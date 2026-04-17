@@ -1,0 +1,1 @@
+This is a Kotlin Multiplatform project template targeting Android, iOS.

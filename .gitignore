@@ -1,0 +1,39 @@
+## IDE & System Files
+.idea/
+.fleet/
+*.iml
+.DS_Store
+captures
+**/xcuserdata/
+
+## Build & Generation
+**/build/
+.gradle/
+.kotlin/
+.cxx/
+.externalNativeBuild/
+.konan/
+
+## Android / Signing
+local.properties
+*.jks
+*.keystore
+*.p12
+*.gpg
+google-services.json
+
+## Xcode
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/project.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+**/xcshareddata/WorkspaceSettings.xcsettings
+
+# CocoaPods
+**/Pods/
+**/DerivedData/
+
+## Compose Multiplatform / Web
+.js_shell/
+kotlin-js-store/
