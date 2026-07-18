@@ -1,0 +1,15 @@
+{
+  "client_id": "beb4b4cf-b7f1-49ac-b0dd-34e8281712a3",
+  "authorization_user_agent": "DEFAULT",
+  "redirect_uri": "msauth://org.structured_barebone.cmp_project/M3FsndsOOv18Ngi%2Fgds7nmrd2%2Bc%3D",
+  "account_mode": "SINGLE",
+  "authorities": [
+    {
+      "type": "AAD",
+      "audience": {
+        "type": "AzureADMyOrg",
+        "tenant_id": "0cd48d9d-13d1-4a63-a2a9-57a2dd7f92c9"
+      }
+    }
+  ]
+}

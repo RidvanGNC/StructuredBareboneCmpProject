@@ -1,15 +1,26 @@
 package org.structured_barebone.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import org.structured_barebone.account.AccountScreen
+import org.structured_barebone.mails.MailsScreen
+import org.structured_barebone.maildetail.MailDetailScreen
+import org.structured_barebone.pricingrates.PricingRatesScreen
+import org.structured_barebone.routingcontacts.RoutingContactsScreen
+import org.structured_barebone.settings.SettingsScreen
 import org.structured_barebone.shared.navigation.Screen
 import org.structured_barebone.template.TemplateScreen
+import org.structured_barebone.user.UserScreen
 
 @Composable
-fun SetupNavGraph(startDestination: Screen = Screen.Template) {
-    val navController = rememberNavController()
+fun SetupNavGraph(
+    navController: NavHostController = rememberNavController(),
+    startDestination: Screen = Screen.Mails,
+) {
     NavHost(
         navController = navController, startDestination = startDestination
     ) {
@@ -19,6 +30,33 @@ fun SetupNavGraph(startDestination: Screen = Screen.Template) {
                     navController.popBackStack()
                 }
             )
+        }
+        composable<Screen.Mails> {
+            MailsScreen(
+                onMailClick = { mailId -> navController.navigate(Screen.MailDetail(mailId)) },
+            )
+        }
+        composable<Screen.MailDetail> { backStackEntry ->
+            val destination: Screen.MailDetail = backStackEntry.toRoute()
+            MailDetailScreen(
+                mailId = destination.mailId,
+                onBack = { navController.popBackStack() },
+            )
+        }
+        composable<Screen.RoutingContacts> {
+            RoutingContactsScreen()
+        }
+        composable<Screen.PricingRates> {
+            PricingRatesScreen()
+        }
+        composable<Screen.Settings> {
+            SettingsScreen()
+        }
+        composable<Screen.Account> {
+            AccountScreen()
+        }
+        composable<Screen.User> {
+            UserScreen()
         }
     }
 }

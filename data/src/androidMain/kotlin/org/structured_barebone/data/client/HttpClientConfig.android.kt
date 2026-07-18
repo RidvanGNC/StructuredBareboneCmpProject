@@ -7,14 +7,14 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManagerFactory
 
-actual fun createHttpClient(): HttpClient {
+actual fun createHttpClient(tokenProvider: suspend () -> String?): HttpClient {
     return HttpClient(Android) {
         engine {
             sslManager = { httpsURLConnection ->
                 httpsURLConnection.sslSocketFactory = getSSLSocketFactory()
             }
         }
-        installCommonPlugins()
+        installCommonPlugins(tokenProvider)
     }
 }
 

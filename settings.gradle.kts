@@ -25,6 +25,13 @@ dependencyResolutionManagement {
             }
         }
         mavenCentral()
+        // MSAL Android'in "display-mask" (Surface Duo) transitive bagimliligi icin gerekli.
+        maven {
+            url = uri("https://pkgs.dev.azure.com/MicrosoftDeviceSDK/DuoSDK-Public/_packaging/Duo-SDK-Feed/maven/v1")
+            content {
+                includeGroup("com.microsoft.device.display")
+            }
+        }
     }
 }
 
@@ -37,3 +44,10 @@ include(":di")
 //Screens
 include(":data")
 include(":screen:template")
+include(":screen:mails")
+include(":screen:user")
+include(":screen:mail-detail")
+include(":screen:routing-contacts")
+include(":screen:pricing-rates")
+include(":screen:settings")
+include(":screen:account")

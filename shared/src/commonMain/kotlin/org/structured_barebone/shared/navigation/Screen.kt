@@ -7,10 +7,24 @@ sealed class Screen {
     @Serializable
     data object Template : Screen()
 
-    //Example Definitions
-//    @Serializable
-//    data object Login : Screen()
-//
-//    @Serializable
-//    data class Detail(val id: String): Screen()
+    @Serializable
+    data object Mails : Screen()
+
+    @Serializable
+    data class MailDetail(val mailId: String) : Screen()
+
+    @Serializable
+    data object RoutingContacts : Screen()
+
+    @Serializable
+    data object PricingRates : Screen()
+
+    @Serializable
+    data object Settings : Screen()
+
+    @Serializable
+    data object Account : Screen()
+
+    @Serializable
+    data object User : Screen()
 }

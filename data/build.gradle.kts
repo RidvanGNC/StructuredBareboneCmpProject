@@ -35,6 +35,9 @@ kotlin {
             //Ktor
             implementation(libs.ktor.client.okhttp)
             implementation(libs.ktor.client.android)
+
+            //Auth
+            implementation(libs.msal)
         }
 
         commonMain.dependencies {
@@ -61,6 +64,7 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.client.serialization)
             implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.ktor.client.auth)
 
             // Koin
             implementation(libs.koin.core)

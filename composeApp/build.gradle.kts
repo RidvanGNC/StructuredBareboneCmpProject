@@ -30,11 +30,15 @@ kotlin {
 
             //Koin
             implementation(libs.koin.android)
+
+            //Project
+            implementation(project(path = ":data"))
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
+            implementation(libs.compose.material.icons.core)
             implementation(libs.compose.ui)
             implementation(libs.compose.components.resources)
             implementation(libs.compose.uiToolingPreview)
@@ -46,10 +50,14 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
 
+            // Navigation
+            implementation(libs.navigation.compose)
+
             //Project
             implementation(project(path = ":shared"))
             implementation(project(path = ":navigation"))
             implementation(project(path = ":di"))
+            implementation(project(path = ":viewmodel"))
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
