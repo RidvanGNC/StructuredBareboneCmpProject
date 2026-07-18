@@ -7,7 +7,6 @@ import io.ktor.client.request.get
 import org.structured_barebone.data.client.ApiConfig
 import org.structured_barebone.data.domain.UserRepository
 import org.structured_barebone.data.model.ApiResponse
-import org.structured_barebone.shared.model.ALL_TENANT_PERMISSIONS
 import org.structured_barebone.shared.model.Result
 import org.structured_barebone.shared.model.UserProfile
 
@@ -29,10 +28,6 @@ class UserRepositoryImpl(
                     isActive = true,
                     deletionScheduledAt = null,
                     language = "tr",
-                    isAdmin = true,
-                    tenantId = "t1",
-                    tenantName = "Acme Ceviri Ltd.",
-                    permissions = ALL_TENANT_PERMISSIONS,
                 )
             } else {
                 httpClient.get("/me").body()

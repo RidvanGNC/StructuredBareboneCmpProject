@@ -23,8 +23,5 @@ sealed class Screen {
     data object Settings : Screen()
 
     @Serializable
-    data object Account : Screen()
-
-    @Serializable
     data object User : Screen()
 }

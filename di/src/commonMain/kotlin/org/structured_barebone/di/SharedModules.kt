@@ -6,7 +6,6 @@ import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 import org.structured_barebone.data.auth.AuthService
 import org.structured_barebone.data.client.createHttpClient
-import org.structured_barebone.data.domain.AccountRepository
 import org.structured_barebone.data.domain.MailReplyRepository
 import org.structured_barebone.data.domain.MailRepository
 import org.structured_barebone.data.domain.PricingRateRepository
@@ -14,7 +13,6 @@ import org.structured_barebone.data.domain.RoutingContactRepository
 import org.structured_barebone.data.domain.SettingsRepository
 import org.structured_barebone.data.domain.TemplateRepository
 import org.structured_barebone.data.domain.UserRepository
-import org.structured_barebone.data.implementation.AccountRepositoryImpl
 import org.structured_barebone.data.implementation.MailReplyRepositoryImpl
 import org.structured_barebone.data.implementation.MailRepositoryImpl
 import org.structured_barebone.data.implementation.PricingRateRepositoryImpl
@@ -22,7 +20,6 @@ import org.structured_barebone.data.implementation.RoutingContactRepositoryImpl
 import org.structured_barebone.data.implementation.SettingsRepositoryImpl
 import org.structured_barebone.data.implementation.TemplateRepositoryImpl
 import org.structured_barebone.data.implementation.UserRepositoryImpl
-import org.structured_barebone.viewmodel.AccountViewModel
 import org.structured_barebone.viewmodel.MailDetailViewModel
 import org.structured_barebone.viewmodel.MailListViewModel
 import org.structured_barebone.viewmodel.PricingRatesViewModel
@@ -61,7 +58,4 @@ fun commonModule() = module {
 
     single<SettingsRepository> { SettingsRepositoryImpl(get()) }
     factory { SettingsViewModel(get()) }
-
-    single<AccountRepository> { AccountRepositoryImpl(get()) }
-    factory { AccountViewModel(get()) }
 }

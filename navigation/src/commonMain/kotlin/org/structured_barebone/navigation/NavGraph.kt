@@ -6,7 +6,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import org.structured_barebone.account.AccountScreen
 import org.structured_barebone.mails.MailsScreen
 import org.structured_barebone.maildetail.MailDetailScreen
 import org.structured_barebone.pricingrates.PricingRatesScreen
@@ -51,9 +50,6 @@ fun SetupNavGraph(
         }
         composable<Screen.Settings> {
             SettingsScreen()
-        }
-        composable<Screen.Account> {
-            AccountScreen()
         }
         composable<Screen.User> {
             UserScreen()

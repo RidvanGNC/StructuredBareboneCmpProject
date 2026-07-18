@@ -3,7 +3,6 @@ package org.structured_barebone.data.model
 import kotlinx.serialization.Serializable
 import org.structured_barebone.shared.model.CloudProvider
 import org.structured_barebone.shared.model.EngineMode
-import org.structured_barebone.shared.model.TenantPermission
 
 @Serializable
 data class UpdateReplyRequest(val subject: String, val body: String)
@@ -50,15 +49,6 @@ data class UpdateEngineConfigRequest(
 
 @Serializable
 data class UpsertCloudCredentialRequest(val provider: CloudProvider, val apiKey: String)
-
-@Serializable
-data class CreateCompanyRequest(val name: String)
-
-@Serializable
-data class InviteUserRequest(val email: String, val permissions: List<TenantPermission>)
-
-@Serializable
-data class UpdatePermissionsRequest(val permissions: List<TenantPermission>)
 
 @Serializable
 data class SyncResultDto(val ingested: Int)

@@ -1,8 +1,5 @@
 package org.structured_barebone.data.implementation
 
-import org.structured_barebone.shared.model.ALL_TENANT_PERMISSIONS
-import org.structured_barebone.shared.model.AccountStatusDto
-import org.structured_barebone.shared.model.AuditLogEntryDto
 import org.structured_barebone.shared.model.CloudCredentialDto
 import org.structured_barebone.shared.model.CloudProvider
 import org.structured_barebone.shared.model.CustomerDto
@@ -18,10 +15,6 @@ import org.structured_barebone.shared.model.MailStatus
 import org.structured_barebone.shared.model.MailType
 import org.structured_barebone.shared.model.PricingRateDto
 import org.structured_barebone.shared.model.RoutingContactDto
-import org.structured_barebone.shared.model.TenantInvitationDto
-import org.structured_barebone.shared.model.TenantInvitationStatus
-import org.structured_barebone.shared.model.TenantPermission
-import org.structured_barebone.shared.model.TenantUserDto
 
 // Web tarafindaki mockData.ts ile tutarli ornek veri; gercek backend baglanana kadar kullanilir.
 internal object MockMailData {
@@ -148,36 +141,6 @@ internal object MockMailData {
             responseContent = "{\"detected_language\":\"tr\",\"mail_type\":\"soru_ve_teklif\"}",
             promptTokens = 120, completionTokens = 40, totalTokens = 160,
             success = true, errorMessage = null, durationMs = 850,
-        ),
-    )
-
-    var accountStatus = AccountStatusDto(
-        hasTenant = true, tenantName = "Acme Ceviri Ltd.", isAdmin = true, canBootstrap = false,
-    )
-
-    val tenantInvitations = mutableListOf(
-        TenantInvitationDto(
-            id = "inv1", email = "yeni.kullanici@example.com",
-            permissions = listOf(TenantPermission.ViewMails, TenantPermission.SendMails),
-            status = TenantInvitationStatus.Pending, createdAt = "2026-07-16T22:00:00Z", acceptedAt = null,
-        ),
-    )
-
-    val tenantUsers = mutableListOf(
-        TenantUserDto(
-            id = "u1", email = "dragongonca@gmail.com", name = "Ridvan", surname = "Gonca",
-            isAdmin = true, permissions = ALL_TENANT_PERMISSIONS, firstLoginAt = "2026-01-31T01:12:00Z",
-        ),
-    )
-
-    val auditLog = mutableListOf(
-        AuditLogEntryDto(
-            id = "audit1", actorEmail = "dragongonca@gmail.com", action = "RoutingContact.Added",
-            details = "Elif Demir (elif.demir@example.com)", timestamp = "2025-08-17T00:00:00Z",
-        ),
-        AuditLogEntryDto(
-            id = "audit2", actorEmail = "dragongonca@gmail.com", action = "User.Invited",
-            details = "yeni.kullanici@example.com (ViewMails, SendMails)", timestamp = "2026-07-16T22:00:00Z",
         ),
     )
 }

@@ -49,7 +49,6 @@ kotlin {
             implementation(project(path = ":screen:routing-contacts"))
             implementation(project(path = ":screen:pricing-rates"))
             implementation(project(path = ":screen:settings"))
-            implementation(project(path = ":screen:account"))
             implementation(project(path = ":screen:user"))
         }
     }

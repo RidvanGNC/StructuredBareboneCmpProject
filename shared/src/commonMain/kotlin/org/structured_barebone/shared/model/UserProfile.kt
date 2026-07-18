@@ -14,8 +14,4 @@ data class UserProfile(
     val isActive: Boolean,
     val deletionScheduledAt: String?,
     val language: String,
-    val isAdmin: Boolean,
-    val tenantId: String?,
-    val tenantName: String?,
-    val permissions: List<TenantPermission>,
 )

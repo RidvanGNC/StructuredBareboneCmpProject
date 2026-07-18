@@ -37,9 +37,7 @@ import org.koin.core.parameter.parametersOf
 import org.structured_barebone.shared.model.MailDto
 import org.structured_barebone.shared.model.MailReplyDto
 import org.structured_barebone.shared.model.MailReplyType
-import org.structured_barebone.shared.model.TenantPermission
 import org.structured_barebone.viewmodel.MailDetailViewModel
-import org.structured_barebone.viewmodel.UserViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,10 +45,6 @@ fun MailDetailScreen(mailId: String, onBack: () -> Unit) {
     val viewModel: MailDetailViewModel = koinInject(parameters = { parametersOf(mailId) })
     val uiState by viewModel.uiState.collectAsState()
     var selectedTab by remember { mutableIntStateOf(0) }
-
-    val userViewModel: UserViewModel = koinInject()
-    val userState by userViewModel.uiState.collectAsState()
-    val permissions = (userState as? UserViewModel.UiState.Success)?.profile?.permissions ?: emptyList()
 
     Scaffold(
         topBar = {
@@ -105,7 +99,6 @@ fun MailDetailScreen(mailId: String, onBack: () -> Unit) {
                             reply = quoteReply,
                             predictedPrice = state.mail.predictedPrice,
                             viewModel = viewModel,
-                            permissions = permissions,
                         )
                     } else {
                         ReplyEditor(
@@ -113,7 +106,6 @@ fun MailDetailScreen(mailId: String, onBack: () -> Unit) {
                             reply = deliveryReply,
                             predictedPrice = state.mail.predictedPrice,
                             viewModel = viewModel,
-                            permissions = permissions,
                         )
                     }
                 }
@@ -143,7 +135,6 @@ private fun ReplyEditor(
     reply: MailReplyDto?,
     predictedPrice: Double?,
     viewModel: MailDetailViewModel,
-    permissions: List<TenantPermission>,
 ) {
     if (reply == null) {
         Box(modifier = Modifier.fillMaxWidth().padding(24.dp), contentAlignment = Alignment.Center) {
@@ -158,8 +149,6 @@ private fun ReplyEditor(
     var body by remember(reply.id) { mutableStateOf(reply.body) }
     var actualPriceText by remember(reply.id) { mutableStateOf(predictedPrice?.toString() ?: "") }
 
-    val canApprove = permissions.contains(TenantPermission.ApproveMails)
-    val canSend = permissions.contains(TenantPermission.SendMails)
     val isSent = reply.sentAt != null
     val isApproved = reply.isApproved
     val isEditable = !isApproved
@@ -219,7 +208,7 @@ private fun ReplyEditor(
             )
         }
 
-        if (isEditable && canApprove) {
+        if (isEditable) {
             Button(
                 onClick = { viewModel.approve(reply.id, actualPriceText.toDoubleOrNull()) },
                 enabled = replyType != MailReplyType.Delivery || reply.attachmentFileName != null,
@@ -228,7 +217,7 @@ private fun ReplyEditor(
             }
         }
 
-        if (isApproved && !isSent && canSend) {
+        if (isApproved && !isSent) {
             Button(onClick = { viewModel.send(reply.id) }) {
                 Text("Gönder")
             }
