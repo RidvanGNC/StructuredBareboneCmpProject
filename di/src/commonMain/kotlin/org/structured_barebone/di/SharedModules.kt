@@ -36,7 +36,12 @@ fun initKoin(
 }
 
 fun commonModule() = module {
-    single<HttpClient> { createHttpClient(tokenProvider = { get<AuthService>().getAccessToken() }) }
+    single<HttpClient> {
+        createHttpClient(
+            tokenProvider = { get<AuthService>().getAccessToken() },
+            graphTokenProvider = { get<AuthService>().getGraphAccessToken() },
+        )
+    }
 
     single<TemplateRepository> { TemplateRepositoryImpl(get()) }
     factory { TemplateViewModel(get()) }

@@ -11,6 +11,7 @@ interface AuthService {
     // aksi halde UI, hesap yuklendikten sonra guncellenmez (bkz. "An account is already signed in" hatasi).
     val isSignedIn: StateFlow<Boolean>
     suspend fun getAccessToken(): String?
+    suspend fun getGraphAccessToken(): String?
     suspend fun signIn(host: AuthHost): Result<Unit>
     fun signOut()
 }

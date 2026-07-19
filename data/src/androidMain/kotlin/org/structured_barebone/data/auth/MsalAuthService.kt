@@ -23,6 +23,11 @@ import kotlin.coroutines.resume
 // (ve o kayda ayni redirect URI eklenmeden) gercek girisi tamamlayamaz; bkz. res/raw/msal_config.json.
 class MsalAuthService(context: Context) : AuthService {
     private val scopes = arrayOf(AuthConfig.API_SCOPE)
+
+    // Girişte hem kendi API scope'umuzu hem Graph scope'larini birlikte istiyoruz ki tek bir
+    // onay ekraninda ikisine de izin verilsin; sonrasinda her biri icin ayri ayri sessiz token
+    // alinabiliyor (bkz. getAccessToken / getGraphAccessToken).
+    private val signInScopes = arrayOf(AuthConfig.API_SCOPE, *AuthConfig.GRAPH_SCOPES)
     private var app: ISingleAccountPublicClientApplication? = null
     private var currentAccount: IAccount? = null
 
@@ -84,6 +89,27 @@ class MsalAuthService(context: Context) : AuthService {
         }
     }
 
+    override suspend fun getGraphAccessToken(): String? {
+        val application = app ?: return null
+        currentAccount ?: return null
+        return suspendCancellableCoroutine { continuation ->
+            application.acquireTokenSilentAsync(
+                AuthConfig.GRAPH_SCOPES,
+                AuthConfig.AUTHORITY_URL,
+                object : SilentAuthenticationCallback {
+                    override fun onSuccess(authenticationResult: IAuthenticationResult) {
+                        continuation.resume(authenticationResult.accessToken)
+                    }
+
+                    override fun onError(exception: MsalException) {
+                        Log.e("MsalAuthService", "Graph icin sessiz token alma basarisiz: ${exception.errorCode} - ${exception.message}", exception)
+                        continuation.resume(null)
+                    }
+                },
+            )
+        }
+    }
+
     override suspend fun signIn(host: AuthHost): Result<Unit> {
         val application = app ?: return Result.Error("Kimlik dogrulama servisi henuz hazir degil.")
         // Hesap arka planda az once yuklenmis olabilir (bkz. getCurrentAccountAsync); bu durumda
@@ -96,7 +122,7 @@ class MsalAuthService(context: Context) : AuthService {
             application.signIn(
                 host,
                 null,
-                scopes,
+                signInScopes,
                 object : AuthenticationCallback {
                     override fun onSuccess(authenticationResult: IAuthenticationResult) {
                         currentAccount = authenticationResult.account

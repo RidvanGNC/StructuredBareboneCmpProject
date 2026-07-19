@@ -12,6 +12,8 @@ class UnimplementedAuthService : AuthService {
 
     override suspend fun getAccessToken(): String? = null
 
+    override suspend fun getGraphAccessToken(): String? = null
+
     override suspend fun signIn(host: AuthHost): Result<Unit> =
         Result.Error("iOS icin kimlik dogrulama entegrasyonu henuz tamamlanmadi.")
 

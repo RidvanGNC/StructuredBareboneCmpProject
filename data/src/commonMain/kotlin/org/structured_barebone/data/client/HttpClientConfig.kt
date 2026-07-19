@@ -4,6 +4,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.api.createClientPlugin
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
@@ -20,7 +21,10 @@ import kotlinx.serialization.json.Json
 import org.structured_barebone.data.model.ProblemDetails
 import org.structured_barebone.data.model.ServerException
 
-fun HttpClientConfig<*>.installCommonPlugins(tokenProvider: suspend () -> String? = { null }) {
+fun HttpClientConfig<*>.installCommonPlugins(
+    tokenProvider: suspend () -> String? = { null },
+    graphTokenProvider: suspend () -> String? = { null },
+) {
     val json = Json {
         ignoreUnknownKeys = true
         isLenient = true
@@ -43,6 +47,16 @@ fun HttpClientConfig<*>.installCommonPlugins(tokenProvider: suspend () -> String
             refreshTokens { tokenProvider()?.let { BearerTokens(it, "") } }
         }
     }
+
+    // Backend On-Behalf-Of ile Graph token'i turetemiyor (kisisel Microsoft hesaplari OBO'yu
+    // desteklemiyor); bu yuzden Graph icin ayrica aldigimiz token'i her istekte ayri bir
+    // header ile iletiyoruz, backend bunu oldugu gibi kullanir.
+    val graphTokenHeaderPlugin = createClientPlugin("GraphTokenHeader") {
+        onRequest { request, _ ->
+            graphTokenProvider()?.let { request.headers.append("X-Graph-Token", it) }
+        }
+    }
+    install(graphTokenHeaderPlugin)
 
     install(HttpTimeout) {
         connectTimeoutMillis = 15_000
@@ -77,4 +91,7 @@ fun HttpClientConfig<*>.installCommonPlugins(tokenProvider: suspend () -> String
     }
 }
 
-expect fun createHttpClient(tokenProvider: suspend () -> String? = { null }): HttpClient
+expect fun createHttpClient(
+    tokenProvider: suspend () -> String? = { null },
+    graphTokenProvider: suspend () -> String? = { null },
+): HttpClient
