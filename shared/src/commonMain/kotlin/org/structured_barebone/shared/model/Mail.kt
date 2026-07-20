@@ -9,7 +9,7 @@ enum class MailStatus {
 
 @Serializable
 enum class MailType {
-    Advertisement, Spam, InquiryOrOffer, Translation
+    Advertisement, Spam, InquiryOrOffer, Translation, Information
 }
 
 @Serializable
@@ -24,6 +24,8 @@ data class MailDto(
     val customerId: String,
     val status: MailStatus,
     val type: MailType,
+    val subject: String?,
+    val body: String?,
     val predictedLanguage: String?,
     val confirmedLanguage: String?,
     val languageSource: LanguageSource,
@@ -32,6 +34,7 @@ data class MailDto(
     val customerGroup: Int,
     val mailGroup: String,
     val hasAttachment: Boolean,
+    val attachmentFileName: String?,
     val sequenceNumber: Int,
     val isContinuation: Boolean,
     val isUrgent: Boolean,

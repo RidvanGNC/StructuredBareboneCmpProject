@@ -24,6 +24,7 @@ data class EngineSettingsDto(
     val temperature: Double,
     val maxTokens: Int?,
     val topP: Double?,
+    val topK: Int?,
     val updatedAt: String,
 )
 

@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.structured_barebone.data.domain.MailReplyRepository
 import org.structured_barebone.data.domain.MailRepository
+import org.structured_barebone.data.platform.AttachmentSaver
 import org.structured_barebone.shared.model.MailDto
 import org.structured_barebone.shared.model.MailReplyDto
 import org.structured_barebone.shared.model.MailReplyType
@@ -18,6 +19,7 @@ class MailDetailViewModel(
     private val mailId: String,
     private val mailRepository: MailRepository,
     private val mailReplyRepository: MailReplyRepository,
+    private val attachmentSaver: AttachmentSaver,
 ) : ViewModel() {
     private val viewModelScope = CoroutineScope(Dispatchers.Main)
 
@@ -29,6 +31,9 @@ class MailDetailViewModel(
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
+
+    private val _attachmentError = MutableStateFlow<String?>(null)
+    val attachmentError: StateFlow<String?> = _attachmentError.asStateFlow()
 
     init {
         load()
@@ -86,5 +91,33 @@ class MailDetailViewModel(
             val result = mailReplyRepository.send(replyId)
             if (result is Result.Success) load()
         }
+    }
+
+    fun confirmLanguage(language: String) {
+        viewModelScope.launch {
+            val result = mailRepository.confirmLanguage(mailId, language)
+            if (result is Result.Success) load()
+        }
+    }
+
+    fun reanalyze() {
+        viewModelScope.launch {
+            _uiState.value = UiState.Loading
+            mailRepository.reanalyze(mailId)
+            load()
+        }
+    }
+
+    fun downloadAttachment(fileName: String) {
+        viewModelScope.launch {
+            when (val result = mailRepository.downloadAttachment(mailId)) {
+                is Result.Success -> attachmentSaver.saveAndOpen(fileName, result.data)
+                is Result.Error -> _attachmentError.value = result.message
+            }
+        }
+    }
+
+    fun clearAttachmentError() {
+        _attachmentError.value = null
     }
 }

@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 private const val KEY_LANGUAGE_TAG = "app_language_tag"
 private const val KEY_API_BASE_URL_OVERRIDE = "api_base_url_override"
+private const val KEY_READ_NOTIFICATION_IDS = "read_notification_ids"
 
 // Web'deki SUPPORTED_UI_LANGUAGES ile ayni 5 dil (tr/en/ar/ru/de).
 val SUPPORTED_LANGUAGE_TAGS = listOf("tr", "en", "ar", "ru", "de")
@@ -44,5 +45,22 @@ class AppPreferences(private val settings: Settings) {
             settings.putString(KEY_API_BASE_URL_OVERRIDE, trimmed)
         }
         _apiBaseUrlOverride.value = trimmed
+    }
+
+    private val _readNotificationIds = MutableStateFlow(
+        settings.getStringOrNull(KEY_READ_NOTIFICATION_IDS)?.split(",")?.filter { it.isNotEmpty() }?.toSet() ?: emptySet(),
+    )
+    val readNotificationIds: StateFlow<Set<String>> = _readNotificationIds
+
+    fun markNotificationRead(id: String) {
+        val updated = _readNotificationIds.value + id
+        settings.putString(KEY_READ_NOTIFICATION_IDS, updated.joinToString(","))
+        _readNotificationIds.value = updated
+    }
+
+    fun markNotificationsRead(ids: List<String>) {
+        val updated = _readNotificationIds.value + ids
+        settings.putString(KEY_READ_NOTIFICATION_IDS, updated.joinToString(","))
+        _readNotificationIds.value = updated
     }
 }

@@ -43,13 +43,13 @@ kotlin {
 
             // Project
             implementation(project(path = ":shared"))
-            implementation(project(path = ":screen:template"))
             implementation(project(path = ":screen:mails"))
             implementation(project(path = ":screen:mail-detail"))
             implementation(project(path = ":screen:routing-contacts"))
             implementation(project(path = ":screen:pricing-rates"))
             implementation(project(path = ":screen:settings"))
             implementation(project(path = ":screen:user"))
+            implementation(project(path = ":screen:mail-groups"))
         }
     }
 }

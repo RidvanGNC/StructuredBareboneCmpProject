@@ -20,7 +20,7 @@ kotlin {
         iosArm64(), iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "template"
+            baseName = "mailGroups"
             isStatic = true
         }
     }
@@ -37,6 +37,7 @@ kotlin {
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
+            implementation(libs.compose.material.icons.core)
             implementation(libs.compose.ui)
             implementation(libs.compose.components.resources)
             implementation(libs.compose.uiToolingPreview)
@@ -55,13 +56,14 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
 
             //Project
+            implementation(project(path = ":shared"))
             implementation(project(path = ":viewmodel"))
         }
     }
 }
 
 android {
-    namespace = "org.structured_barebone.template"
+    namespace = "org.structured_barebone.mailgroups"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {

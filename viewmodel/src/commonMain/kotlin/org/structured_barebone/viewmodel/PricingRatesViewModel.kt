@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.structured_barebone.data.domain.PricingRateRepository
+import org.structured_barebone.shared.model.Currency
 import org.structured_barebone.shared.model.PricingRateDto
 import org.structured_barebone.shared.model.Result
 
@@ -39,9 +40,9 @@ class PricingRatesViewModel(
         }
     }
 
-    fun upsert(languageCode: String, ratePerCharacter: Double) {
+    fun upsert(languageCode: String, ratePerCharacter: Double, currency: Currency) {
         viewModelScope.launch {
-            val result = repository.upsert(languageCode, ratePerCharacter)
+            val result = repository.upsert(languageCode, ratePerCharacter, currency)
             if (result is Result.Success) load()
         }
     }

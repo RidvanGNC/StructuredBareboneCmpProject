@@ -2,6 +2,7 @@ package org.structured_barebone.mails
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,20 +14,27 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -41,11 +49,17 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import org.structured_barebone.data.domain.MailFilter
 import structuredbarebonecmpproject.shared.generated.resources.Res
+import structuredbarebonecmpproject.shared.generated.resources.mail_groups_title
 import structuredbarebonecmpproject.shared.generated.resources.mail_type_advertisement
+import structuredbarebonecmpproject.shared.generated.resources.mail_type_information
 import structuredbarebonecmpproject.shared.generated.resources.mail_type_inquiry_or_offer
 import structuredbarebonecmpproject.shared.generated.resources.mail_type_spam
 import structuredbarebonecmpproject.shared.generated.resources.mail_type_translation
 import structuredbarebonecmpproject.shared.generated.resources.mails_all_groups
+import structuredbarebonecmpproject.shared.generated.resources.mails_filter_attachment
+import structuredbarebonecmpproject.shared.generated.resources.mails_filter_notarized
+import structuredbarebonecmpproject.shared.generated.resources.mails_filter_urgent
+import structuredbarebonecmpproject.shared.generated.resources.mails_notarized_cd
 import structuredbarebonecmpproject.shared.generated.resources.mails_sync_cd
 import structuredbarebonecmpproject.shared.generated.resources.mails_urgent_cd
 import org.structured_barebone.shared.model.MailDto
@@ -55,13 +69,26 @@ import org.structured_barebone.shared.theme.MailStatusColors
 import org.structured_barebone.shared.theme.MailTypeColors
 import org.structured_barebone.viewmodel.MailListViewModel
 
+private val NotarizedColor = Color(0xFF722ED1)
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MailsScreen(onMailClick: (String) -> Unit = {}) {
+fun MailsScreen(onMailClick: (String) -> Unit = {}, onMailGroupsClick: () -> Unit = {}) {
     val viewModel: MailListViewModel = koinInject()
     val uiState by viewModel.uiState.collectAsState()
     val filter by viewModel.filter.collectAsState()
 
     Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {},
+                actions = {
+                    IconButton(onClick = onMailGroupsClick) {
+                        Icon(Icons.Default.List, contentDescription = stringResource(Res.string.mail_groups_title))
+                    }
+                },
+            )
+        },
         floatingActionButton = {
             FloatingActionButton(onClick = { viewModel.sync() }) {
                 Icon(Icons.Default.Refresh, contentDescription = stringResource(Res.string.mails_sync_cd))
@@ -91,11 +118,37 @@ fun MailsScreen(onMailClick: (String) -> Unit = {}) {
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     item {
-                        MailGroupFilter(
-                            groups = state.mailGroups,
-                            selected = filter.mailGroup,
-                            onSelect = { group -> viewModel.updateFilter(filter.copy(mailGroup = group)) },
-                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        ) {
+                            MailGroupFilter(
+                                groups = state.mailGroups,
+                                selected = filter.mailGroup,
+                                onSelect = { group -> viewModel.updateFilter(filter.copy(mailGroup = group)) },
+                            )
+                            FilterChip(
+                                selected = filter.isUrgent == true,
+                                onClick = {
+                                    viewModel.updateFilter(filter.copy(isUrgent = if (filter.isUrgent == true) null else true))
+                                },
+                                label = { Text(stringResource(Res.string.mails_filter_urgent)) },
+                            )
+                            FilterChip(
+                                selected = filter.hasAttachment == true,
+                                onClick = {
+                                    viewModel.updateFilter(filter.copy(hasAttachment = if (filter.hasAttachment == true) null else true))
+                                },
+                                label = { Text(stringResource(Res.string.mails_filter_attachment)) },
+                            )
+                            FilterChip(
+                                selected = filter.isNotarized == true,
+                                onClick = {
+                                    viewModel.updateFilter(filter.copy(isNotarized = if (filter.isNotarized == true) null else true))
+                                },
+                                label = { Text(stringResource(Res.string.mails_filter_notarized)) },
+                            )
+                        }
                     }
                     items(state.mails) { mail ->
                         MailCard(
@@ -165,6 +218,14 @@ private fun MailCard(mail: MailDto, customerName: String, onClick: () -> Unit) {
             if (mail.hasAttachment) {
                 Text(text = "📎", modifier = Modifier.padding(end = 8.dp))
             }
+            if (mail.isNotarized) {
+                Icon(
+                    Icons.Default.Lock,
+                    contentDescription = stringResource(Res.string.mails_notarized_cd),
+                    tint = NotarizedColor,
+                    modifier = Modifier.padding(end = 8.dp).size(18.dp),
+                )
+            }
             if (mail.isUrgent) {
                 Box(
                     modifier = Modifier
@@ -209,4 +270,5 @@ private fun mailTypeLabel(type: MailType): String = when (type) {
     MailType.Spam -> stringResource(Res.string.mail_type_spam)
     MailType.InquiryOrOffer -> stringResource(Res.string.mail_type_inquiry_or_offer)
     MailType.Translation -> stringResource(Res.string.mail_type_translation)
+    MailType.Information -> stringResource(Res.string.mail_type_information)
 }

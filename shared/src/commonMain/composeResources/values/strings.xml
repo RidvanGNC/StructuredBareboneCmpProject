@@ -3,6 +3,7 @@
     <!-- Genel / paylasilan -->
     <string name="common_save">Kaydet</string>
     <string name="common_cancel">Vazgeç</string>
+    <string name="common_done">Tamam</string>
     <string name="common_add">Ekle</string>
     <string name="common_add_cd">Ekle</string>
     <string name="common_edit_cd">Düzenle</string>
@@ -16,16 +17,32 @@
     <string name="nav_settings">Ayarlar</string>
     <string name="nav_user">Hesabım</string>
 
+    <!-- Uygulama basligi -->
+    <string name="app_title">Mail Otomasyonu</string>
+
+    <!-- Bildirimler -->
+    <string name="notifications_title">Bildirimler</string>
+    <string name="notifications_no_active_model">Aktif bir model seçilmedi. Ayarlar &gt; Model Ayarları\'ndan bir model seçin.</string>
+    <string name="notifications_missing_cloud_api_key">%1$s için bulut API anahtarı tanımlanmadı.</string>
+    <string name="notifications_failed_request">Bir işlem başarısız oldu: %1$s</string>
+    <string name="notifications_mark_as_read">Okundu olarak işaretle</string>
+    <string name="notifications_mark_all_read">Tümünü okundu işaretle</string>
+
     <!-- Mail tipleri -->
     <string name="mail_type_advertisement">Reklam</string>
     <string name="mail_type_spam">Spam</string>
     <string name="mail_type_inquiry_or_offer">Soru ve Teklif</string>
     <string name="mail_type_translation">Çeviri</string>
+    <string name="mail_type_information">Bilgilendirme</string>
 
     <!-- Mailler ekrani -->
     <string name="mails_sync_cd">Senkronize Et</string>
     <string name="mails_all_groups">Tüm Gruplar</string>
     <string name="mails_urgent_cd">Acil</string>
+    <string name="mails_notarized_cd">Noter Onaylı</string>
+    <string name="mails_filter_urgent">Acil</string>
+    <string name="mails_filter_attachment">Ek Belge</string>
+    <string name="mails_filter_notarized">Noter Onaylı</string>
 
     <!-- Mail detayi ekrani -->
     <string name="mail_detail_title">Mail Detayı</string>
@@ -43,6 +60,12 @@
     <string name="mail_detail_actual_price_label">Onaylanan Fiyat</string>
     <string name="mail_detail_approve">Onayla</string>
     <string name="mail_detail_send">Gönder</string>
+    <string name="mail_detail_content_section">İçerik</string>
+    <string name="mail_detail_predicted_language_label">Tahmini Dil</string>
+    <string name="mail_detail_confirmed_language_label">Onaylanan Dil</string>
+    <string name="mail_detail_confirm_language">Dili Onayla</string>
+    <string name="mail_detail_attachment_download">İndir</string>
+    <string name="mail_detail_reanalyze_cd">Yeniden Analiz Et</string>
 
     <!-- Yonlendirmeler ekrani -->
     <string name="routing_contacts_title">Sabit Yönlendirmeler</string>
@@ -53,14 +76,18 @@
     <string name="routing_contacts_name_label">Ad</string>
     <string name="routing_contacts_surname_label">Soyad</string>
     <string name="routing_contacts_email_label">E-posta</string>
-    <string name="routing_contacts_languages_label">Diller (virgülle ayırın: tr, en)</string>
+    <string name="routing_contacts_languages_label">Diller</string>
     <string name="routing_contacts_priority_field_label">Öncelik (düşük sayı önce tercih edilir)</string>
 
     <!-- Fiyatlandirma ekrani -->
     <string name="pricing_rates_title">Fiyatlandırma</string>
-    <string name="pricing_rates_language_code_label">Dil Kodu (örn. en)</string>
+    <string name="pricing_rates_language_code_label">Dil</string>
     <string name="pricing_rates_rate_label">Karakter Başı Ücret</string>
     <string name="pricing_rates_loading">Yükleniyor...</string>
+    <string name="pricing_rates_currency_label">Para Birimi</string>
+    <string name="pricing_rates_currency_try">Türk Lirası</string>
+    <string name="pricing_rates_currency_usd">Amerikan Doları</string>
+    <string name="pricing_rates_currency_eur">Euro</string>
 
     <!-- Ayarlar ekrani -->
     <string name="settings_title">Ayarlar</string>
@@ -77,11 +104,29 @@
     <string name="settings_temperature_label">Temperature</string>
     <string name="settings_max_tokens_label">Maksimum Token</string>
     <string name="settings_top_p_label">Top P</string>
+    <string name="settings_top_k_label">Top K</string>
+    <string name="settings_appearance_tab">Görünüm</string>
+    <string name="settings_appearance_brand_text_label">Marka Metni</string>
+    <string name="settings_appearance_primary_color_label">Ana Renk</string>
+    <string name="settings_appearance_reset_color">Varsayılana Sıfırla</string>
+    <string name="settings_appearance_font_family_label">Yazı Tipi</string>
+    <string name="settings_appearance_font_scale_label">Font Büyüklüğü</string>
+    <string name="settings_vacation_tab">Tatil Modu</string>
+    <string name="settings_vacation_enabled_label">Tatil Modu Aktif</string>
+    <string name="settings_vacation_message_label">Tatil Modu Otomatik Yanıt Metni</string>
+    <string name="settings_vacation_notify_types_label">Otomatik yanıt gönderilecek mail tipleri</string>
     <string name="settings_model_size_gb">%1$s GB</string>
     <string name="settings_not_configured">Tanımlanmadı</string>
     <string name="settings_log_tokens_duration">Token: %1$s · Süre: %2$s ms</string>
     <string name="settings_log_success">Başarılı</string>
     <string name="settings_log_failed">Başarısız (%1$s)</string>
+    <string name="settings_log_status_filter_label">Durum</string>
+    <string name="settings_log_filter_all">Tümü</string>
+    <string name="settings_log_filter_success">Başarılı</string>
+    <string name="settings_log_filter_failed">Başarısız</string>
+    <string name="settings_log_prev_page">Önceki</string>
+    <string name="settings_log_next_page">Sonraki</string>
+    <string name="settings_log_page_indicator">Sayfa %1$s / %2$s</string>
 
     <!-- Hesabim ekrani -->
     <string name="user_first_login">İlk giriş: %1$s</string>
@@ -96,6 +141,13 @@
     <string name="user_server_section_title">Sunucu Adresi</string>
     <string name="user_server_placeholder">örn. http://192.168.0.12:5100</string>
     <string name="user_server_hint">Boş bırakılırsa varsayılan adres kullanılır.</string>
+
+    <!-- Mail gruplari yonetim ekrani -->
+    <string name="mail_groups_title">Mail Grupları</string>
+    <string name="mail_groups_add_title">Grup Ekle</string>
+    <string name="mail_groups_group_name_label">Grup Adı (etki alanı)</string>
+    <string name="mail_groups_note_label">Not</string>
+    <string name="mail_groups_no_note">Not yok</string>
 
     <!-- Dil adlari (dil secici icin) -->
     <string name="language_name_tr">Türkçe</string>

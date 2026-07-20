@@ -1,6 +1,7 @@
 package org.structured_barebone.pricingrates
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -14,10 +15,13 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -36,10 +40,17 @@ import structuredbarebonecmpproject.shared.generated.resources.Res
 import structuredbarebonecmpproject.shared.generated.resources.common_delete_cd
 import structuredbarebonecmpproject.shared.generated.resources.common_edit_cd
 import structuredbarebonecmpproject.shared.generated.resources.common_save
+import structuredbarebonecmpproject.shared.generated.resources.pricing_rates_currency_eur
+import structuredbarebonecmpproject.shared.generated.resources.pricing_rates_currency_label
+import structuredbarebonecmpproject.shared.generated.resources.pricing_rates_currency_try
+import structuredbarebonecmpproject.shared.generated.resources.pricing_rates_currency_usd
 import structuredbarebonecmpproject.shared.generated.resources.pricing_rates_language_code_label
 import structuredbarebonecmpproject.shared.generated.resources.pricing_rates_loading
 import structuredbarebonecmpproject.shared.generated.resources.pricing_rates_rate_label
 import structuredbarebonecmpproject.shared.generated.resources.pricing_rates_title
+import org.structured_barebone.shared.components.LanguageLabel
+import org.structured_barebone.shared.components.LanguageSelectField
+import org.structured_barebone.shared.model.Currency
 import org.structured_barebone.shared.model.PricingRateDto
 import org.structured_barebone.viewmodel.PricingRatesViewModel
 
@@ -49,8 +60,9 @@ fun PricingRatesScreen() {
     val viewModel: PricingRatesViewModel = koinInject()
     val uiState by viewModel.uiState.collectAsState()
 
-    var languageCode by remember { mutableStateOf("") }
+    var languageCode by remember { mutableStateOf<String?>(null) }
     var rateText by remember { mutableStateOf("") }
+    var currency by remember { mutableStateOf(Currency.TRY) }
 
     Scaffold(
         topBar = { TopAppBar(title = { Text(stringResource(Res.string.pricing_rates_title)) }) },
@@ -58,10 +70,10 @@ fun PricingRatesScreen() {
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             Card(modifier = Modifier.fillMaxWidth().padding(12.dp)) {
                 Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(
-                        value = languageCode,
-                        onValueChange = { languageCode = it },
-                        label = { Text(stringResource(Res.string.pricing_rates_language_code_label)) },
+                    LanguageSelectField(
+                        label = stringResource(Res.string.pricing_rates_language_code_label),
+                        selectedCode = languageCode,
+                        onSelect = { languageCode = it },
                         modifier = Modifier.fillMaxWidth(),
                     )
                     OutlinedTextField(
@@ -70,13 +82,20 @@ fun PricingRatesScreen() {
                         label = { Text(stringResource(Res.string.pricing_rates_rate_label)) },
                         modifier = Modifier.fillMaxWidth(),
                     )
+                    CurrencyDropdown(
+                        label = stringResource(Res.string.pricing_rates_currency_label),
+                        selected = currency,
+                        onSelect = { currency = it },
+                    )
                     Button(
                         onClick = {
+                            val code = languageCode
                             val rate = rateText.toDoubleOrNull()
-                            if (languageCode.isNotBlank() && rate != null) {
-                                viewModel.upsert(languageCode.trim().lowercase(), rate)
-                                languageCode = ""
+                            if (code != null && rate != null) {
+                                viewModel.upsert(code, rate, currency)
+                                languageCode = null
                                 rateText = ""
+                                currency = Currency.TRY
                             }
                         },
                     ) {
@@ -106,10 +125,48 @@ fun PricingRatesScreen() {
                             onEdit = {
                                 languageCode = rate.languageCode
                                 rateText = rate.ratePerCharacter.toString()
+                                currency = rate.currency
                             },
                             onDelete = { viewModel.remove(rate.id) },
                         )
                     }
+                }
+            }
+        }
+    }
+}
+
+private fun currencySymbol(currency: Currency): String = when (currency) {
+    Currency.TRY -> "₺"
+    Currency.USD -> "$"
+    Currency.EUR -> "€"
+}
+
+@Composable
+private fun currencyName(currency: Currency): String = when (currency) {
+    Currency.TRY -> stringResource(Res.string.pricing_rates_currency_try)
+    Currency.USD -> stringResource(Res.string.pricing_rates_currency_usd)
+    Currency.EUR -> stringResource(Res.string.pricing_rates_currency_eur)
+}
+
+@Composable
+private fun CurrencyDropdown(label: String, selected: Currency, onSelect: (Currency) -> Unit) {
+    var expanded by remember { mutableStateOf(false) }
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Text(label, style = MaterialTheme.typography.labelMedium)
+        Box(modifier = Modifier.fillMaxWidth()) {
+            OutlinedButton(onClick = { expanded = true }, modifier = Modifier.fillMaxWidth()) {
+                Text("${currencySymbol(selected)} ${currencyName(selected)}", modifier = Modifier.fillMaxWidth())
+            }
+            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                Currency.entries.forEach { option ->
+                    DropdownMenuItem(
+                        text = { Text("${currencySymbol(option)} ${currencyName(option)}") },
+                        onClick = {
+                            onSelect(option)
+                            expanded = false
+                        },
+                    )
                 }
             }
         }
@@ -124,8 +181,8 @@ private fun RateRow(rate: PricingRateDto, onEdit: () -> Unit, onDelete: () -> Un
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Column {
-                Text(text = rate.languageCode.uppercase(), style = MaterialTheme.typography.titleMedium)
-                Text(text = rate.ratePerCharacter.toString())
+                LanguageLabel(code = rate.languageCode, style = MaterialTheme.typography.titleMedium)
+                Text(text = "${currencySymbol(rate.currency)} ${rate.ratePerCharacter}")
             }
             Row {
                 IconButton(onClick = onEdit) {

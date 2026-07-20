@@ -3,6 +3,7 @@ package org.structured_barebone.user
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -53,6 +55,8 @@ import structuredbarebonecmpproject.shared.generated.resources.user_logout
 import structuredbarebonecmpproject.shared.generated.resources.user_server_hint
 import structuredbarebonecmpproject.shared.generated.resources.user_server_placeholder
 import structuredbarebonecmpproject.shared.generated.resources.user_server_section_title
+import structuredbarebonecmpproject.shared.generated.resources.settings_vacation_enabled_label
+import structuredbarebonecmpproject.shared.generated.resources.settings_vacation_tab
 import org.structured_barebone.viewmodel.UserViewModel
 
 @Composable
@@ -109,6 +113,7 @@ fun UserScreen(onLoggedOut: () -> Unit = {}) {
 
                     LanguageSection(appPreferences)
                     ServerAddressSection(appPreferences)
+                    VacationModeSection(viewModel)
 
                     OutlinedButton(onClick = onLoggedOut, modifier = Modifier.fillMaxWidth()) {
                         Text(stringResource(Res.string.user_logout))
@@ -225,6 +230,32 @@ private fun ServerAddressSection(appPreferences: AppPreferences) {
             Button(onClick = { appPreferences.setApiBaseUrlOverride(text) }) {
                 Text(stringResource(Res.string.common_save))
             }
+        }
+    }
+}
+
+@Composable
+private fun VacationModeSection(viewModel: UserViewModel) {
+    val vacationMode by viewModel.vacationMode.collectAsState()
+    val settings = vacationMode ?: return
+
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.padding(16.dp).fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(stringResource(Res.string.settings_vacation_tab), style = MaterialTheme.typography.titleMedium)
+                Text(
+                    stringResource(Res.string.settings_vacation_enabled_label),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.Gray,
+                )
+            }
+            Switch(
+                checked = settings.isEnabled,
+                onCheckedChange = { viewModel.setVacationModeEnabled(it) },
+            )
         }
     }
 }

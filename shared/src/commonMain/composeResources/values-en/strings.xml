@@ -3,6 +3,7 @@
     <!-- Common / shared -->
     <string name="common_save">Save</string>
     <string name="common_cancel">Cancel</string>
+    <string name="common_done">Done</string>
     <string name="common_add">Add</string>
     <string name="common_add_cd">Add</string>
     <string name="common_edit_cd">Edit</string>
@@ -16,16 +17,32 @@
     <string name="nav_settings">Settings</string>
     <string name="nav_user">Account</string>
 
+    <!-- App title -->
+    <string name="app_title">Mail Automation</string>
+
+    <!-- Notifications -->
+    <string name="notifications_title">Notifications</string>
+    <string name="notifications_no_active_model">No active model is selected. Choose a model in Settings &gt; Model Settings.</string>
+    <string name="notifications_missing_cloud_api_key">No cloud API key configured for %1$s.</string>
+    <string name="notifications_failed_request">An operation failed: %1$s</string>
+    <string name="notifications_mark_as_read">Mark as read</string>
+    <string name="notifications_mark_all_read">Mark all as read</string>
+
     <!-- Mail types -->
     <string name="mail_type_advertisement">Advertisement</string>
     <string name="mail_type_spam">Spam</string>
     <string name="mail_type_inquiry_or_offer">Inquiry &amp; Offer</string>
     <string name="mail_type_translation">Translation</string>
+    <string name="mail_type_information">Information</string>
 
     <!-- Mails screen -->
     <string name="mails_sync_cd">Sync</string>
     <string name="mails_all_groups">All Groups</string>
     <string name="mails_urgent_cd">Urgent</string>
+    <string name="mails_notarized_cd">Notarized</string>
+    <string name="mails_filter_urgent">Urgent</string>
+    <string name="mails_filter_attachment">Attachment</string>
+    <string name="mails_filter_notarized">Notarized</string>
 
     <!-- Mail detail screen -->
     <string name="mail_detail_title">Mail Details</string>
@@ -43,6 +60,12 @@
     <string name="mail_detail_actual_price_label">Approved Price</string>
     <string name="mail_detail_approve">Approve</string>
     <string name="mail_detail_send">Send</string>
+    <string name="mail_detail_content_section">Content</string>
+    <string name="mail_detail_predicted_language_label">Predicted Language</string>
+    <string name="mail_detail_confirmed_language_label">Confirmed Language</string>
+    <string name="mail_detail_confirm_language">Confirm Language</string>
+    <string name="mail_detail_attachment_download">Download</string>
+    <string name="mail_detail_reanalyze_cd">Reanalyze</string>
 
     <!-- Routing contacts screen -->
     <string name="routing_contacts_title">Routing Contacts</string>
@@ -53,14 +76,18 @@
     <string name="routing_contacts_name_label">First Name</string>
     <string name="routing_contacts_surname_label">Last Name</string>
     <string name="routing_contacts_email_label">Email</string>
-    <string name="routing_contacts_languages_label">Languages (comma-separated: tr, en)</string>
+    <string name="routing_contacts_languages_label">Languages</string>
     <string name="routing_contacts_priority_field_label">Priority (lower number is preferred first)</string>
 
     <!-- Pricing rates screen -->
     <string name="pricing_rates_title">Pricing</string>
-    <string name="pricing_rates_language_code_label">Language Code (e.g. en)</string>
+    <string name="pricing_rates_language_code_label">Language</string>
     <string name="pricing_rates_rate_label">Rate per Character</string>
     <string name="pricing_rates_loading">Loading...</string>
+    <string name="pricing_rates_currency_label">Currency</string>
+    <string name="pricing_rates_currency_try">Turkish Lira</string>
+    <string name="pricing_rates_currency_usd">US Dollar</string>
+    <string name="pricing_rates_currency_eur">Euro</string>
 
     <!-- Settings screen -->
     <string name="settings_title">Settings</string>
@@ -77,11 +104,29 @@
     <string name="settings_temperature_label">Temperature</string>
     <string name="settings_max_tokens_label">Max Tokens</string>
     <string name="settings_top_p_label">Top P</string>
+    <string name="settings_top_k_label">Top K</string>
+    <string name="settings_appearance_tab">Appearance</string>
+    <string name="settings_appearance_brand_text_label">Brand Text</string>
+    <string name="settings_appearance_primary_color_label">Primary Color</string>
+    <string name="settings_appearance_reset_color">Reset to Default</string>
+    <string name="settings_appearance_font_family_label">Font Family</string>
+    <string name="settings_appearance_font_scale_label">Font Size</string>
+    <string name="settings_vacation_tab">Vacation Mode</string>
+    <string name="settings_vacation_enabled_label">Vacation Mode Enabled</string>
+    <string name="settings_vacation_message_label">Vacation Auto-Reply Message</string>
+    <string name="settings_vacation_notify_types_label">Mail types to auto-reply to</string>
     <string name="settings_model_size_gb">%1$s GB</string>
     <string name="settings_not_configured">Not Configured</string>
     <string name="settings_log_tokens_duration">Tokens: %1$s · Duration: %2$s ms</string>
     <string name="settings_log_success">Successful</string>
     <string name="settings_log_failed">Failed (%1$s)</string>
+    <string name="settings_log_status_filter_label">Status</string>
+    <string name="settings_log_filter_all">All</string>
+    <string name="settings_log_filter_success">Successful</string>
+    <string name="settings_log_filter_failed">Failed</string>
+    <string name="settings_log_prev_page">Previous</string>
+    <string name="settings_log_next_page">Next</string>
+    <string name="settings_log_page_indicator">Page %1$s of %2$s</string>
 
     <!-- Account screen -->
     <string name="user_first_login">First login: %1$s</string>
@@ -96,6 +141,13 @@
     <string name="user_server_section_title">Server Address</string>
     <string name="user_server_placeholder">e.g. http://192.168.0.12:5100</string>
     <string name="user_server_hint">Leave blank to use the default address.</string>
+
+    <!-- Mail groups management screen -->
+    <string name="mail_groups_title">Mail Groups</string>
+    <string name="mail_groups_add_title">Add Group</string>
+    <string name="mail_groups_group_name_label">Group Name (domain)</string>
+    <string name="mail_groups_note_label">Note</string>
+    <string name="mail_groups_no_note">No note</string>
 
     <!-- Language names (for language selector) -->
     <string name="language_name_tr">Türkçe</string>

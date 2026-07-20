@@ -9,10 +9,12 @@ import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
@@ -32,6 +34,7 @@ import org.structured_barebone.data.settings.DEFAULT_LANGUAGE_TAG
 import org.structured_barebone.data.settings.SUPPORTED_LANGUAGE_TAGS
 import org.structured_barebone.navigation.SetupNavGraph
 import structuredbarebonecmpproject.shared.generated.resources.Res
+import structuredbarebonecmpproject.shared.generated.resources.app_title
 import structuredbarebonecmpproject.shared.generated.resources.nav_mails
 import structuredbarebonecmpproject.shared.generated.resources.nav_pricing_rates
 import structuredbarebonecmpproject.shared.generated.resources.nav_routing_contacts
@@ -62,11 +65,20 @@ fun App() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MainApp() {
     val navController = rememberNavController()
 
     Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(Res.string.app_title)) },
+                actions = {
+                    NotificationBell(onNavigateToSettings = { navController.navigate(Screen.Settings) })
+                },
+            )
+        },
         bottomBar = {
             val backStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = backStackEntry?.destination?.route

@@ -12,6 +12,7 @@ import org.structured_barebone.data.client.ApiConfig
 import org.structured_barebone.data.domain.PricingRateRepository
 import org.structured_barebone.data.model.ApiResponse
 import org.structured_barebone.data.model.UpsertPricingRateRequest
+import org.structured_barebone.shared.model.Currency
 import org.structured_barebone.shared.model.PricingRateDto
 import org.structured_barebone.shared.model.Result
 
@@ -29,12 +30,12 @@ class PricingRateRepositoryImpl(
             ApiResponse(success = true, message = null, data = rates)
         }
 
-    override suspend fun upsert(languageCode: String, ratePerCharacter: Double): Result<PricingRateDto> =
+    override suspend fun upsert(languageCode: String, ratePerCharacter: Double, currency: Currency): Result<PricingRateDto> =
         safeRequest {
             val rate = if (ApiConfig.USE_MOCK) {
                 val index = MockMailData.pricingRates.indexOfFirst { it.languageCode == languageCode }
                 if (index >= 0) {
-                    val updated = MockMailData.pricingRates[index].copy(ratePerCharacter = ratePerCharacter)
+                    val updated = MockMailData.pricingRates[index].copy(ratePerCharacter = ratePerCharacter, currency = currency)
                     MockMailData.pricingRates[index] = updated
                     updated
                 } else {
@@ -42,6 +43,7 @@ class PricingRateRepositoryImpl(
                         id = "mock-rate-$languageCode",
                         languageCode = languageCode,
                         ratePerCharacter = ratePerCharacter,
+                        currency = currency,
                     )
                     MockMailData.pricingRates.add(created)
                     created
@@ -49,7 +51,7 @@ class PricingRateRepositoryImpl(
             } else {
                 httpClient.put("/pricing-rates") {
                     contentType(ContentType.Application.Json)
-                    setBody(UpsertPricingRateRequest(languageCode, ratePerCharacter))
+                    setBody(UpsertPricingRateRequest(languageCode, ratePerCharacter, currency))
                 }.body()
             }
             ApiResponse(success = true, message = null, data = rate)

@@ -56,6 +56,8 @@ import structuredbarebonecmpproject.shared.generated.resources.routing_contacts_
 import structuredbarebonecmpproject.shared.generated.resources.routing_contacts_remove_cd
 import structuredbarebonecmpproject.shared.generated.resources.routing_contacts_surname_label
 import structuredbarebonecmpproject.shared.generated.resources.routing_contacts_title
+import org.structured_barebone.shared.components.LanguageLabel
+import org.structured_barebone.shared.components.MultiLanguageSelectField
 import org.structured_barebone.shared.model.RoutingContactDto
 import org.structured_barebone.viewmodel.RoutingContactsViewModel
 
@@ -128,7 +130,7 @@ fun RoutingContactsScreen() {
             initialName = contact.name,
             initialSurname = contact.surname,
             initialEmail = contact.email,
-            initialLanguages = contact.languagePreferences.joinToString(", "),
+            initialLanguages = contact.languagePreferences,
             initialPriority = contact.priority,
             onDismiss = { editingContact = null },
             onConfirm = { name, surname, email, languages, priority ->
@@ -154,10 +156,11 @@ private fun ContactCard(
             Column(modifier = Modifier.weight(1f)) {
                 Text(text = "${contact.name} ${contact.surname}", style = MaterialTheme.typography.titleMedium)
                 Text(text = contact.email, style = MaterialTheme.typography.bodySmall)
-                Text(
-                    text = contact.languagePreferences.joinToString(", "),
-                    style = MaterialTheme.typography.bodySmall,
-                )
+                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    contact.languagePreferences.forEach { code ->
+                        LanguageLabel(code = code, style = MaterialTheme.typography.bodySmall)
+                    }
+                }
                 Text(
                     text = stringResource(Res.string.routing_contacts_priority_label, contact.priority.toString()),
                     style = MaterialTheme.typography.bodySmall,
@@ -183,7 +186,7 @@ private fun ContactDialog(
     initialName: String = "",
     initialSurname: String = "",
     initialEmail: String = "",
-    initialLanguages: String = "",
+    initialLanguages: List<String> = emptyList(),
     initialPriority: Int = 0,
 ) {
     var name by remember { mutableStateOf(initialName) }
@@ -200,10 +203,10 @@ private fun ContactDialog(
                 OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text(stringResource(Res.string.routing_contacts_name_label)) })
                 OutlinedTextField(value = surname, onValueChange = { surname = it }, label = { Text(stringResource(Res.string.routing_contacts_surname_label)) })
                 OutlinedTextField(value = email, onValueChange = { email = it }, label = { Text(stringResource(Res.string.routing_contacts_email_label)) })
-                OutlinedTextField(
-                    value = languages,
-                    onValueChange = { languages = it },
-                    label = { Text(stringResource(Res.string.routing_contacts_languages_label)) },
+                MultiLanguageSelectField(
+                    label = stringResource(Res.string.routing_contacts_languages_label),
+                    selectedCodes = languages,
+                    onChange = { languages = it },
                 )
                 OutlinedTextField(
                     value = priorityText,
@@ -214,8 +217,7 @@ private fun ContactDialog(
         },
         confirmButton = {
             TextButton(onClick = {
-                val languageList = languages.split(",").map { it.trim() }.filter { it.isNotEmpty() }
-                onConfirm(name, surname, email, languageList, priorityText.toIntOrNull() ?: 0)
+                onConfirm(name, surname, email, languages, priorityText.toIntOrNull() ?: 0)
             }) {
                 Text(confirmLabel)
             }

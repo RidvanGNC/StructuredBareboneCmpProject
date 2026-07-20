@@ -39,6 +39,18 @@
                     android:path="/M3FsndsOOv18Ngi%2Fgds7nmrd2%2Bc%3D" />
             </intent-filter>
         </activity>
+
+        <!-- Ek belge indirme/gorunutuleme icin (bkz. AttachmentSaver.android.kt) - indirilen dosya
+             cache/attachments altina yazilir ve baska bir uygulamaya content:// URI'si olarak paylasilir. -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

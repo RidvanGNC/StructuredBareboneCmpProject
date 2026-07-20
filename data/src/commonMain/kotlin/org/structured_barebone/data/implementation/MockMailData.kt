@@ -1,7 +1,9 @@
 package org.structured_barebone.data.implementation
 
+import org.structured_barebone.shared.model.AppearanceSettingsDto
 import org.structured_barebone.shared.model.CloudCredentialDto
 import org.structured_barebone.shared.model.CloudProvider
+import org.structured_barebone.shared.model.Currency
 import org.structured_barebone.shared.model.CustomerDto
 import org.structured_barebone.shared.model.EngineMode
 import org.structured_barebone.shared.model.EngineSettingsDto
@@ -9,12 +11,14 @@ import org.structured_barebone.shared.model.LanguageSource
 import org.structured_barebone.shared.model.LlmRequestLogDto
 import org.structured_barebone.shared.model.LocalModelDto
 import org.structured_barebone.shared.model.MailDto
+import org.structured_barebone.shared.model.ManagedMailGroupDto
 import org.structured_barebone.shared.model.MailReplyDto
 import org.structured_barebone.shared.model.MailReplyType
 import org.structured_barebone.shared.model.MailStatus
 import org.structured_barebone.shared.model.MailType
 import org.structured_barebone.shared.model.PricingRateDto
 import org.structured_barebone.shared.model.RoutingContactDto
+import org.structured_barebone.shared.model.VacationModeSettingsDto
 
 // Web tarafindaki mockData.ts ile tutarli ornek veri; gercek backend baglanana kadar kullanilir.
 internal object MockMailData {
@@ -33,58 +37,64 @@ internal object MockMailData {
         ),
     )
 
-    val mails = listOf(
+    val mails = mutableListOf(
         MailDto(
             id = "m1", userId = "u1", customerId = "c2",
             status = MailStatus.NotCompleted, type = MailType.InquiryOrOffer,
+            subject = "Fiyat Teklifi Talebi", body = "Merhaba, ektedeki belgenin ceviri fiyat teklifini alabilir miyim?",
             predictedLanguage = "en", confirmedLanguage = null, languageSource = LanguageSource.Attachment,
             isNotarized = true, completionDuration = null, customerGroup = 2, mailGroup = "baltikticaret",
-            hasAttachment = true, sequenceNumber = 0, isContinuation = false, isUrgent = true,
+            hasAttachment = true, attachmentFileName = "sozlesme.pdf", sequenceNumber = 0, isContinuation = false, isUrgent = true,
             attachmentCharacterCount = 4200, predictedPrice = 210.0, actualPrice = null, priceChanged = false,
             threadId = "t1", receivedAt = "2026-07-16T16:12:00Z",
         ),
         MailDto(
             id = "m2", userId = "u1", customerId = "c1",
             status = MailStatus.InProgress, type = MailType.Translation,
+            subject = "Ceviri Talebi", body = "Ekteki belgenin almancaya cevirisini rica ederim.",
             predictedLanguage = "de", confirmedLanguage = "de", languageSource = LanguageSource.Attachment,
             isNotarized = false, completionDuration = null, customerGroup = 1, mailGroup = "acmehukuk",
-            hasAttachment = true, sequenceNumber = 0, isContinuation = false, isUrgent = false,
+            hasAttachment = true, attachmentFileName = "dilekce.docx", sequenceNumber = 0, isContinuation = false, isUrgent = false,
             attachmentCharacterCount = 9800, predictedPrice = null, actualPrice = null, priceChanged = false,
             threadId = "t2", receivedAt = "2026-07-16T12:12:00Z",
         ),
         MailDto(
             id = "m3", userId = "u1", customerId = "c1",
             status = MailStatus.Completed, type = MailType.Translation,
+            subject = "Noter Onaylı Çeviri", body = "Belgenin noter onaylı fransizca cevirisi tamamlandi mi?",
             predictedLanguage = "fr", confirmedLanguage = "fr", languageSource = LanguageSource.Attachment,
             isNotarized = true, completionDuration = "1.04:12:00", customerGroup = 1, mailGroup = "acmehukuk",
-            hasAttachment = true, sequenceNumber = 0, isContinuation = false, isUrgent = false,
+            hasAttachment = true, attachmentFileName = "vekaletname.pdf", sequenceNumber = 0, isContinuation = false, isUrgent = false,
             attachmentCharacterCount = 15320, predictedPrice = null, actualPrice = 480.0, priceChanged = true,
             threadId = "t3", receivedAt = "2026-07-14T17:12:00Z",
         ),
         MailDto(
             id = "m4", userId = "u1", customerId = "c2",
             status = MailStatus.NotCompleted, type = MailType.Spam,
+            subject = "Kazandiniz!", body = "Tebrikler, buyuk odulu kazandiniz, hemen tiklayin.",
             predictedLanguage = "en", confirmedLanguage = null, languageSource = LanguageSource.MailBody,
             isNotarized = false, completionDuration = null, customerGroup = 3, mailGroup = "baltikticaret",
-            hasAttachment = false, sequenceNumber = 0, isContinuation = false, isUrgent = false,
+            hasAttachment = false, attachmentFileName = null, sequenceNumber = 0, isContinuation = false, isUrgent = false,
             attachmentCharacterCount = null, predictedPrice = null, actualPrice = null, priceChanged = false,
             threadId = "t4", receivedAt = "2026-07-16T14:12:00Z",
         ),
         MailDto(
             id = "m5", userId = "u1", customerId = "c2",
             status = MailStatus.NotCompleted, type = MailType.Advertisement,
+            subject = "Yeni Kampanyalarimiz", body = "Bu ay gecerli indirimlerimizi kacirmayin.",
             predictedLanguage = "tr", confirmedLanguage = null, languageSource = LanguageSource.MailBody,
             isNotarized = false, completionDuration = null, customerGroup = 3, mailGroup = "baltikticaret",
-            hasAttachment = false, sequenceNumber = 0, isContinuation = false, isUrgent = false,
+            hasAttachment = false, attachmentFileName = null, sequenceNumber = 0, isContinuation = false, isUrgent = false,
             attachmentCharacterCount = null, predictedPrice = null, actualPrice = null, priceChanged = false,
             threadId = "t5", receivedAt = "2026-07-15T11:12:00Z",
         ),
         MailDto(
             id = "m6", userId = "u1", customerId = "c1",
             status = MailStatus.InProgress, type = MailType.Translation,
+            subject = "RE: Ceviri Talebi", body = "Ek olarak ikinci bir belge daha gonderiyorum.",
             predictedLanguage = "de", confirmedLanguage = "de", languageSource = LanguageSource.MailBody,
             isNotarized = false, completionDuration = null, customerGroup = 1, mailGroup = "acmehukuk",
-            hasAttachment = false, sequenceNumber = 1, isContinuation = true, isUrgent = false,
+            hasAttachment = false, attachmentFileName = null, sequenceNumber = 1, isContinuation = true, isUrgent = false,
             attachmentCharacterCount = null, predictedPrice = null, actualPrice = null, priceChanged = false,
             threadId = "t2", receivedAt = "2026-07-16T15:12:00Z",
         ),
@@ -113,14 +123,14 @@ internal object MockMailData {
     )
 
     val pricingRates = mutableListOf(
-        PricingRateDto(id = "p1", languageCode = "en", ratePerCharacter = 0.05),
-        PricingRateDto(id = "p2", languageCode = "de", ratePerCharacter = 0.06),
-        PricingRateDto(id = "p3", languageCode = "fr", ratePerCharacter = 0.06),
+        PricingRateDto(id = "p1", languageCode = "en", ratePerCharacter = 0.05, currency = Currency.TRY),
+        PricingRateDto(id = "p2", languageCode = "de", ratePerCharacter = 0.06, currency = Currency.TRY),
+        PricingRateDto(id = "p3", languageCode = "fr", ratePerCharacter = 0.06, currency = Currency.TRY),
     )
 
     var engineSettings = EngineSettingsDto(
         id = "es1", mode = EngineMode.Local, localModelName = "llama3.1:8b",
-        cloudProvider = CloudProvider.Claude, temperature = 0.0, maxTokens = null, topP = null,
+        cloudProvider = CloudProvider.Claude, temperature = 0.0, maxTokens = null, topP = null, topK = null,
         updatedAt = "2026-07-16T10:00:00Z",
     )
 
@@ -131,6 +141,23 @@ internal object MockMailData {
 
     val cloudCredentials = mutableListOf(
         CloudCredentialDto(id = "cc1", provider = CloudProvider.Claude, maskedPreview = "****VwCv", updatedAt = "2026-07-05T10:00:00Z"),
+    )
+
+    var appearanceSettings = AppearanceSettingsDto(
+        id = "as1", brandText = "Mail Otomasyon", brandLogoBase64 = null,
+        primaryColor = "#5B7FDB", fontFamily = "Open Sans", fontScale = 1.0,
+        updatedAt = "2026-07-19T00:00:00Z",
+    )
+
+    var vacationModeSettings = VacationModeSettingsDto(
+        id = "vm1", isEnabled = false, messageTemplate = "",
+        notifyMailTypes = listOf(MailType.InquiryOrOffer, MailType.Translation),
+        updatedAt = "2026-07-19T00:00:00Z",
+    )
+
+    val managedMailGroups = mutableListOf(
+        ManagedMailGroupDto(id = "mg1", mailGroup = "acmehukuk", isActive = true, note = null, addedAt = "2026-06-01T00:00:00Z"),
+        ManagedMailGroupDto(id = "mg2", mailGroup = "baltikticaret", isActive = true, note = "Onemli musteri", addedAt = "2026-06-10T00:00:00Z"),
     )
 
     val llmLogs = listOf(

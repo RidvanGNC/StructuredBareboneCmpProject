@@ -3,6 +3,7 @@
     <!-- Allgemein / gemeinsam -->
     <string name="common_save">Speichern</string>
     <string name="common_cancel">Abbrechen</string>
+    <string name="common_done">Fertig</string>
     <string name="common_add">Hinzufügen</string>
     <string name="common_add_cd">Hinzufügen</string>
     <string name="common_edit_cd">Bearbeiten</string>
@@ -16,16 +17,32 @@
     <string name="nav_settings">Einstellungen</string>
     <string name="nav_user">Konto</string>
 
+    <!-- App-Titel -->
+    <string name="app_title">Mail-Automatisierung</string>
+
+    <!-- Benachrichtigungen -->
+    <string name="notifications_title">Benachrichtigungen</string>
+    <string name="notifications_no_active_model">Es ist kein aktives Modell ausgewählt. Wählen Sie eines unter Einstellungen &gt; Modell-Einstellungen.</string>
+    <string name="notifications_missing_cloud_api_key">Für %1$s ist kein Cloud-API-Schlüssel konfiguriert.</string>
+    <string name="notifications_failed_request">Ein Vorgang ist fehlgeschlagen: %1$s</string>
+    <string name="notifications_mark_as_read">Als gelesen markieren</string>
+    <string name="notifications_mark_all_read">Alle als gelesen markieren</string>
+
     <!-- Mail-Typen -->
     <string name="mail_type_advertisement">Werbung</string>
     <string name="mail_type_spam">Spam</string>
     <string name="mail_type_inquiry_or_offer">Anfrage &amp; Angebot</string>
     <string name="mail_type_translation">Übersetzung</string>
+    <string name="mail_type_information">Information</string>
 
     <!-- Mails-Bildschirm -->
     <string name="mails_sync_cd">Synchronisieren</string>
     <string name="mails_all_groups">Alle Gruppen</string>
     <string name="mails_urgent_cd">Dringend</string>
+    <string name="mails_notarized_cd">Notariell Beglaubigt</string>
+    <string name="mails_filter_urgent">Dringend</string>
+    <string name="mails_filter_attachment">Anhang</string>
+    <string name="mails_filter_notarized">Notariell Beglaubigt</string>
 
     <!-- Mail-Detail-Bildschirm -->
     <string name="mail_detail_title">E-Mail-Details</string>
@@ -43,6 +60,12 @@
     <string name="mail_detail_actual_price_label">Genehmigter Preis</string>
     <string name="mail_detail_approve">Genehmigen</string>
     <string name="mail_detail_send">Senden</string>
+    <string name="mail_detail_content_section">Inhalt</string>
+    <string name="mail_detail_predicted_language_label">Erkannte Sprache</string>
+    <string name="mail_detail_confirmed_language_label">Bestätigte Sprache</string>
+    <string name="mail_detail_confirm_language">Sprache Bestätigen</string>
+    <string name="mail_detail_attachment_download">Herunterladen</string>
+    <string name="mail_detail_reanalyze_cd">Erneut Analysieren</string>
 
     <!-- Weiterleitungen-Bildschirm -->
     <string name="routing_contacts_title">Feste Weiterleitungen</string>
@@ -53,14 +76,18 @@
     <string name="routing_contacts_name_label">Vorname</string>
     <string name="routing_contacts_surname_label">Nachname</string>
     <string name="routing_contacts_email_label">E-Mail</string>
-    <string name="routing_contacts_languages_label">Sprachen (kommagetrennt: tr, en)</string>
+    <string name="routing_contacts_languages_label">Sprachen</string>
     <string name="routing_contacts_priority_field_label">Priorität (niedrigere Zahl wird zuerst bevorzugt)</string>
 
     <!-- Preisgestaltung-Bildschirm -->
     <string name="pricing_rates_title">Preisgestaltung</string>
-    <string name="pricing_rates_language_code_label">Sprachcode (z. B. en)</string>
+    <string name="pricing_rates_language_code_label">Sprache</string>
     <string name="pricing_rates_rate_label">Preis pro Zeichen</string>
     <string name="pricing_rates_loading">Wird geladen...</string>
+    <string name="pricing_rates_currency_label">Währung</string>
+    <string name="pricing_rates_currency_try">Türkische Lira</string>
+    <string name="pricing_rates_currency_usd">US-Dollar</string>
+    <string name="pricing_rates_currency_eur">Euro</string>
 
     <!-- Einstellungen-Bildschirm -->
     <string name="settings_title">Einstellungen</string>
@@ -77,11 +104,29 @@
     <string name="settings_temperature_label">Temperature</string>
     <string name="settings_max_tokens_label">Maximale Token</string>
     <string name="settings_top_p_label">Top P</string>
+    <string name="settings_top_k_label">Top K</string>
+    <string name="settings_appearance_tab">Erscheinungsbild</string>
+    <string name="settings_appearance_brand_text_label">Markentext</string>
+    <string name="settings_appearance_primary_color_label">Primärfarbe</string>
+    <string name="settings_appearance_reset_color">Auf Standard zurücksetzen</string>
+    <string name="settings_appearance_font_family_label">Schriftart</string>
+    <string name="settings_appearance_font_scale_label">Schriftgröße</string>
+    <string name="settings_vacation_tab">Abwesenheitsmodus</string>
+    <string name="settings_vacation_enabled_label">Abwesenheitsmodus Aktiv</string>
+    <string name="settings_vacation_message_label">Automatische Abwesenheitsantwort</string>
+    <string name="settings_vacation_notify_types_label">Mailtypen für automatische Antwort</string>
     <string name="settings_model_size_gb">%1$s GB</string>
     <string name="settings_not_configured">Nicht Konfiguriert</string>
     <string name="settings_log_tokens_duration">Token: %1$s · Dauer: %2$s ms</string>
     <string name="settings_log_success">Erfolgreich</string>
     <string name="settings_log_failed">Fehlgeschlagen (%1$s)</string>
+    <string name="settings_log_status_filter_label">Status</string>
+    <string name="settings_log_filter_all">Alle</string>
+    <string name="settings_log_filter_success">Erfolgreich</string>
+    <string name="settings_log_filter_failed">Fehlgeschlagen</string>
+    <string name="settings_log_prev_page">Zurück</string>
+    <string name="settings_log_next_page">Weiter</string>
+    <string name="settings_log_page_indicator">Seite %1$s von %2$s</string>
 
     <!-- Konto-Bildschirm -->
     <string name="user_first_login">Erste Anmeldung: %1$s</string>
@@ -96,6 +141,13 @@
     <string name="user_server_section_title">Serveradresse</string>
     <string name="user_server_placeholder">z. B. http://192.168.0.12:5100</string>
     <string name="user_server_hint">Leer lassen, um die Standardadresse zu verwenden.</string>
+
+    <!-- Mail-Gruppen-Verwaltungsbildschirm -->
+    <string name="mail_groups_title">Mail-Gruppen</string>
+    <string name="mail_groups_add_title">Gruppe Hinzufügen</string>
+    <string name="mail_groups_group_name_label">Gruppenname (Domain)</string>
+    <string name="mail_groups_note_label">Notiz</string>
+    <string name="mail_groups_no_note">Keine Notiz</string>
 
     <!-- Sprachnamen (für Sprachauswahl) -->
     <string name="language_name_tr">Türkçe</string>

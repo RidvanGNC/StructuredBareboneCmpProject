@@ -3,6 +3,7 @@
     <!-- عام / مشترك -->
     <string name="common_save">حفظ</string>
     <string name="common_cancel">إلغاء</string>
+    <string name="common_done">تم</string>
     <string name="common_add">إضافة</string>
     <string name="common_add_cd">إضافة</string>
     <string name="common_edit_cd">تعديل</string>
@@ -16,16 +17,32 @@
     <string name="nav_settings">الإعدادات</string>
     <string name="nav_user">الحساب</string>
 
+    <!-- عنوان التطبيق -->
+    <string name="app_title">أتمتة البريد</string>
+
+    <!-- الإشعارات -->
+    <string name="notifications_title">الإشعارات</string>
+    <string name="notifications_no_active_model">لم يتم اختيار نموذج نشط. اختر نموذجًا من الإعدادات &gt; إعدادات النموذج.</string>
+    <string name="notifications_missing_cloud_api_key">لم يتم تكوين مفتاح API سحابي لـ %1$s.</string>
+    <string name="notifications_failed_request">فشلت عملية: %1$s</string>
+    <string name="notifications_mark_as_read">تعليم كمقروء</string>
+    <string name="notifications_mark_all_read">تعليم الكل كمقروء</string>
+
     <!-- أنواع الرسائل -->
     <string name="mail_type_advertisement">إعلان</string>
     <string name="mail_type_spam">بريد عشوائي</string>
     <string name="mail_type_inquiry_or_offer">استفسار وعرض</string>
     <string name="mail_type_translation">ترجمة</string>
+    <string name="mail_type_information">معلوماتي</string>
 
     <!-- شاشة الرسائل -->
     <string name="mails_sync_cd">مزامنة</string>
     <string name="mails_all_groups">كل المجموعات</string>
     <string name="mails_urgent_cd">عاجل</string>
+    <string name="mails_notarized_cd">موثق</string>
+    <string name="mails_filter_urgent">عاجل</string>
+    <string name="mails_filter_attachment">مرفق</string>
+    <string name="mails_filter_notarized">موثق</string>
 
     <!-- شاشة تفاصيل الرسالة -->
     <string name="mail_detail_title">تفاصيل البريد</string>
@@ -43,6 +60,12 @@
     <string name="mail_detail_actual_price_label">السعر المعتمد</string>
     <string name="mail_detail_approve">اعتماد</string>
     <string name="mail_detail_send">إرسال</string>
+    <string name="mail_detail_content_section">المحتوى</string>
+    <string name="mail_detail_predicted_language_label">اللغة المتوقعة</string>
+    <string name="mail_detail_confirmed_language_label">اللغة المؤكدة</string>
+    <string name="mail_detail_confirm_language">تأكيد اللغة</string>
+    <string name="mail_detail_attachment_download">تنزيل</string>
+    <string name="mail_detail_reanalyze_cd">إعادة التحليل</string>
 
     <!-- شاشة التوجيهات الثابتة -->
     <string name="routing_contacts_title">التوجيهات الثابتة</string>
@@ -53,14 +76,18 @@
     <string name="routing_contacts_name_label">الاسم</string>
     <string name="routing_contacts_surname_label">اللقب</string>
     <string name="routing_contacts_email_label">البريد الإلكتروني</string>
-    <string name="routing_contacts_languages_label">اللغات (مفصولة بفواصل: tr, en)</string>
+    <string name="routing_contacts_languages_label">اللغات</string>
     <string name="routing_contacts_priority_field_label">الأولوية (الرقم الأصغر له الأولوية)</string>
 
     <!-- شاشة التسعير -->
     <string name="pricing_rates_title">التسعير</string>
-    <string name="pricing_rates_language_code_label">رمز اللغة (مثال: en)</string>
+    <string name="pricing_rates_language_code_label">اللغة</string>
     <string name="pricing_rates_rate_label">السعر لكل حرف</string>
     <string name="pricing_rates_loading">جارٍ التحميل...</string>
+    <string name="pricing_rates_currency_label">العملة</string>
+    <string name="pricing_rates_currency_try">ليرة تركية</string>
+    <string name="pricing_rates_currency_usd">دولار أمريكي</string>
+    <string name="pricing_rates_currency_eur">يورو</string>
 
     <!-- شاشة الإعدادات -->
     <string name="settings_title">الإعدادات</string>
@@ -77,11 +104,29 @@
     <string name="settings_temperature_label">Temperature</string>
     <string name="settings_max_tokens_label">الحد الأقصى للرموز</string>
     <string name="settings_top_p_label">Top P</string>
+    <string name="settings_top_k_label">Top K</string>
+    <string name="settings_appearance_tab">المظهر</string>
+    <string name="settings_appearance_brand_text_label">نص العلامة التجارية</string>
+    <string name="settings_appearance_primary_color_label">اللون الأساسي</string>
+    <string name="settings_appearance_reset_color">إعادة تعيين للافتراضي</string>
+    <string name="settings_appearance_font_family_label">الخط</string>
+    <string name="settings_appearance_font_scale_label">حجم الخط</string>
+    <string name="settings_vacation_tab">وضع الإجازة</string>
+    <string name="settings_vacation_enabled_label">وضع الإجازة مفعّل</string>
+    <string name="settings_vacation_message_label">رسالة الرد التلقائي أثناء الإجازة</string>
+    <string name="settings_vacation_notify_types_label">أنواع الرسائل للرد التلقائي</string>
     <string name="settings_model_size_gb">%1$s غيغابايت</string>
     <string name="settings_not_configured">غير مهيأ</string>
     <string name="settings_log_tokens_duration">الرموز: %1$s · المدة: %2$s مللي ثانية</string>
     <string name="settings_log_success">ناجح</string>
     <string name="settings_log_failed">فاشل (%1$s)</string>
+    <string name="settings_log_status_filter_label">الحالة</string>
+    <string name="settings_log_filter_all">الكل</string>
+    <string name="settings_log_filter_success">ناجح</string>
+    <string name="settings_log_filter_failed">فاشل</string>
+    <string name="settings_log_prev_page">السابق</string>
+    <string name="settings_log_next_page">التالي</string>
+    <string name="settings_log_page_indicator">صفحة %1$s من %2$s</string>
 
     <!-- شاشة الحساب -->
     <string name="user_first_login">أول تسجيل دخول: %1$s</string>
@@ -96,6 +141,13 @@
     <string name="user_server_section_title">عنوان الخادم</string>
     <string name="user_server_placeholder">مثال: http://192.168.0.12:5100</string>
     <string name="user_server_hint">اتركه فارغًا لاستخدام العنوان الافتراضي.</string>
+
+    <!-- شاشة إدارة مجموعات البريد -->
+    <string name="mail_groups_title">مجموعات البريد</string>
+    <string name="mail_groups_add_title">إضافة مجموعة</string>
+    <string name="mail_groups_group_name_label">اسم المجموعة (النطاق)</string>
+    <string name="mail_groups_note_label">ملاحظة</string>
+    <string name="mail_groups_no_note">لا توجد ملاحظة</string>
 
     <!-- أسماء اللغات (لمحدد اللغة) -->
     <string name="language_name_tr">Türkçe</string>

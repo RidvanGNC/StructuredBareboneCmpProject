@@ -28,6 +28,7 @@ kotlin {
     sourceSets {
         androidMain.dependencies {
             implementation(libs.androidx.activity.compose)
+            implementation(libs.androidx.core.ktx)
 
             //Koin
             implementation(libs.koin.android)

@@ -10,12 +10,14 @@ object MailTypeColors {
     val Spam = Color(0xFFFF4D4F)
     val InquiryOrOffer = Color(0xFF1677FF)
     val Translation = Color(0xFF52C41A)
+    val Information = Color(0xFF722ED1)
 
     fun forType(type: MailType): Color = when (type) {
         MailType.Advertisement -> Advertisement
         MailType.Spam -> Spam
         MailType.InquiryOrOffer -> InquiryOrOffer
         MailType.Translation -> Translation
+        MailType.Information -> Information
     }
 }
 

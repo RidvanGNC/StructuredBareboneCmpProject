@@ -3,6 +3,7 @@
     <!-- Общее -->
     <string name="common_save">Сохранить</string>
     <string name="common_cancel">Отмена</string>
+    <string name="common_done">Готово</string>
     <string name="common_add">Добавить</string>
     <string name="common_add_cd">Добавить</string>
     <string name="common_edit_cd">Редактировать</string>
@@ -16,16 +17,32 @@
     <string name="nav_settings">Настройки</string>
     <string name="nav_user">Аккаунт</string>
 
+    <!-- Название приложения -->
+    <string name="app_title">Автоматизация почты</string>
+
+    <!-- Уведомления -->
+    <string name="notifications_title">Уведомления</string>
+    <string name="notifications_no_active_model">Активная модель не выбрана. Выберите модель в Настройки &gt; Настройки модели.</string>
+    <string name="notifications_missing_cloud_api_key">Для %1$s не настроен облачный API-ключ.</string>
+    <string name="notifications_failed_request">Операция завершилась ошибкой: %1$s</string>
+    <string name="notifications_mark_as_read">Отметить как прочитанное</string>
+    <string name="notifications_mark_all_read">Отметить всё как прочитанное</string>
+
     <!-- Типы писем -->
     <string name="mail_type_advertisement">Реклама</string>
     <string name="mail_type_spam">Спам</string>
     <string name="mail_type_inquiry_or_offer">Запрос и предложение</string>
     <string name="mail_type_translation">Перевод</string>
+    <string name="mail_type_information">Информационное</string>
 
     <!-- Экран писем -->
     <string name="mails_sync_cd">Синхронизировать</string>
     <string name="mails_all_groups">Все группы</string>
     <string name="mails_urgent_cd">Срочно</string>
+    <string name="mails_notarized_cd">Нотариально Заверено</string>
+    <string name="mails_filter_urgent">Срочно</string>
+    <string name="mails_filter_attachment">Вложение</string>
+    <string name="mails_filter_notarized">Нотариально</string>
 
     <!-- Экран деталей письма -->
     <string name="mail_detail_title">Детали письма</string>
@@ -43,6 +60,12 @@
     <string name="mail_detail_actual_price_label">Утверждённая цена</string>
     <string name="mail_detail_approve">Утвердить</string>
     <string name="mail_detail_send">Отправить</string>
+    <string name="mail_detail_content_section">Содержимое</string>
+    <string name="mail_detail_predicted_language_label">Предполагаемый язык</string>
+    <string name="mail_detail_confirmed_language_label">Подтверждённый язык</string>
+    <string name="mail_detail_confirm_language">Подтвердить язык</string>
+    <string name="mail_detail_attachment_download">Скачать</string>
+    <string name="mail_detail_reanalyze_cd">Повторный анализ</string>
 
     <!-- Экран постоянных маршрутов -->
     <string name="routing_contacts_title">Постоянные маршруты</string>
@@ -53,14 +76,18 @@
     <string name="routing_contacts_name_label">Имя</string>
     <string name="routing_contacts_surname_label">Фамилия</string>
     <string name="routing_contacts_email_label">Эл. почта</string>
-    <string name="routing_contacts_languages_label">Языки (через запятую: tr, en)</string>
+    <string name="routing_contacts_languages_label">Языки</string>
     <string name="routing_contacts_priority_field_label">Приоритет (меньшее число предпочтительнее)</string>
 
     <!-- Экран тарифов -->
     <string name="pricing_rates_title">Тарифы</string>
-    <string name="pricing_rates_language_code_label">Код языка (напр. en)</string>
+    <string name="pricing_rates_language_code_label">Язык</string>
     <string name="pricing_rates_rate_label">Цена за символ</string>
     <string name="pricing_rates_loading">Загрузка...</string>
+    <string name="pricing_rates_currency_label">Валюта</string>
+    <string name="pricing_rates_currency_try">Турецкая лира</string>
+    <string name="pricing_rates_currency_usd">Доллар США</string>
+    <string name="pricing_rates_currency_eur">Евро</string>
 
     <!-- Экран настроек -->
     <string name="settings_title">Настройки</string>
@@ -77,11 +104,29 @@
     <string name="settings_temperature_label">Temperature</string>
     <string name="settings_max_tokens_label">Максимум токенов</string>
     <string name="settings_top_p_label">Top P</string>
+    <string name="settings_top_k_label">Top K</string>
+    <string name="settings_appearance_tab">Внешний вид</string>
+    <string name="settings_appearance_brand_text_label">Текст бренда</string>
+    <string name="settings_appearance_primary_color_label">Основной цвет</string>
+    <string name="settings_appearance_reset_color">Сбросить по умолчанию</string>
+    <string name="settings_appearance_font_family_label">Шрифт</string>
+    <string name="settings_appearance_font_scale_label">Размер шрифта</string>
+    <string name="settings_vacation_tab">Режим отпуска</string>
+    <string name="settings_vacation_enabled_label">Режим отпуска включён</string>
+    <string name="settings_vacation_message_label">Текст автоответа на время отпуска</string>
+    <string name="settings_vacation_notify_types_label">Типы писем для автоответа</string>
     <string name="settings_model_size_gb">%1$s ГБ</string>
     <string name="settings_not_configured">Не настроено</string>
     <string name="settings_log_tokens_duration">Токены: %1$s · Длительность: %2$s мс</string>
     <string name="settings_log_success">Успешно</string>
     <string name="settings_log_failed">Неудачно (%1$s)</string>
+    <string name="settings_log_status_filter_label">Статус</string>
+    <string name="settings_log_filter_all">Все</string>
+    <string name="settings_log_filter_success">Успешно</string>
+    <string name="settings_log_filter_failed">Неудачно</string>
+    <string name="settings_log_prev_page">Назад</string>
+    <string name="settings_log_next_page">Далее</string>
+    <string name="settings_log_page_indicator">Страница %1$s из %2$s</string>
 
     <!-- Экран аккаунта -->
     <string name="user_first_login">Первый вход: %1$s</string>
@@ -96,6 +141,13 @@
     <string name="user_server_section_title">Адрес сервера</string>
     <string name="user_server_placeholder">напр. http://192.168.0.12:5100</string>
     <string name="user_server_hint">Оставьте пустым, чтобы использовать адрес по умолчанию.</string>
+
+    <!-- Экран управления группами писем -->
+    <string name="mail_groups_title">Группы писем</string>
+    <string name="mail_groups_add_title">Добавить группу</string>
+    <string name="mail_groups_group_name_label">Название группы (домен)</string>
+    <string name="mail_groups_note_label">Заметка</string>
+    <string name="mail_groups_no_note">Нет заметки</string>
 
     <!-- Названия языков (для селектора языка) -->
     <string name="language_name_tr">Türkçe</string>

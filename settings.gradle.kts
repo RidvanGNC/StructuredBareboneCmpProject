@@ -43,10 +43,10 @@ include(":di")
 
 //Screens
 include(":data")
-include(":screen:template")
 include(":screen:mails")
 include(":screen:user")
 include(":screen:mail-detail")
 include(":screen:routing-contacts")
 include(":screen:pricing-rates")
 include(":screen:settings")
+include(":screen:mail-groups")
