@@ -19,6 +19,7 @@ import org.structured_barebone.shared.model.CloudCredentialDto
 import org.structured_barebone.shared.model.CloudProvider
 import org.structured_barebone.shared.model.EngineMode
 import org.structured_barebone.shared.model.EngineSettingsDto
+import org.structured_barebone.shared.model.LlmLogPageDto
 import org.structured_barebone.shared.model.LlmRequestLogDto
 import org.structured_barebone.shared.model.LocalModelDto
 import org.structured_barebone.shared.model.Result
@@ -135,7 +136,10 @@ class SettingsRepositoryImpl(
             val logs = if (ApiConfig.USE_MOCK) {
                 MockMailData.llmLogs
             } else {
-                httpClient.get("/settings/logs") { parameter("take", take) }.body()
+                httpClient.get("/settings/logs") {
+                    parameter("page", 1)
+                    parameter("pageSize", take)
+                }.body<LlmLogPageDto>().items
             }
             ApiResponse(success = true, message = null, data = logs)
         }

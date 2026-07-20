@@ -58,3 +58,9 @@ data class LlmRequestLogDto(
     val errorMessage: String?,
     val durationMs: Int,
 )
+
+@Serializable
+data class LlmLogPageDto(
+    val items: List<LlmRequestLogDto>,
+    val totalCount: Int,
+)

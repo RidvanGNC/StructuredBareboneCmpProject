@@ -10,9 +10,13 @@ import com.microsoft.identity.client.ISingleAccountPublicClientApplication
 import com.microsoft.identity.client.PublicClientApplication
 import com.microsoft.identity.client.SilentAuthenticationCallback
 import com.microsoft.identity.client.exception.MsalException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import org.structured_barebone.data.R
 import org.structured_barebone.shared.model.Result
@@ -23,16 +27,15 @@ import kotlin.coroutines.resume
 // (ve o kayda ayni redirect URI eklenmeden) gercek girisi tamamlayamaz; bkz. res/raw/msal_config.json.
 class MsalAuthService(context: Context) : AuthService {
     private val scopes = arrayOf(AuthConfig.API_SCOPE)
-
-    // Girişte hem kendi API scope'umuzu hem Graph scope'larini birlikte istiyoruz ki tek bir
-    // onay ekraninda ikisine de izin verilsin; sonrasinda her biri icin ayri ayri sessiz token
-    // alinabiliyor (bkz. getAccessToken / getGraphAccessToken).
-    private val signInScopes = arrayOf(AuthConfig.API_SCOPE, *AuthConfig.GRAPH_SCOPES)
     private var app: ISingleAccountPublicClientApplication? = null
     private var currentAccount: IAccount? = null
 
     private val _isSignedIn = MutableStateFlow(false)
     override val isSignedIn: StateFlow<Boolean> = _isSignedIn.asStateFlow()
+
+    // Baslangicta yuklenen hesabin token'inin gecerliligini arka planda dogrulamak icin
+    // (bkz. validateLoadedAccount) - servis Koin single oldugundan uygulama omru boyunca yasar.
+    private val serviceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     init {
         PublicClientApplication.createSingleAccountPublicClientApplication(
@@ -46,12 +49,12 @@ class MsalAuthService(context: Context) : AuthService {
                     application.getCurrentAccountAsync(object : ISingleAccountPublicClientApplication.CurrentAccountCallback {
                         override fun onAccountLoaded(activeAccount: IAccount?) {
                             currentAccount = activeAccount
-                            _isSignedIn.value = activeAccount != null
+                            validateLoadedAccount(activeAccount)
                         }
 
                         override fun onAccountChanged(priorAccount: IAccount?, currentAccount: IAccount?) {
                             this@MsalAuthService.currentAccount = currentAccount
-                            _isSignedIn.value = currentAccount != null
+                            validateLoadedAccount(currentAccount)
                         }
 
                         override fun onError(exception: MsalException) {
@@ -66,6 +69,25 @@ class MsalAuthService(context: Context) : AuthService {
                 }
             },
         )
+    }
+
+    // Yerelde/broker'da bulunan bir hesap kaydinin token'inin hala gecerli oldugunu dogrular.
+    // Aksi halde giris ekrani hicbir zaman gosterilmeden uygulama isSignedIn=true sanip sessiz
+    // token isteklerini sonsuza kadar tekrarlar (bkz. AADSTS500202 vakasi) - bu yuzden "hesap
+    // kaydi var" bilgisi tek basina yeterli sayilmiyor, gercekten token alinabiliyor mu kontrol ediliyor.
+    private fun validateLoadedAccount(account: IAccount?) {
+        if (account == null) {
+            _isSignedIn.value = false
+            return
+        }
+        serviceScope.launch {
+            val isValid = getAccessToken() != null
+            if (isValid) {
+                _isSignedIn.value = true
+            } else if (currentAccount === account) {
+                app?.let { signOutSuspend(it) }
+            }
+        }
     }
 
     override suspend fun getAccessToken(): String? {
@@ -112,17 +134,38 @@ class MsalAuthService(context: Context) : AuthService {
 
     override suspend fun signIn(host: AuthHost): Result<Unit> {
         val application = app ?: return Result.Error("Kimlik dogrulama servisi henuz hazir degil.")
-        // Hesap arka planda az once yuklenmis olabilir (bkz. getCurrentAccountAsync); bu durumda
-        // MSAL "An account is already signed in" hatasi verir - aslinda zaten girisliyiz, hata degil.
+
+        // Hesap arka planda az once yuklenmis olabilir (bkz. getCurrentAccountAsync), ama bu hesabin
+        // token'i artik gecersiz olabilir (orn. Azure App Registration ayarlari hesap yuklendikten
+        // sonra degisti - bkz. AADSTS500202 vakasi). Bu yuzden "hesap var" bilgisine korukorune
+        // guvenilmiyor; sessiz bir token denemesiyle dogrulaniyor, basarisiz olursa hesap
+        // (hem yerelde hem broker'da) temizlenip gercek bir interaktif giris yapiliyor.
         if (currentAccount != null) {
-            _isSignedIn.value = true
-            return Result.Success(Unit)
+            if (getAccessToken() != null) {
+                _isSignedIn.value = true
+                return Result.Success(Unit)
+            }
+            signOutSuspend(application)
         }
-        return suspendCancellableCoroutine { continuation ->
+
+        // AAD v2 endpoint'i tek bir istekte FARKLI kaynaklara (resource) ait scope'lari kabul
+        // etmiyor (bkz. AADSTS70011: "api://.../access_as_user" ile Microsoft Graph scope'lari
+        // "are not compatible with each other"). Bu yuzden once kendi API'miz icin interaktif
+        // giris yapilir, basarili olursa Graph icin ayri bir izin istegi (incremental consent)
+        // gonderilir; Graph izni her nedense alinamazsa ana giris yine de basarili sayilir.
+        val primaryResult = signInInteractive(application, host)
+        if (primaryResult is Result.Success) {
+            acquireGraphConsent(application, host)
+        }
+        return primaryResult
+    }
+
+    private suspend fun signInInteractive(application: ISingleAccountPublicClientApplication, host: AuthHost): Result<Unit> =
+        suspendCancellableCoroutine { continuation ->
             application.signIn(
                 host,
                 null,
-                signInScopes,
+                scopes,
                 object : AuthenticationCallback {
                     override fun onSuccess(authenticationResult: IAuthenticationResult) {
                         currentAccount = authenticationResult.account
@@ -131,6 +174,8 @@ class MsalAuthService(context: Context) : AuthService {
                     }
 
                     override fun onError(exception: MsalException) {
+                        // Hesap arka planda tam bu sirada yeniden yuklendiyse MSAL "an account is
+                        // already signed in" hatasi verebilir - bu durumda gercekten girisliyiz demektir.
                         if (currentAccount != null) {
                             _isSignedIn.value = true
                             continuation.resume(Result.Success(Unit))
@@ -141,6 +186,28 @@ class MsalAuthService(context: Context) : AuthService {
 
                     override fun onCancel() {
                         continuation.resume(Result.Error("Giris iptal edildi."))
+                    }
+                },
+            )
+        }
+
+    private suspend fun acquireGraphConsent(application: ISingleAccountPublicClientApplication, host: AuthHost) {
+        suspendCancellableCoroutine<Unit> { continuation ->
+            application.acquireToken(
+                host,
+                AuthConfig.GRAPH_SCOPES,
+                object : AuthenticationCallback {
+                    override fun onSuccess(authenticationResult: IAuthenticationResult) {
+                        continuation.resume(Unit)
+                    }
+
+                    override fun onError(exception: MsalException) {
+                        Log.e("MsalAuthService", "Graph icin izin alinamadi: ${exception.errorCode} - ${exception.message}", exception)
+                        continuation.resume(Unit)
+                    }
+
+                    override fun onCancel() {
+                        continuation.resume(Unit)
                     }
                 },
             )
@@ -156,5 +223,24 @@ class MsalAuthService(context: Context) : AuthService {
 
             override fun onError(exception: MsalException) = Unit
         })
+    }
+
+    private suspend fun signOutSuspend(application: ISingleAccountPublicClientApplication) {
+        suspendCancellableCoroutine<Unit> { continuation ->
+            application.signOut(object : ISingleAccountPublicClientApplication.SignOutCallback {
+                override fun onSignOut() {
+                    currentAccount = null
+                    _isSignedIn.value = false
+                    continuation.resume(Unit)
+                }
+
+                override fun onError(exception: MsalException) {
+                    Log.e("MsalAuthService", "Gecersiz hesap temizlenemedi: ${exception.errorCode} - ${exception.message}", exception)
+                    currentAccount = null
+                    _isSignedIn.value = false
+                    continuation.resume(Unit)
+                }
+            })
+        }
     }
 }
