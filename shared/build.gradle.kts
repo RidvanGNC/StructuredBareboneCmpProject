@@ -58,3 +58,9 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 }
+
+// Diger modullerdeki (screen/*, composeApp) ekranlar strings.xml'e stringResource(Res.string.xxx)
+// ile erisebilsin diye Res sinifi disari acik hale getirildi (varsayilan: internal).
+compose.resources {
+    publicResClass = true
+}

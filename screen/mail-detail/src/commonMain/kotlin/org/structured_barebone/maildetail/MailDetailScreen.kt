@@ -32,8 +32,27 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
+import structuredbarebonecmpproject.shared.generated.resources.Res
+import structuredbarebonecmpproject.shared.generated.resources.common_back_cd
+import structuredbarebonecmpproject.shared.generated.resources.common_save
+import structuredbarebonecmpproject.shared.generated.resources.mail_detail_actual_price
+import structuredbarebonecmpproject.shared.generated.resources.mail_detail_actual_price_label
+import structuredbarebonecmpproject.shared.generated.resources.mail_detail_approve
+import structuredbarebonecmpproject.shared.generated.resources.mail_detail_approved_pending_send
+import structuredbarebonecmpproject.shared.generated.resources.mail_detail_body_label
+import structuredbarebonecmpproject.shared.generated.resources.mail_detail_delivery_tab
+import structuredbarebonecmpproject.shared.generated.resources.mail_detail_generate_draft
+import structuredbarebonecmpproject.shared.generated.resources.mail_detail_language_summary
+import structuredbarebonecmpproject.shared.generated.resources.mail_detail_pick_file_simulation
+import structuredbarebonecmpproject.shared.generated.resources.mail_detail_predicted_price
+import structuredbarebonecmpproject.shared.generated.resources.mail_detail_quote_tab
+import structuredbarebonecmpproject.shared.generated.resources.mail_detail_send
+import structuredbarebonecmpproject.shared.generated.resources.mail_detail_sent_at
+import structuredbarebonecmpproject.shared.generated.resources.mail_detail_subject_label
+import structuredbarebonecmpproject.shared.generated.resources.mail_detail_title
 import org.structured_barebone.shared.model.MailDto
 import org.structured_barebone.shared.model.MailReplyDto
 import org.structured_barebone.shared.model.MailReplyType
@@ -49,10 +68,10 @@ fun MailDetailScreen(mailId: String, onBack: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Mail Detayı") },
+                title = { Text(stringResource(Res.string.mail_detail_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Geri")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(Res.string.common_back_cd))
                     }
                 },
             )
@@ -84,12 +103,12 @@ fun MailDetailScreen(mailId: String, onBack: () -> Unit) {
                         Tab(
                             selected = selectedTab == 0,
                             onClick = { selectedTab = 0 },
-                            text = { Text("Fiyat Teklifi") },
+                            text = { Text(stringResource(Res.string.mail_detail_quote_tab)) },
                         )
                         Tab(
                             selected = selectedTab == 1,
                             onClick = { selectedTab = 1 },
-                            text = { Text("Çeviri Teslimi") },
+                            text = { Text(stringResource(Res.string.mail_detail_delivery_tab)) },
                         )
                     }
 
@@ -118,12 +137,18 @@ fun MailDetailScreen(mailId: String, onBack: () -> Unit) {
 private fun MailSummary(mail: MailDto) {
     Card(modifier = Modifier.fillMaxWidth().padding(12.dp)) {
         Column(modifier = Modifier.padding(12.dp)) {
-            Text("Dil: ${mail.predictedLanguage ?: "-"} / ${mail.confirmedLanguage ?: "-"}")
+            Text(
+                stringResource(
+                    Res.string.mail_detail_language_summary,
+                    mail.predictedLanguage ?: "-",
+                    mail.confirmedLanguage ?: "-",
+                ),
+            )
             if (mail.predictedPrice != null) {
-                Text("Tahmini Fiyat: ${mail.predictedPrice}")
+                Text(stringResource(Res.string.mail_detail_predicted_price, mail.predictedPrice.toString()))
             }
             if (mail.actualPrice != null) {
-                Text("Onaylanan Fiyat: ${mail.actualPrice}")
+                Text(stringResource(Res.string.mail_detail_actual_price, mail.actualPrice.toString()))
             }
         }
     }
@@ -139,7 +164,7 @@ private fun ReplyEditor(
     if (reply == null) {
         Box(modifier = Modifier.fillMaxWidth().padding(24.dp), contentAlignment = Alignment.Center) {
             Button(onClick = { viewModel.generateDraft(replyType) }) {
-                Text("Taslak Oluştur")
+                Text(stringResource(Res.string.mail_detail_generate_draft))
             }
         }
         return
@@ -158,22 +183,22 @@ private fun ReplyEditor(
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         if (isSent) {
-            Text("Gönderildi: ${reply.sentAt}", color = MaterialTheme.colorScheme.primary)
+            Text(stringResource(Res.string.mail_detail_sent_at, reply.sentAt.toString()), color = MaterialTheme.colorScheme.primary)
         } else if (isApproved) {
-            Text("Onaylandı, gönderim bekliyor", color = MaterialTheme.colorScheme.secondary)
+            Text(stringResource(Res.string.mail_detail_approved_pending_send), color = MaterialTheme.colorScheme.secondary)
         }
 
         OutlinedTextField(
             value = subject,
             onValueChange = { subject = it },
-            label = { Text("Konu") },
+            label = { Text(stringResource(Res.string.mail_detail_subject_label)) },
             enabled = isEditable,
             modifier = Modifier.fillMaxWidth(),
         )
         OutlinedTextField(
             value = body,
             onValueChange = { body = it },
-            label = { Text("İçerik") },
+            label = { Text(stringResource(Res.string.mail_detail_body_label)) },
             enabled = isEditable,
             modifier = Modifier.fillMaxWidth(),
             minLines = 5,
@@ -181,7 +206,7 @@ private fun ReplyEditor(
 
         if (isEditable) {
             Button(onClick = { viewModel.updateDraft(reply.id, subject, body) }) {
-                Text("Kaydet")
+                Text(stringResource(Res.string.common_save))
             }
         }
 
@@ -191,7 +216,7 @@ private fun ReplyEditor(
                     enabled = isEditable,
                     onClick = { viewModel.attachDeliveryFile(reply.id, "ceviri-damgali.pdf") },
                 ) {
-                    Text("Dosya Seç (Simülasyon)")
+                    Text(stringResource(Res.string.mail_detail_pick_file_simulation))
                 }
                 reply.attachmentFileName?.let {
                     Text(text = it, modifier = Modifier.padding(start = 8.dp))
@@ -203,7 +228,7 @@ private fun ReplyEditor(
             OutlinedTextField(
                 value = actualPriceText,
                 onValueChange = { actualPriceText = it },
-                label = { Text("Onaylanan Fiyat") },
+                label = { Text(stringResource(Res.string.mail_detail_actual_price_label)) },
                 modifier = Modifier.fillMaxWidth(),
             )
         }
@@ -213,13 +238,13 @@ private fun ReplyEditor(
                 onClick = { viewModel.approve(reply.id, actualPriceText.toDoubleOrNull()) },
                 enabled = replyType != MailReplyType.Delivery || reply.attachmentFileName != null,
             ) {
-                Text("Onayla")
+                Text(stringResource(Res.string.mail_detail_approve))
             }
         }
 
         if (isApproved && !isSent) {
             Button(onClick = { viewModel.send(reply.id) }) {
-                Text("Gönder")
+                Text(stringResource(Res.string.mail_detail_send))
             }
         }
     }

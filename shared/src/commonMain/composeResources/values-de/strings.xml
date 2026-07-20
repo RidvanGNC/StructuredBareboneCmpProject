@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Allgemein / gemeinsam -->
+    <string name="common_save">Speichern</string>
+    <string name="common_cancel">Abbrechen</string>
+    <string name="common_add">Hinzufügen</string>
+    <string name="common_add_cd">Hinzufügen</string>
+    <string name="common_edit_cd">Bearbeiten</string>
+    <string name="common_delete_cd">Löschen</string>
+    <string name="common_back_cd">Zurück</string>
+
+    <!-- Untere Navigation -->
+    <string name="nav_mails">E-Mails</string>
+    <string name="nav_routing_contacts">Weiterleitungsliste</string>
+    <string name="nav_pricing_rates">Preisgestaltung</string>
+    <string name="nav_settings">Einstellungen</string>
+    <string name="nav_user">Konto</string>
+
+    <!-- Mail-Typen -->
+    <string name="mail_type_advertisement">Werbung</string>
+    <string name="mail_type_spam">Spam</string>
+    <string name="mail_type_inquiry_or_offer">Anfrage &amp; Angebot</string>
+    <string name="mail_type_translation">Übersetzung</string>
+
+    <!-- Mails-Bildschirm -->
+    <string name="mails_sync_cd">Synchronisieren</string>
+    <string name="mails_all_groups">Alle Gruppen</string>
+    <string name="mails_urgent_cd">Dringend</string>
+
+    <!-- Mail-Detail-Bildschirm -->
+    <string name="mail_detail_title">E-Mail-Details</string>
+    <string name="mail_detail_quote_tab">Angebot</string>
+    <string name="mail_detail_delivery_tab">Übersetzungslieferung</string>
+    <string name="mail_detail_language_summary">Sprache: %1$s / %2$s</string>
+    <string name="mail_detail_predicted_price">Geschätzter Preis: %1$s</string>
+    <string name="mail_detail_actual_price">Genehmigter Preis: %1$s</string>
+    <string name="mail_detail_generate_draft">Entwurf Erstellen</string>
+    <string name="mail_detail_sent_at">Gesendet: %1$s</string>
+    <string name="mail_detail_approved_pending_send">Genehmigt, Versand ausstehend</string>
+    <string name="mail_detail_subject_label">Betreff</string>
+    <string name="mail_detail_body_label">Inhalt</string>
+    <string name="mail_detail_pick_file_simulation">Datei Auswählen (Simuliert)</string>
+    <string name="mail_detail_actual_price_label">Genehmigter Preis</string>
+    <string name="mail_detail_approve">Genehmigen</string>
+    <string name="mail_detail_send">Senden</string>
+
+    <!-- Weiterleitungen-Bildschirm -->
+    <string name="routing_contacts_title">Feste Weiterleitungen</string>
+    <string name="routing_contacts_add_title">Weiterleitung Hinzufügen</string>
+    <string name="routing_contacts_edit_title">Weiterleitung Bearbeiten</string>
+    <string name="routing_contacts_priority_label">Priorität: %1$s</string>
+    <string name="routing_contacts_remove_cd">Entfernen</string>
+    <string name="routing_contacts_name_label">Vorname</string>
+    <string name="routing_contacts_surname_label">Nachname</string>
+    <string name="routing_contacts_email_label">E-Mail</string>
+    <string name="routing_contacts_languages_label">Sprachen (kommagetrennt: tr, en)</string>
+    <string name="routing_contacts_priority_field_label">Priorität (niedrigere Zahl wird zuerst bevorzugt)</string>
+
+    <!-- Preisgestaltung-Bildschirm -->
+    <string name="pricing_rates_title">Preisgestaltung</string>
+    <string name="pricing_rates_language_code_label">Sprachcode (z. B. en)</string>
+    <string name="pricing_rates_rate_label">Preis pro Zeichen</string>
+    <string name="pricing_rates_loading">Wird geladen...</string>
+
+    <!-- Einstellungen-Bildschirm -->
+    <string name="settings_title">Einstellungen</string>
+    <string name="settings_engine_tab">Modell</string>
+    <string name="settings_models_tab">Modelle</string>
+    <string name="settings_cloud_tab">Cloud</string>
+    <string name="settings_logs_tab">Protokolle</string>
+    <string name="settings_mode_label">Betriebsmodus</string>
+    <string name="settings_mode_local">Lokal (Ollama)</string>
+    <string name="settings_mode_cloud">Cloud</string>
+    <string name="settings_local_model_label">Lokales Modell</string>
+    <string name="settings_cloud_provider_label">Cloud-Anbieter</string>
+    <string name="settings_api_key_label">API-Schlüssel (leer lassen, um beizubehalten)</string>
+    <string name="settings_temperature_label">Temperature</string>
+    <string name="settings_max_tokens_label">Maximale Token</string>
+    <string name="settings_top_p_label">Top P</string>
+    <string name="settings_model_size_gb">%1$s GB</string>
+    <string name="settings_not_configured">Nicht Konfiguriert</string>
+    <string name="settings_log_tokens_duration">Token: %1$s · Dauer: %2$s ms</string>
+    <string name="settings_log_success">Erfolgreich</string>
+    <string name="settings_log_failed">Fehlgeschlagen (%1$s)</string>
+
+    <!-- Konto-Bildschirm -->
+    <string name="user_first_login">Erste Anmeldung: %1$s</string>
+    <string name="user_last_login">Letzte Anmeldung: %1$s</string>
+    <string name="user_logout">Abmelden</string>
+    <string name="user_delete_account">Konto Löschen</string>
+    <string name="user_deletion_requested">Ihre Anfrage zur Kontolöschung wurde empfangen.</string>
+    <string name="user_delete_confirm_title">Möchten Sie Ihr Konto wirklich löschen?</string>
+    <string name="user_delete_confirm_body">Diese Aktion kann nicht rückgängig gemacht werden. Sie können Ihr Konto innerhalb von 30 Tagen durch Kontaktaufnahme mit dem technischen Support reaktivieren.</string>
+    <string name="user_language_section_title">Sprache</string>
+    <string name="user_language_system_default">Systemsprache</string>
+    <string name="user_server_section_title">Serveradresse</string>
+    <string name="user_server_placeholder">z. B. http://192.168.0.12:5100</string>
+    <string name="user_server_hint">Leer lassen, um die Standardadresse zu verwenden.</string>
+
+    <!-- Sprachnamen (für Sprachauswahl) -->
+    <string name="language_name_tr">Türkçe</string>
+    <string name="language_name_en">English</string>
+    <string name="language_name_ar">العربية</string>
+    <string name="language_name_ru">Русский</string>
+    <string name="language_name_de">Deutsch</string>
+</resources>

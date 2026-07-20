@@ -30,7 +30,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
+import structuredbarebonecmpproject.shared.generated.resources.Res
+import structuredbarebonecmpproject.shared.generated.resources.common_delete_cd
+import structuredbarebonecmpproject.shared.generated.resources.common_edit_cd
+import structuredbarebonecmpproject.shared.generated.resources.common_save
+import structuredbarebonecmpproject.shared.generated.resources.pricing_rates_language_code_label
+import structuredbarebonecmpproject.shared.generated.resources.pricing_rates_loading
+import structuredbarebonecmpproject.shared.generated.resources.pricing_rates_rate_label
+import structuredbarebonecmpproject.shared.generated.resources.pricing_rates_title
 import org.structured_barebone.shared.model.PricingRateDto
 import org.structured_barebone.viewmodel.PricingRatesViewModel
 
@@ -44,7 +53,7 @@ fun PricingRatesScreen() {
     var rateText by remember { mutableStateOf("") }
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Fiyatlandırma") }) },
+        topBar = { TopAppBar(title = { Text(stringResource(Res.string.pricing_rates_title)) }) },
     ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             Card(modifier = Modifier.fillMaxWidth().padding(12.dp)) {
@@ -52,13 +61,13 @@ fun PricingRatesScreen() {
                     OutlinedTextField(
                         value = languageCode,
                         onValueChange = { languageCode = it },
-                        label = { Text("Dil Kodu (örn. en)") },
+                        label = { Text(stringResource(Res.string.pricing_rates_language_code_label)) },
                         modifier = Modifier.fillMaxWidth(),
                     )
                     OutlinedTextField(
                         value = rateText,
                         onValueChange = { rateText = it },
-                        label = { Text("Karakter Başı Ücret") },
+                        label = { Text(stringResource(Res.string.pricing_rates_rate_label)) },
                         modifier = Modifier.fillMaxWidth(),
                     )
                     Button(
@@ -71,14 +80,14 @@ fun PricingRatesScreen() {
                             }
                         },
                     ) {
-                        Text("Kaydet")
+                        Text(stringResource(Res.string.common_save))
                     }
                 }
             }
 
             when (val state = uiState) {
                 is PricingRatesViewModel.UiState.Loading -> Text(
-                    text = "Yükleniyor...",
+                    text = stringResource(Res.string.pricing_rates_loading),
                     modifier = Modifier.padding(12.dp),
                 )
 
@@ -120,10 +129,10 @@ private fun RateRow(rate: PricingRateDto, onEdit: () -> Unit, onDelete: () -> Un
             }
             Row {
                 IconButton(onClick = onEdit) {
-                    Icon(Icons.Default.Edit, contentDescription = "Düzenle")
+                    Icon(Icons.Default.Edit, contentDescription = stringResource(Res.string.common_edit_cd))
                 }
                 IconButton(onClick = onDelete) {
-                    Icon(Icons.Default.Delete, contentDescription = "Sil")
+                    Icon(Icons.Default.Delete, contentDescription = stringResource(Res.string.common_delete_cd))
                 }
             }
         }

@@ -6,6 +6,7 @@ import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 import org.structured_barebone.data.auth.AuthService
 import org.structured_barebone.data.client.createHttpClient
+import org.structured_barebone.data.client.platformBaseUrl
 import org.structured_barebone.data.domain.MailReplyRepository
 import org.structured_barebone.data.domain.MailRepository
 import org.structured_barebone.data.domain.PricingRateRepository
@@ -20,6 +21,7 @@ import org.structured_barebone.data.implementation.RoutingContactRepositoryImpl
 import org.structured_barebone.data.implementation.SettingsRepositoryImpl
 import org.structured_barebone.data.implementation.TemplateRepositoryImpl
 import org.structured_barebone.data.implementation.UserRepositoryImpl
+import org.structured_barebone.data.settings.AppPreferences
 import org.structured_barebone.viewmodel.MailDetailViewModel
 import org.structured_barebone.viewmodel.MailListViewModel
 import org.structured_barebone.viewmodel.PricingRatesViewModel
@@ -36,10 +38,14 @@ fun initKoin(
 }
 
 fun commonModule() = module {
+    single { AppPreferences(get()) }
+
     single<HttpClient> {
+        val appPreferences = get<AppPreferences>()
         createHttpClient(
             tokenProvider = { get<AuthService>().getAccessToken() },
             graphTokenProvider = { get<AuthService>().getGraphAccessToken() },
+            baseUrlProvider = { appPreferences.apiBaseUrlOverride.value ?: platformBaseUrl },
         )
     }
 

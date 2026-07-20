@@ -37,7 +37,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
+import structuredbarebonecmpproject.shared.generated.resources.Res
+import structuredbarebonecmpproject.shared.generated.resources.common_add
+import structuredbarebonecmpproject.shared.generated.resources.common_add_cd
+import structuredbarebonecmpproject.shared.generated.resources.common_cancel
+import structuredbarebonecmpproject.shared.generated.resources.common_delete_cd
+import structuredbarebonecmpproject.shared.generated.resources.common_edit_cd
+import structuredbarebonecmpproject.shared.generated.resources.common_save
+import structuredbarebonecmpproject.shared.generated.resources.routing_contacts_add_title
+import structuredbarebonecmpproject.shared.generated.resources.routing_contacts_edit_title
+import structuredbarebonecmpproject.shared.generated.resources.routing_contacts_email_label
+import structuredbarebonecmpproject.shared.generated.resources.routing_contacts_languages_label
+import structuredbarebonecmpproject.shared.generated.resources.routing_contacts_name_label
+import structuredbarebonecmpproject.shared.generated.resources.routing_contacts_priority_field_label
+import structuredbarebonecmpproject.shared.generated.resources.routing_contacts_priority_label
+import structuredbarebonecmpproject.shared.generated.resources.routing_contacts_remove_cd
+import structuredbarebonecmpproject.shared.generated.resources.routing_contacts_surname_label
+import structuredbarebonecmpproject.shared.generated.resources.routing_contacts_title
 import org.structured_barebone.shared.model.RoutingContactDto
 import org.structured_barebone.viewmodel.RoutingContactsViewModel
 
@@ -50,10 +68,10 @@ fun RoutingContactsScreen() {
     var editingContact by remember { mutableStateOf<RoutingContactDto?>(null) }
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Sabit Yönlendirmeler") }) },
+        topBar = { TopAppBar(title = { Text(stringResource(Res.string.routing_contacts_title)) }) },
         floatingActionButton = {
             FloatingActionButton(onClick = { showAddDialog = true }) {
-                Icon(Icons.Default.Add, contentDescription = "Ekle")
+                Icon(Icons.Default.Add, contentDescription = stringResource(Res.string.common_add_cd))
             }
         },
     ) { padding ->
@@ -93,8 +111,8 @@ fun RoutingContactsScreen() {
 
     if (showAddDialog) {
         ContactDialog(
-            title = "Yönlendirme Ekle",
-            confirmLabel = "Ekle",
+            title = stringResource(Res.string.routing_contacts_add_title),
+            confirmLabel = stringResource(Res.string.common_add),
             onDismiss = { showAddDialog = false },
             onConfirm = { name, surname, email, languages, priority ->
                 viewModel.addContact(name, surname, email, languages, true, priority)
@@ -105,8 +123,8 @@ fun RoutingContactsScreen() {
 
     editingContact?.let { contact ->
         ContactDialog(
-            title = "Yönlendirmeyi Düzenle",
-            confirmLabel = "Kaydet",
+            title = stringResource(Res.string.routing_contacts_edit_title),
+            confirmLabel = stringResource(Res.string.common_save),
             initialName = contact.name,
             initialSurname = contact.surname,
             initialEmail = contact.email,
@@ -140,14 +158,17 @@ private fun ContactCard(
                     text = contact.languagePreferences.joinToString(", "),
                     style = MaterialTheme.typography.bodySmall,
                 )
-                Text(text = "Öncelik: ${contact.priority}", style = MaterialTheme.typography.bodySmall)
+                Text(
+                    text = stringResource(Res.string.routing_contacts_priority_label, contact.priority.toString()),
+                    style = MaterialTheme.typography.bodySmall,
+                )
             }
             Switch(checked = contact.isAvailable, onCheckedChange = onAvailabilityChange)
             IconButton(onClick = onEdit) {
-                Icon(Icons.Default.Edit, contentDescription = "Düzenle")
+                Icon(Icons.Default.Edit, contentDescription = stringResource(Res.string.common_edit_cd))
             }
             IconButton(onClick = onRemove) {
-                Icon(Icons.Default.Delete, contentDescription = "Kaldır")
+                Icon(Icons.Default.Delete, contentDescription = stringResource(Res.string.routing_contacts_remove_cd))
             }
         }
     }
@@ -176,18 +197,18 @@ private fun ContactDialog(
         title = { Text(title) },
         text = {
             Column {
-                OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text("Ad") })
-                OutlinedTextField(value = surname, onValueChange = { surname = it }, label = { Text("Soyad") })
-                OutlinedTextField(value = email, onValueChange = { email = it }, label = { Text("E-posta") })
+                OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text(stringResource(Res.string.routing_contacts_name_label)) })
+                OutlinedTextField(value = surname, onValueChange = { surname = it }, label = { Text(stringResource(Res.string.routing_contacts_surname_label)) })
+                OutlinedTextField(value = email, onValueChange = { email = it }, label = { Text(stringResource(Res.string.routing_contacts_email_label)) })
                 OutlinedTextField(
                     value = languages,
                     onValueChange = { languages = it },
-                    label = { Text("Diller (virgülle ayırın: tr, en)") },
+                    label = { Text(stringResource(Res.string.routing_contacts_languages_label)) },
                 )
                 OutlinedTextField(
                     value = priorityText,
                     onValueChange = { priorityText = it },
-                    label = { Text("Öncelik (düşük sayı önce tercih edilir)") },
+                    label = { Text(stringResource(Res.string.routing_contacts_priority_field_label)) },
                 )
             }
         },
@@ -201,7 +222,7 @@ private fun ContactDialog(
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Vazgeç")
+                Text(stringResource(Res.string.common_cancel))
             }
         },
     )

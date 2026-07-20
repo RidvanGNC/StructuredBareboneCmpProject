@@ -37,8 +37,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import org.structured_barebone.data.domain.MailFilter
+import structuredbarebonecmpproject.shared.generated.resources.Res
+import structuredbarebonecmpproject.shared.generated.resources.mail_type_advertisement
+import structuredbarebonecmpproject.shared.generated.resources.mail_type_inquiry_or_offer
+import structuredbarebonecmpproject.shared.generated.resources.mail_type_spam
+import structuredbarebonecmpproject.shared.generated.resources.mail_type_translation
+import structuredbarebonecmpproject.shared.generated.resources.mails_all_groups
+import structuredbarebonecmpproject.shared.generated.resources.mails_sync_cd
+import structuredbarebonecmpproject.shared.generated.resources.mails_urgent_cd
 import org.structured_barebone.shared.model.MailDto
 import org.structured_barebone.shared.model.MailStatus
 import org.structured_barebone.shared.model.MailType
@@ -55,7 +64,7 @@ fun MailsScreen(onMailClick: (String) -> Unit = {}) {
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = { viewModel.sync() }) {
-                Icon(Icons.Default.Refresh, contentDescription = "Senkronize Et")
+                Icon(Icons.Default.Refresh, contentDescription = stringResource(Res.string.mails_sync_cd))
             }
         },
     ) { padding ->
@@ -108,14 +117,15 @@ private fun MailGroupFilter(
     onSelect: (String?) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
+    val allGroupsLabel = stringResource(Res.string.mails_all_groups)
 
     Box {
         OutlinedButton(onClick = { expanded = true }) {
-            Text(selected ?: "Tüm Gruplar")
+            Text(selected ?: allGroupsLabel)
         }
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             DropdownMenuItem(
-                text = { Text("Tüm Gruplar") },
+                text = { Text(allGroupsLabel) },
                 onClick = {
                     onSelect(null)
                     expanded = false
@@ -165,7 +175,7 @@ private fun MailCard(mail: MailDto, customerName: String, onClick: () -> Unit) {
                 ) {
                     Icon(
                         Icons.Default.Warning,
-                        contentDescription = "Acil",
+                        contentDescription = stringResource(Res.string.mails_urgent_cd),
                         tint = Color.White,
                         modifier = Modifier.size(14.dp),
                     )
@@ -193,9 +203,10 @@ private fun StatusBadge(status: MailStatus) {
     }
 }
 
+@Composable
 private fun mailTypeLabel(type: MailType): String = when (type) {
-    MailType.Advertisement -> "Reklam"
-    MailType.Spam -> "Spam"
-    MailType.InquiryOrOffer -> "Soru ve Teklif"
-    MailType.Translation -> "Çeviri"
+    MailType.Advertisement -> stringResource(Res.string.mail_type_advertisement)
+    MailType.Spam -> stringResource(Res.string.mail_type_spam)
+    MailType.InquiryOrOffer -> stringResource(Res.string.mail_type_inquiry_or_offer)
+    MailType.Translation -> stringResource(Res.string.mail_type_translation)
 }

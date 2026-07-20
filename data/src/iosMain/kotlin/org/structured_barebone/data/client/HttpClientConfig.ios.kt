@@ -6,8 +6,9 @@ import io.ktor.client.engine.darwin.Darwin
 actual fun createHttpClient(
     tokenProvider: suspend () -> String?,
     graphTokenProvider: suspend () -> String?,
+    baseUrlProvider: () -> String,
 ): HttpClient {
     return HttpClient(Darwin) {
-        installCommonPlugins(tokenProvider, graphTokenProvider)
+        installCommonPlugins(tokenProvider, graphTokenProvider, baseUrlProvider)
     }
 }

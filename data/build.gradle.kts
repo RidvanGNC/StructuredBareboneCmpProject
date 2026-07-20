@@ -70,6 +70,9 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
 
+            // Settings (kalici dil tercihi / sunucu adresi override'i)
+            implementation(libs.multiplatform.settings)
+
             //Project
             implementation(project(":shared"))
         }

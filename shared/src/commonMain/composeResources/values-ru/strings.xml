@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Общее -->
+    <string name="common_save">Сохранить</string>
+    <string name="common_cancel">Отмена</string>
+    <string name="common_add">Добавить</string>
+    <string name="common_add_cd">Добавить</string>
+    <string name="common_edit_cd">Редактировать</string>
+    <string name="common_delete_cd">Удалить</string>
+    <string name="common_back_cd">Назад</string>
+
+    <!-- Нижняя навигация -->
+    <string name="nav_mails">Письма</string>
+    <string name="nav_routing_contacts">Список маршрутизации</string>
+    <string name="nav_pricing_rates">Тарифы</string>
+    <string name="nav_settings">Настройки</string>
+    <string name="nav_user">Аккаунт</string>
+
+    <!-- Типы писем -->
+    <string name="mail_type_advertisement">Реклама</string>
+    <string name="mail_type_spam">Спам</string>
+    <string name="mail_type_inquiry_or_offer">Запрос и предложение</string>
+    <string name="mail_type_translation">Перевод</string>
+
+    <!-- Экран писем -->
+    <string name="mails_sync_cd">Синхронизировать</string>
+    <string name="mails_all_groups">Все группы</string>
+    <string name="mails_urgent_cd">Срочно</string>
+
+    <!-- Экран деталей письма -->
+    <string name="mail_detail_title">Детали письма</string>
+    <string name="mail_detail_quote_tab">Ценовое предложение</string>
+    <string name="mail_detail_delivery_tab">Доставка перевода</string>
+    <string name="mail_detail_language_summary">Язык: %1$s / %2$s</string>
+    <string name="mail_detail_predicted_price">Предполагаемая цена: %1$s</string>
+    <string name="mail_detail_actual_price">Утверждённая цена: %1$s</string>
+    <string name="mail_detail_generate_draft">Создать черновик</string>
+    <string name="mail_detail_sent_at">Отправлено: %1$s</string>
+    <string name="mail_detail_approved_pending_send">Утверждено, ожидает отправки</string>
+    <string name="mail_detail_subject_label">Тема</string>
+    <string name="mail_detail_body_label">Содержимое</string>
+    <string name="mail_detail_pick_file_simulation">Выбрать файл (симуляция)</string>
+    <string name="mail_detail_actual_price_label">Утверждённая цена</string>
+    <string name="mail_detail_approve">Утвердить</string>
+    <string name="mail_detail_send">Отправить</string>
+
+    <!-- Экран постоянных маршрутов -->
+    <string name="routing_contacts_title">Постоянные маршруты</string>
+    <string name="routing_contacts_add_title">Добавить маршрут</string>
+    <string name="routing_contacts_edit_title">Редактировать маршрут</string>
+    <string name="routing_contacts_priority_label">Приоритет: %1$s</string>
+    <string name="routing_contacts_remove_cd">Удалить</string>
+    <string name="routing_contacts_name_label">Имя</string>
+    <string name="routing_contacts_surname_label">Фамилия</string>
+    <string name="routing_contacts_email_label">Эл. почта</string>
+    <string name="routing_contacts_languages_label">Языки (через запятую: tr, en)</string>
+    <string name="routing_contacts_priority_field_label">Приоритет (меньшее число предпочтительнее)</string>
+
+    <!-- Экран тарифов -->
+    <string name="pricing_rates_title">Тарифы</string>
+    <string name="pricing_rates_language_code_label">Код языка (напр. en)</string>
+    <string name="pricing_rates_rate_label">Цена за символ</string>
+    <string name="pricing_rates_loading">Загрузка...</string>
+
+    <!-- Экран настроек -->
+    <string name="settings_title">Настройки</string>
+    <string name="settings_engine_tab">Модель</string>
+    <string name="settings_models_tab">Модели</string>
+    <string name="settings_cloud_tab">Облако</string>
+    <string name="settings_logs_tab">Журналы</string>
+    <string name="settings_mode_label">Режим работы</string>
+    <string name="settings_mode_local">Локально (Ollama)</string>
+    <string name="settings_mode_cloud">Облако</string>
+    <string name="settings_local_model_label">Локальная модель</string>
+    <string name="settings_cloud_provider_label">Облачный провайдер</string>
+    <string name="settings_api_key_label">API-ключ (оставьте пустым, чтобы сохранить текущий)</string>
+    <string name="settings_temperature_label">Temperature</string>
+    <string name="settings_max_tokens_label">Максимум токенов</string>
+    <string name="settings_top_p_label">Top P</string>
+    <string name="settings_model_size_gb">%1$s ГБ</string>
+    <string name="settings_not_configured">Не настроено</string>
+    <string name="settings_log_tokens_duration">Токены: %1$s · Длительность: %2$s мс</string>
+    <string name="settings_log_success">Успешно</string>
+    <string name="settings_log_failed">Неудачно (%1$s)</string>
+
+    <!-- Экран аккаунта -->
+    <string name="user_first_login">Первый вход: %1$s</string>
+    <string name="user_last_login">Последний вход: %1$s</string>
+    <string name="user_logout">Выйти</string>
+    <string name="user_delete_account">Удалить аккаунт</string>
+    <string name="user_deletion_requested">Ваш запрос на удаление аккаунта получен.</string>
+    <string name="user_delete_confirm_title">Вы уверены, что хотите удалить свой аккаунт?</string>
+    <string name="user_delete_confirm_body">Это действие необратимо. В течение 30 дней вы можете восстановить аккаунт, обратившись в техническую поддержку.</string>
+    <string name="user_language_section_title">Язык</string>
+    <string name="user_language_system_default">Системный язык</string>
+    <string name="user_server_section_title">Адрес сервера</string>
+    <string name="user_server_placeholder">напр. http://192.168.0.12:5100</string>
+    <string name="user_server_hint">Оставьте пустым, чтобы использовать адрес по умолчанию.</string>
+
+    <!-- Названия языков (для селектора языка) -->
+    <string name="language_name_tr">Türkçe</string>
+    <string name="language_name_en">English</string>
+    <string name="language_name_ar">العربية</string>
+    <string name="language_name_ru">Русский</string>
+    <string name="language_name_de">Deutsch</string>
+</resources>

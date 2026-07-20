@@ -24,6 +24,7 @@ import org.structured_barebone.data.model.ServerException
 fun HttpClientConfig<*>.installCommonPlugins(
     tokenProvider: suspend () -> String? = { null },
     graphTokenProvider: suspend () -> String? = { null },
+    baseUrlProvider: () -> String = { platformBaseUrl },
 ) {
     val json = Json {
         ignoreUnknownKeys = true
@@ -37,7 +38,7 @@ fun HttpClientConfig<*>.installCommonPlugins(
     }
 
     defaultRequest {
-        url(platformBaseUrl)
+        url(baseUrlProvider())
     }
 
     install(Auth) {
@@ -94,4 +95,5 @@ fun HttpClientConfig<*>.installCommonPlugins(
 expect fun createHttpClient(
     tokenProvider: suspend () -> String? = { null },
     graphTokenProvider: suspend () -> String? = { null },
+    baseUrlProvider: () -> String = { platformBaseUrl },
 ): HttpClient

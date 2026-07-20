@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Genel / paylasilan -->
+    <string name="common_save">Kaydet</string>
+    <string name="common_cancel">Vazgeç</string>
+    <string name="common_add">Ekle</string>
+    <string name="common_add_cd">Ekle</string>
+    <string name="common_edit_cd">Düzenle</string>
+    <string name="common_delete_cd">Sil</string>
+    <string name="common_back_cd">Geri</string>
+
+    <!-- Alt navigasyon -->
+    <string name="nav_mails">Mailler</string>
+    <string name="nav_routing_contacts">Yönlendirmeler</string>
+    <string name="nav_pricing_rates">Fiyatlandırma</string>
+    <string name="nav_settings">Ayarlar</string>
+    <string name="nav_user">Hesabım</string>
+
+    <!-- Mail tipleri -->
+    <string name="mail_type_advertisement">Reklam</string>
+    <string name="mail_type_spam">Spam</string>
+    <string name="mail_type_inquiry_or_offer">Soru ve Teklif</string>
+    <string name="mail_type_translation">Çeviri</string>
+
+    <!-- Mailler ekrani -->
+    <string name="mails_sync_cd">Senkronize Et</string>
+    <string name="mails_all_groups">Tüm Gruplar</string>
+    <string name="mails_urgent_cd">Acil</string>
+
+    <!-- Mail detayi ekrani -->
+    <string name="mail_detail_title">Mail Detayı</string>
+    <string name="mail_detail_quote_tab">Fiyat Teklifi</string>
+    <string name="mail_detail_delivery_tab">Çeviri Teslimi</string>
+    <string name="mail_detail_language_summary">Dil: %1$s / %2$s</string>
+    <string name="mail_detail_predicted_price">Tahmini Fiyat: %1$s</string>
+    <string name="mail_detail_actual_price">Onaylanan Fiyat: %1$s</string>
+    <string name="mail_detail_generate_draft">Taslak Oluştur</string>
+    <string name="mail_detail_sent_at">Gönderildi: %1$s</string>
+    <string name="mail_detail_approved_pending_send">Onaylandı, gönderim bekliyor</string>
+    <string name="mail_detail_subject_label">Konu</string>
+    <string name="mail_detail_body_label">İçerik</string>
+    <string name="mail_detail_pick_file_simulation">Dosya Seç (Simülasyon)</string>
+    <string name="mail_detail_actual_price_label">Onaylanan Fiyat</string>
+    <string name="mail_detail_approve">Onayla</string>
+    <string name="mail_detail_send">Gönder</string>
+
+    <!-- Yonlendirmeler ekrani -->
+    <string name="routing_contacts_title">Sabit Yönlendirmeler</string>
+    <string name="routing_contacts_add_title">Yönlendirme Ekle</string>
+    <string name="routing_contacts_edit_title">Yönlendirmeyi Düzenle</string>
+    <string name="routing_contacts_priority_label">Öncelik: %1$s</string>
+    <string name="routing_contacts_remove_cd">Kaldır</string>
+    <string name="routing_contacts_name_label">Ad</string>
+    <string name="routing_contacts_surname_label">Soyad</string>
+    <string name="routing_contacts_email_label">E-posta</string>
+    <string name="routing_contacts_languages_label">Diller (virgülle ayırın: tr, en)</string>
+    <string name="routing_contacts_priority_field_label">Öncelik (düşük sayı önce tercih edilir)</string>
+
+    <!-- Fiyatlandirma ekrani -->
+    <string name="pricing_rates_title">Fiyatlandırma</string>
+    <string name="pricing_rates_language_code_label">Dil Kodu (örn. en)</string>
+    <string name="pricing_rates_rate_label">Karakter Başı Ücret</string>
+    <string name="pricing_rates_loading">Yükleniyor...</string>
+
+    <!-- Ayarlar ekrani -->
+    <string name="settings_title">Ayarlar</string>
+    <string name="settings_engine_tab">Motor</string>
+    <string name="settings_models_tab">Modeller</string>
+    <string name="settings_cloud_tab">Bulut</string>
+    <string name="settings_logs_tab">Loglar</string>
+    <string name="settings_mode_label">Çalışma Modu</string>
+    <string name="settings_mode_local">Yerel (Ollama)</string>
+    <string name="settings_mode_cloud">Bulut</string>
+    <string name="settings_local_model_label">Yerel Model</string>
+    <string name="settings_cloud_provider_label">Bulut Sağlayıcı</string>
+    <string name="settings_api_key_label">API Anahtarı (boş bırakılırsa korunur)</string>
+    <string name="settings_temperature_label">Temperature</string>
+    <string name="settings_max_tokens_label">Maksimum Token</string>
+    <string name="settings_top_p_label">Top P</string>
+    <string name="settings_model_size_gb">%1$s GB</string>
+    <string name="settings_not_configured">Tanımlanmadı</string>
+    <string name="settings_log_tokens_duration">Token: %1$s · Süre: %2$s ms</string>
+    <string name="settings_log_success">Başarılı</string>
+    <string name="settings_log_failed">Başarısız (%1$s)</string>
+
+    <!-- Hesabim ekrani -->
+    <string name="user_first_login">İlk giriş: %1$s</string>
+    <string name="user_last_login">Son giriş: %1$s</string>
+    <string name="user_logout">Çıkış Yap</string>
+    <string name="user_delete_account">Hesabı Sil</string>
+    <string name="user_deletion_requested">Hesap silme talebiniz alındı.</string>
+    <string name="user_delete_confirm_title">Hesabınızı silmek istediğinize emin misiniz?</string>
+    <string name="user_delete_confirm_body">Bu işlem geri alınamaz. 30 gün içerisinde teknik ekip ile görüşerek hesabınızı yeniden aktive edebilirsiniz.</string>
+    <string name="user_language_section_title">Dil</string>
+    <string name="user_language_system_default">Sistem Dili</string>
+    <string name="user_server_section_title">Sunucu Adresi</string>
+    <string name="user_server_placeholder">örn. http://192.168.0.12:5100</string>
+    <string name="user_server_hint">Boş bırakılırsa varsayılan adres kullanılır.</string>
+
+    <!-- Dil adlari (dil secici icin) -->
+    <string name="language_name_tr">Türkçe</string>
+    <string name="language_name_en">English</string>
+    <string name="language_name_ar">العربية</string>
+    <string name="language_name_ru">Русский</string>
+    <string name="language_name_de">Deutsch</string>
+</resources>

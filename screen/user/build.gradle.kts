@@ -57,6 +57,7 @@ kotlin {
             //Project
             implementation(project(path = ":shared"))
             implementation(project(path = ":viewmodel"))
+            implementation(project(path = ":data"))
         }
     }
 }

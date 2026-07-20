@@ -20,6 +20,10 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            // :data'nin MsalBridge/MsalBridgeProvider'i Swift tarafinda (iosApp) gorunebilsin diye
+            // disari aciliyor; export() sadece "api" bagimliliklarla calisir (asagidaki commonMain'de
+            // ":data" bu yuzden api ile eklendi).
+            export(project(":data"))
         }
     }
 
@@ -30,9 +34,6 @@ kotlin {
 
             //Koin
             implementation(libs.koin.android)
-
-            //Project
-            implementation(project(path = ":data"))
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -58,6 +59,7 @@ kotlin {
             implementation(project(path = ":navigation"))
             implementation(project(path = ":di"))
             implementation(project(path = ":viewmodel"))
+            api(project(path = ":data"))
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

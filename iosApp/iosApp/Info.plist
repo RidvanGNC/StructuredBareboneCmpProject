@@ -4,5 +4,24 @@
 <dict>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<!-- MSAL interaktif girisin sistem tarayicisindan uygulamaya donebilmesi icin gerekli redirect
+	     scheme'i (Android msal_config.json'daki client_id ile ayni Azure App Registration kullanilmali). -->
+	<!-- Scheme, Configuration/Config.xcconfig'teki PRODUCT_BUNDLE_IDENTIFIER'a gore turetildi
+	     (TEAM_ID bos oldugunda: org.structured_barebone.cmp_project.StructuredBareboneCmpProject).
+	     TEAM_ID dolduruluyorsa bu scheme'i de guncellemek gerekir. -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>msauth.org.structured_barebone.cmp_project.StructuredBareboneCmpProject</string>
+			</array>
+		</dict>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>msauthv2</string>
+		<string>msauthv3</string>
+	</array>
 </dict>
 </plist>

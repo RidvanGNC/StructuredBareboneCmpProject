@@ -58,6 +58,9 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
 
+            // Settings
+            implementation(libs.multiplatform.settings)
+
             //Project
             implementation(project(path = ":shared"))
             implementation(project(path = ":data"))

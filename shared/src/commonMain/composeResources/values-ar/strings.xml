@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- عام / مشترك -->
+    <string name="common_save">حفظ</string>
+    <string name="common_cancel">إلغاء</string>
+    <string name="common_add">إضافة</string>
+    <string name="common_add_cd">إضافة</string>
+    <string name="common_edit_cd">تعديل</string>
+    <string name="common_delete_cd">حذف</string>
+    <string name="common_back_cd">رجوع</string>
+
+    <!-- التنقل السفلي -->
+    <string name="nav_mails">الرسائل</string>
+    <string name="nav_routing_contacts">قائمة التوجيه</string>
+    <string name="nav_pricing_rates">التسعير</string>
+    <string name="nav_settings">الإعدادات</string>
+    <string name="nav_user">الحساب</string>
+
+    <!-- أنواع الرسائل -->
+    <string name="mail_type_advertisement">إعلان</string>
+    <string name="mail_type_spam">بريد عشوائي</string>
+    <string name="mail_type_inquiry_or_offer">استفسار وعرض</string>
+    <string name="mail_type_translation">ترجمة</string>
+
+    <!-- شاشة الرسائل -->
+    <string name="mails_sync_cd">مزامنة</string>
+    <string name="mails_all_groups">كل المجموعات</string>
+    <string name="mails_urgent_cd">عاجل</string>
+
+    <!-- شاشة تفاصيل الرسالة -->
+    <string name="mail_detail_title">تفاصيل البريد</string>
+    <string name="mail_detail_quote_tab">عرض السعر</string>
+    <string name="mail_detail_delivery_tab">تسليم الترجمة</string>
+    <string name="mail_detail_language_summary">اللغة: %1$s / %2$s</string>
+    <string name="mail_detail_predicted_price">السعر المتوقع: %1$s</string>
+    <string name="mail_detail_actual_price">السعر المعتمد: %1$s</string>
+    <string name="mail_detail_generate_draft">إنشاء مسودة</string>
+    <string name="mail_detail_sent_at">تم الإرسال: %1$s</string>
+    <string name="mail_detail_approved_pending_send">تمت الموافقة، بانتظار الإرسال</string>
+    <string name="mail_detail_subject_label">الموضوع</string>
+    <string name="mail_detail_body_label">المحتوى</string>
+    <string name="mail_detail_pick_file_simulation">اختيار ملف (محاكاة)</string>
+    <string name="mail_detail_actual_price_label">السعر المعتمد</string>
+    <string name="mail_detail_approve">اعتماد</string>
+    <string name="mail_detail_send">إرسال</string>
+
+    <!-- شاشة التوجيهات الثابتة -->
+    <string name="routing_contacts_title">التوجيهات الثابتة</string>
+    <string name="routing_contacts_add_title">إضافة توجيه</string>
+    <string name="routing_contacts_edit_title">تعديل التوجيه</string>
+    <string name="routing_contacts_priority_label">الأولوية: %1$s</string>
+    <string name="routing_contacts_remove_cd">إزالة</string>
+    <string name="routing_contacts_name_label">الاسم</string>
+    <string name="routing_contacts_surname_label">اللقب</string>
+    <string name="routing_contacts_email_label">البريد الإلكتروني</string>
+    <string name="routing_contacts_languages_label">اللغات (مفصولة بفواصل: tr, en)</string>
+    <string name="routing_contacts_priority_field_label">الأولوية (الرقم الأصغر له الأولوية)</string>
+
+    <!-- شاشة التسعير -->
+    <string name="pricing_rates_title">التسعير</string>
+    <string name="pricing_rates_language_code_label">رمز اللغة (مثال: en)</string>
+    <string name="pricing_rates_rate_label">السعر لكل حرف</string>
+    <string name="pricing_rates_loading">جارٍ التحميل...</string>
+
+    <!-- شاشة الإعدادات -->
+    <string name="settings_title">الإعدادات</string>
+    <string name="settings_engine_tab">النموذج</string>
+    <string name="settings_models_tab">النماذج</string>
+    <string name="settings_cloud_tab">السحابة</string>
+    <string name="settings_logs_tab">السجلات</string>
+    <string name="settings_mode_label">وضع التشغيل</string>
+    <string name="settings_mode_local">محلي (Ollama)</string>
+    <string name="settings_mode_cloud">سحابي</string>
+    <string name="settings_local_model_label">النموذج المحلي</string>
+    <string name="settings_cloud_provider_label">مزود السحابة</string>
+    <string name="settings_api_key_label">مفتاح API (اتركه فارغًا للاحتفاظ بالحالي)</string>
+    <string name="settings_temperature_label">Temperature</string>
+    <string name="settings_max_tokens_label">الحد الأقصى للرموز</string>
+    <string name="settings_top_p_label">Top P</string>
+    <string name="settings_model_size_gb">%1$s غيغابايت</string>
+    <string name="settings_not_configured">غير مهيأ</string>
+    <string name="settings_log_tokens_duration">الرموز: %1$s · المدة: %2$s مللي ثانية</string>
+    <string name="settings_log_success">ناجح</string>
+    <string name="settings_log_failed">فاشل (%1$s)</string>
+
+    <!-- شاشة الحساب -->
+    <string name="user_first_login">أول تسجيل دخول: %1$s</string>
+    <string name="user_last_login">آخر تسجيل دخول: %1$s</string>
+    <string name="user_logout">تسجيل الخروج</string>
+    <string name="user_delete_account">حذف الحساب</string>
+    <string name="user_deletion_requested">تم استلام طلب حذف حسابك.</string>
+    <string name="user_delete_confirm_title">هل أنت متأكد أنك تريد حذف حسابك؟</string>
+    <string name="user_delete_confirm_body">لا يمكن التراجع عن هذا الإجراء. يمكنك إعادة تفعيل حسابك خلال 30 يومًا بالتواصل مع الدعم الفني.</string>
+    <string name="user_language_section_title">اللغة</string>
+    <string name="user_language_system_default">لغة النظام</string>
+    <string name="user_server_section_title">عنوان الخادم</string>
+    <string name="user_server_placeholder">مثال: http://192.168.0.12:5100</string>
+    <string name="user_server_hint">اتركه فارغًا لاستخدام العنوان الافتراضي.</string>
+
+    <!-- أسماء اللغات (لمحدد اللغة) -->
+    <string name="language_name_tr">Türkçe</string>
+    <string name="language_name_en">English</string>
+    <string name="language_name_ar">العربية</string>
+    <string name="language_name_ru">Русский</string>
+    <string name="language_name_de">Deutsch</string>
+</resources>

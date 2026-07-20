@@ -21,6 +21,7 @@ navigationCompose = "2.9.2" #Navigation
 coroutines = "1.10.2" #Kotlinx Coroutines
 ktor = "3.4.2" #Ktor
 msal = "8.4.1" #Microsoft Authentication Library (Android)
+multiplatformSettings = "1.3.0" #Kalici key-value ayarlar (dil tercihi, sunucu adresi override'i)
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -72,6 +73,9 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 
 #Auth
 msal = { module = "com.microsoft.identity.client:msal", version.ref = "msal" }
+
+#Settings
+multiplatform-settings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformSettings" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

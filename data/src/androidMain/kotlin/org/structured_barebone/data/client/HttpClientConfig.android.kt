@@ -10,6 +10,7 @@ import javax.net.ssl.TrustManagerFactory
 actual fun createHttpClient(
     tokenProvider: suspend () -> String?,
     graphTokenProvider: suspend () -> String?,
+    baseUrlProvider: () -> String,
 ): HttpClient {
     return HttpClient(Android) {
         engine {
@@ -17,7 +18,7 @@ actual fun createHttpClient(
                 httpsURLConnection.sslSocketFactory = getSSLSocketFactory()
             }
         }
-        installCommonPlugins(tokenProvider, graphTokenProvider)
+        installCommonPlugins(tokenProvider, graphTokenProvider, baseUrlProvider)
     }
 }
 

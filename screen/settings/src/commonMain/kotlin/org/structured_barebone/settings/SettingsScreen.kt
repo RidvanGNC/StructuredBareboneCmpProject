@@ -38,7 +38,30 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
+import structuredbarebonecmpproject.shared.generated.resources.Res
+import structuredbarebonecmpproject.shared.generated.resources.common_delete_cd
+import structuredbarebonecmpproject.shared.generated.resources.common_save
+import structuredbarebonecmpproject.shared.generated.resources.settings_api_key_label
+import structuredbarebonecmpproject.shared.generated.resources.settings_cloud_provider_label
+import structuredbarebonecmpproject.shared.generated.resources.settings_cloud_tab
+import structuredbarebonecmpproject.shared.generated.resources.settings_engine_tab
+import structuredbarebonecmpproject.shared.generated.resources.settings_local_model_label
+import structuredbarebonecmpproject.shared.generated.resources.settings_log_failed
+import structuredbarebonecmpproject.shared.generated.resources.settings_log_success
+import structuredbarebonecmpproject.shared.generated.resources.settings_log_tokens_duration
+import structuredbarebonecmpproject.shared.generated.resources.settings_logs_tab
+import structuredbarebonecmpproject.shared.generated.resources.settings_max_tokens_label
+import structuredbarebonecmpproject.shared.generated.resources.settings_mode_cloud
+import structuredbarebonecmpproject.shared.generated.resources.settings_mode_label
+import structuredbarebonecmpproject.shared.generated.resources.settings_mode_local
+import structuredbarebonecmpproject.shared.generated.resources.settings_model_size_gb
+import structuredbarebonecmpproject.shared.generated.resources.settings_models_tab
+import structuredbarebonecmpproject.shared.generated.resources.settings_not_configured
+import structuredbarebonecmpproject.shared.generated.resources.settings_temperature_label
+import structuredbarebonecmpproject.shared.generated.resources.settings_title
+import structuredbarebonecmpproject.shared.generated.resources.settings_top_p_label
 import org.structured_barebone.shared.model.CloudCredentialDto
 import org.structured_barebone.shared.model.CloudProvider
 import org.structured_barebone.shared.model.EngineMode
@@ -55,7 +78,7 @@ fun SettingsScreen() {
     var selectedTab by remember { mutableIntStateOf(0) }
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Ayarlar") }) },
+        topBar = { TopAppBar(title = { Text(stringResource(Res.string.settings_title)) }) },
     ) { padding ->
         when (val state = uiState) {
             is SettingsViewModel.UiState.Loading -> Box(
@@ -74,10 +97,10 @@ fun SettingsScreen() {
 
             is SettingsViewModel.UiState.Success -> Column(modifier = Modifier.fillMaxSize().padding(padding)) {
                 TabRow(selectedTabIndex = selectedTab) {
-                    Tab(selected = selectedTab == 0, onClick = { selectedTab = 0 }, text = { Text("Motor") })
-                    Tab(selected = selectedTab == 1, onClick = { selectedTab = 1 }, text = { Text("Modeller") })
-                    Tab(selected = selectedTab == 2, onClick = { selectedTab = 2 }, text = { Text("Bulut") })
-                    Tab(selected = selectedTab == 3, onClick = { selectedTab = 3 }, text = { Text("Loglar") })
+                    Tab(selected = selectedTab == 0, onClick = { selectedTab = 0 }, text = { Text(stringResource(Res.string.settings_engine_tab)) })
+                    Tab(selected = selectedTab == 1, onClick = { selectedTab = 1 }, text = { Text(stringResource(Res.string.settings_models_tab)) })
+                    Tab(selected = selectedTab == 2, onClick = { selectedTab = 2 }, text = { Text(stringResource(Res.string.settings_cloud_tab)) })
+                    Tab(selected = selectedTab == 3, onClick = { selectedTab = 3 }, text = { Text(stringResource(Res.string.settings_logs_tab)) })
                 }
 
                 when (selectedTab) {
@@ -111,16 +134,16 @@ private fun EngineConfigTab(
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         EnumDropdown(
-            label = "Çalışma Modu",
+            label = stringResource(Res.string.settings_mode_label),
             options = EngineMode.entries,
             selected = mode,
-            optionLabel = { if (it == EngineMode.Local) "Yerel (Ollama)" else "Bulut" },
+            optionLabel = { if (it == EngineMode.Local) stringResource(Res.string.settings_mode_local) else stringResource(Res.string.settings_mode_cloud) },
             onSelect = { mode = it },
         )
 
         if (mode == EngineMode.Local) {
             EnumDropdown(
-                label = "Yerel Model",
+                label = stringResource(Res.string.settings_local_model_label),
                 options = localModels.map { it.name },
                 selected = localModelName,
                 optionLabel = { it },
@@ -128,7 +151,7 @@ private fun EngineConfigTab(
             )
         } else {
             EnumDropdown(
-                label = "Bulut Sağlayıcı",
+                label = stringResource(Res.string.settings_cloud_provider_label),
                 options = CloudProvider.entries,
                 selected = cloudProvider,
                 optionLabel = { it.name },
@@ -137,7 +160,7 @@ private fun EngineConfigTab(
             OutlinedTextField(
                 value = cloudApiKey,
                 onValueChange = { cloudApiKey = it },
-                label = { Text("API Anahtarı (boş bırakılırsa korunur)") },
+                label = { Text(stringResource(Res.string.settings_api_key_label)) },
                 modifier = Modifier.fillMaxWidth(),
             )
         }
@@ -145,19 +168,19 @@ private fun EngineConfigTab(
         OutlinedTextField(
             value = temperature,
             onValueChange = { temperature = it },
-            label = { Text("Temperature") },
+            label = { Text(stringResource(Res.string.settings_temperature_label)) },
             modifier = Modifier.fillMaxWidth(),
         )
         OutlinedTextField(
             value = maxTokens,
             onValueChange = { maxTokens = it },
-            label = { Text("Maksimum Token") },
+            label = { Text(stringResource(Res.string.settings_max_tokens_label)) },
             modifier = Modifier.fillMaxWidth(),
         )
         OutlinedTextField(
             value = topP,
             onValueChange = { topP = it },
-            label = { Text("Top P") },
+            label = { Text(stringResource(Res.string.settings_top_p_label)) },
             modifier = Modifier.fillMaxWidth(),
         )
 
@@ -174,7 +197,7 @@ private fun EngineConfigTab(
                 )
             },
         ) {
-            Text("Kaydet")
+            Text(stringResource(Res.string.common_save))
         }
     }
 }
@@ -184,7 +207,7 @@ private fun <T> EnumDropdown(
     label: String,
     options: List<T>,
     selected: T,
-    optionLabel: (T) -> String,
+    optionLabel: @Composable (T) -> String,
     onSelect: (T) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -219,7 +242,7 @@ private fun LocalModelsTab(models: List<LocalModelDto>) {
             Card(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(12.dp)) {
                     Text(model.name, style = MaterialTheme.typography.titleMedium)
-                    Text("${model.sizeBytes / 1024 / 1024 / 1024} GB")
+                    Text(stringResource(Res.string.settings_model_size_gb, (model.sizeBytes / 1024 / 1024 / 1024).toString()))
                 }
             }
         }
@@ -242,11 +265,11 @@ private fun CloudCredentialsTab(credentials: List<CloudCredentialDto>, viewModel
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
                         Text(provider.name, style = MaterialTheme.typography.titleMedium)
-                        Text(credentialByProvider[provider]?.maskedPreview ?: "Tanımlanmadı")
+                        Text(credentialByProvider[provider]?.maskedPreview ?: stringResource(Res.string.settings_not_configured))
                     }
                     if (credentialByProvider.containsKey(provider)) {
                         IconButton(onClick = { viewModel.deleteCloudCredential(provider) }) {
-                            Icon(Icons.Default.Delete, contentDescription = "Sil")
+                            Icon(Icons.Default.Delete, contentDescription = stringResource(Res.string.common_delete_cd))
                         }
                     }
                 }
@@ -265,8 +288,8 @@ private fun LogsTab(logs: List<LlmRequestLogDto>) {
             Card(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(12.dp)) {
                     Text("${log.modelName} · ${log.requestType}", style = MaterialTheme.typography.titleMedium)
-                    Text("Token: ${log.totalTokens ?: "-"} · Süre: ${log.durationMs} ms")
-                    Text(if (log.success) "Başarılı" else "Başarısız (${log.errorMessage ?: ""})")
+                    Text(stringResource(Res.string.settings_log_tokens_duration, log.totalTokens?.toString() ?: "-", log.durationMs.toString()))
+                    Text(if (log.success) stringResource(Res.string.settings_log_success) else stringResource(Res.string.settings_log_failed, log.errorMessage ?: ""))
                 }
             }
         }
