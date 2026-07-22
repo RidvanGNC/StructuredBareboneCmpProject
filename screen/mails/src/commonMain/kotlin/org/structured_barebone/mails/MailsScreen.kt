@@ -51,7 +51,9 @@ import org.structured_barebone.data.domain.MailFilter
 import structuredbarebonecmpproject.shared.generated.resources.Res
 import structuredbarebonecmpproject.shared.generated.resources.mail_groups_title
 import structuredbarebonecmpproject.shared.generated.resources.mail_type_advertisement
+import structuredbarebonecmpproject.shared.generated.resources.mail_type_deleted
 import structuredbarebonecmpproject.shared.generated.resources.mail_type_information
+import structuredbarebonecmpproject.shared.generated.resources.mail_type_social
 import structuredbarebonecmpproject.shared.generated.resources.mail_type_inquiry_or_offer
 import structuredbarebonecmpproject.shared.generated.resources.mail_type_spam
 import structuredbarebonecmpproject.shared.generated.resources.mail_type_translation
@@ -271,4 +273,6 @@ private fun mailTypeLabel(type: MailType): String = when (type) {
     MailType.InquiryOrOffer -> stringResource(Res.string.mail_type_inquiry_or_offer)
     MailType.Translation -> stringResource(Res.string.mail_type_translation)
     MailType.Information -> stringResource(Res.string.mail_type_information)
+    MailType.Social -> stringResource(Res.string.mail_type_social)
+    MailType.Deleted -> stringResource(Res.string.mail_type_deleted)
 }

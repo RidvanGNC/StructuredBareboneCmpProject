@@ -34,6 +34,8 @@
     <string name="mail_type_inquiry_or_offer">Anfrage &amp; Angebot</string>
     <string name="mail_type_translation">Übersetzung</string>
     <string name="mail_type_information">Information</string>
+    <string name="mail_type_social">Soziales</string>
+    <string name="mail_type_deleted">Gelöscht</string>
 
     <!-- Mails-Bildschirm -->
     <string name="mails_sync_cd">Synchronisieren</string>

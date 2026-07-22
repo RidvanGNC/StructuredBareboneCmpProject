@@ -34,6 +34,8 @@
     <string name="mail_type_inquiry_or_offer">استفسار وعرض</string>
     <string name="mail_type_translation">ترجمة</string>
     <string name="mail_type_information">معلوماتي</string>
+    <string name="mail_type_social">اجتماعي</string>
+    <string name="mail_type_deleted">محذوف</string>
 
     <!-- شاشة الرسائل -->
     <string name="mails_sync_cd">مزامنة</string>

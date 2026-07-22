@@ -34,6 +34,8 @@
     <string name="mail_type_inquiry_or_offer">Soru ve Teklif</string>
     <string name="mail_type_translation">Çeviri</string>
     <string name="mail_type_information">Bilgilendirme</string>
+    <string name="mail_type_social">Sosyal</string>
+    <string name="mail_type_deleted">Silindi</string>
 
     <!-- Mailler ekrani -->
     <string name="mails_sync_cd">Senkronize Et</string>
