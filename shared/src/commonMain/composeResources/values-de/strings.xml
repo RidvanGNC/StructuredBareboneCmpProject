@@ -36,6 +36,7 @@
     <string name="mail_type_information">Information</string>
     <string name="mail_type_social">Soziales</string>
     <string name="mail_type_deleted">Gelöscht</string>
+    <string name="mail_type_uncategorized">Nicht kategorisiert</string>
 
     <!-- Mails-Bildschirm -->
     <string name="mails_sync_cd">Synchronisieren</string>

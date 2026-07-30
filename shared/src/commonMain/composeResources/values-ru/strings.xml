@@ -36,6 +36,7 @@
     <string name="mail_type_information">Информационное</string>
     <string name="mail_type_social">Социальные</string>
     <string name="mail_type_deleted">Удалено</string>
+    <string name="mail_type_uncategorized">Не категоризировано</string>
 
     <!-- Экран писем -->
     <string name="mails_sync_cd">Синхронизировать</string>

@@ -36,6 +36,7 @@
     <string name="mail_type_information">Bilgilendirme</string>
     <string name="mail_type_social">Sosyal</string>
     <string name="mail_type_deleted">Silindi</string>
+    <string name="mail_type_uncategorized">Kategorize Edilmedi</string>
 
     <!-- Mailler ekrani -->
     <string name="mails_sync_cd">Senkronize Et</string>

@@ -13,6 +13,7 @@ object MailTypeColors {
     val Information = Color(0xFF722ED1)
     val Social = Color(0xFF13C2C2)
     val Deleted = Color(0xFF8C8C8C)
+    val Uncategorized = Color(0xFFFA8C16)
 
     fun forType(type: MailType): Color = when (type) {
         MailType.Advertisement -> Advertisement
@@ -22,6 +23,7 @@ object MailTypeColors {
         MailType.Information -> Information
         MailType.Social -> Social
         MailType.Deleted -> Deleted
+        MailType.Uncategorized -> Uncategorized
     }
 }
 

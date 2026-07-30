@@ -9,7 +9,7 @@ enum class MailStatus {
 
 @Serializable
 enum class MailType {
-    Advertisement, Spam, InquiryOrOffer, Translation, Information, Social, Deleted
+    Advertisement, Spam, InquiryOrOffer, Translation, Information, Social, Deleted, Uncategorized
 }
 
 @Serializable

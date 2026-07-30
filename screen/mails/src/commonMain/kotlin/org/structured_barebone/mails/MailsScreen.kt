@@ -275,4 +275,5 @@ private fun mailTypeLabel(type: MailType): String = when (type) {
     MailType.Information -> stringResource(Res.string.mail_type_information)
     MailType.Social -> stringResource(Res.string.mail_type_social)
     MailType.Deleted -> stringResource(Res.string.mail_type_deleted)
+    MailType.Uncategorized -> stringResource(Res.string.mail_type_uncategorized)
 }
