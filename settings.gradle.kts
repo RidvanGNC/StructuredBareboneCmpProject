@@ -29,6 +29,7 @@ dependencyResolutionManagement {
 }
 
 include(":composeApp")
+include(":desktopApp")
 include(":shared")
 include(":navigation")
 include(":viewmodel")

@@ -5,9 +5,14 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 kotlin {
+    jvm {
+        compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
+    }
+
     androidTarget {
         compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
     }
@@ -18,7 +23,7 @@ kotlin {
             implementation(libs.compose.runtime)
             implementation(libs.compose.ui)
             implementation(libs.navigation.compose)
-            implementation(project(":shared"))
+            implementation(libs.kotlinx.serialization.json)
             implementation(project(":screen:template"))
         }
     }

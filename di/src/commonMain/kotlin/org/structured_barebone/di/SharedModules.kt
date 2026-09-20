@@ -3,21 +3,20 @@ package org.structured_barebone.di
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
-import org.structured_barebone.data.client.createHttpClient
 import org.structured_barebone.data.domain.TemplateRepository
 import org.structured_barebone.data.implementation.TemplateRepositoryImpl
 import org.structured_barebone.viewmodel.TemplateViewModel
 
 fun initKoin(
     appDeclaration: KoinAppDeclaration = {}
-) = startKoin {
-    appDeclaration()
-    modules(commonModule())
+) {
+    startKoin {
+        appDeclaration()
+        modules(commonModule())
+    }
 }
 
 fun commonModule() = module {
-    single { createHttpClient() }
-
-    single<TemplateRepository> { TemplateRepositoryImpl(get()) }
+    single<TemplateRepository> { TemplateRepositoryImpl() }
     factory { TemplateViewModel(get()) }
 }

@@ -13,9 +13,9 @@ class TemplateViewModel(
     private val templateRepository: TemplateRepository
 ) : ViewModel() {
     sealed interface UiState {
-        data object Loading : UiState()
-        data class Success(val value: String) : UiState()
-        data class Error(val message: String) : UiState()
+        data object Loading : UiState
+        data class Success(val value: String) : UiState
+        data class Error(val message: String) : UiState
     }
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Loading)

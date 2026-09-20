@@ -15,6 +15,12 @@ plugins {
 }
 
 kotlin {
+    jvm {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
+
     androidTarget {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
@@ -46,7 +52,6 @@ kotlin {
             implementation(libs.compose.components.resources)
             implementation(libs.compose.uiToolingPreview)
             //Project
-            implementation(project(path = ":shared"))
             implementation(project(path = ":navigation"))
             implementation(project(path = ":di"))
         }

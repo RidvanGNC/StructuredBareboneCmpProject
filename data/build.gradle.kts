@@ -7,6 +7,10 @@ plugins {
 }
 
 kotlin {
+    jvm {
+        compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
+    }
+
     androidTarget {
         compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
     }
@@ -27,6 +31,9 @@ kotlin {
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
+        }
+        jvmMain.dependencies {
+            implementation(libs.ktor.client.cio)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

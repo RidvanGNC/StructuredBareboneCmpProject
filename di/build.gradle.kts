@@ -6,6 +6,10 @@ plugins {
 }
 
 kotlin {
+    jvm {
+        compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
+    }
+
     androidTarget {
         compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
     }
@@ -14,6 +18,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(libs.koin.core)
+            implementation(libs.androidx.lifecycle.viewmodel)
             implementation(project(":data"))
             implementation(project(":viewmodel"))
         }

@@ -17,10 +17,10 @@ A Kotlin Multiplatform (KMP) template targeting Android and iOS, built with Comp
 
 ## Tech Stack
 
-- Kotlin Multiplatform (`2.3.20`)
+- Kotlin Multiplatform (`2.3.21`)
 - Compose Multiplatform (`1.10.3`)
-- Koin (`4.2.1`) for dependency injection
-- Ktor (`3.4.2`) for networking
+- Koin (`4.2.2`) for dependency injection
+- Ktor (`3.4.3`) for networking
 - Kotlinx Serialization + Coroutines
 
 ## Project Structure Analysis
@@ -28,14 +28,16 @@ A Kotlin Multiplatform (KMP) template targeting Android and iOS, built with Comp
 ```text
 .
 |-- composeApp/                 # Main app module (Android app + shared Compose UI entry)
+|-- desktopApp/                 # Desktop window and native installer packaging entry
 |-- iosApp/                     # Native iOS Swift wrapper project
-|-- shared/                     # Shared contracts/models/navigation primitives
+|-- shared/                     # Shared CMP business contracts/models (no UI/navigation)
 |-- data/                       # Data layer: API client, repository interfaces/implementations
 |-- viewmodel/                  # Presentation logic (ViewModel)
 |-- navigation/                 # NavGraph setup and route bindings
 |-- di/                         # Koin module definitions
 |-- screen/
 |   `-- template/               # Feature screen UI module (example/template)
+|-- webApp/                     # Independent React/TypeScript SPA (separate Node build)
 |-- gradle/                     # Wrapper + version catalog
 |-- build.gradle.kts            # Root build config
 |-- settings.gradle.kts         # Included modules
@@ -46,10 +48,10 @@ A Kotlin Multiplatform (KMP) template targeting Android and iOS, built with Comp
 
 - `:composeApp`
   - App entry point (`App.kt`), Android `MainActivity`, iOS `MainViewController` bridge.
-  - Depends on `:shared`, `:navigation`, `:di`.
+  - Depends on `:navigation`, `:di`.
 - `:navigation`
   - Defines `SetupNavGraph`, currently routes to `TemplateScreen`.
-  - Depends on `:shared`, `:screen:template`.
+  - Owns navigation route types and depends on `:screen:template`.
 - `:screen:template`
   - Feature UI (`TemplateScreen`) and ViewModel injection from Koin.
   - Depends on `:viewmodel`.
@@ -63,7 +65,11 @@ A Kotlin Multiplatform (KMP) template targeting Android and iOS, built with Comp
   - Wires `ApiClient`, `TemplateRepository`, and `TemplateViewModel` in Koin.
   - Depends on `:shared`, `:data`, `:viewmodel`.
 - `:shared`
-  - Common result wrapper (`Result`) and navigation route model (`Screen`).
+  - Common CMP business contracts/models such as the result wrapper (`Result`).
+
+- `webApp/`
+  - Independent React UI, browser HTTP client and web-only state. It shares API contracts with CMP,
+    never Compose screens, Koin, Ktor implementations or the Gradle module tree.
 
 ## Current App Flow
 
@@ -85,6 +91,27 @@ On Windows:
 gradlew.bat :composeApp:assembleDebug
 gradlew.bat :composeApp:installDebug
 ```
+
+### Desktop / Windows
+
+```bash
+gradlew.bat :desktopApp:run
+gradlew.bat :desktopApp:packageMsi
+```
+
+`desktopApp` only owns the JVM window and MSI packaging. Shared UI, state, DI, and data modules remain reusable; the JVM-specific Ktor client is implemented in `data/src/jvmMain`.
+
+### Web / React
+
+```bash
+cd webApp
+npm ci
+npm run dev
+```
+
+`webApp` is intentionally independent from Gradle and Compose. Its only integration point is the
+backend API contract; see [webApp/ARCHITECTURE.md](webApp/ARCHITECTURE.md) and
+[webApp/SECURITY.md](webApp/SECURITY.md).
 
 On macOS/Linux:
 
@@ -114,10 +141,10 @@ Android ve iOS hedefleyen, Compose Multiplatform ile oluşturulmuş modüler bir
 
 ## Teknoloji Yığını
 
-- Kotlin Multiplatform (`2.3.20`)
+- Kotlin Multiplatform (`2.3.21`)
 - Compose Multiplatform (`1.10.3`)
-- Bağımlılık enjeksiyonu için Koin (`4.2.1`)
-- Ağ işlemleri için Ktor (`3.4.2`)
+- Bağımlılık enjeksiyonu için Koin (`4.2.2`)
+- Ağ işlemleri için Ktor (`3.4.3`)
 - Kotlinx Serialization + Coroutines
 
 ## Proje Klasör Yapısı Analizi
@@ -125,14 +152,16 @@ Android ve iOS hedefleyen, Compose Multiplatform ile oluşturulmuş modüler bir
 ```text
 .
 |-- composeApp/                 # Ana uygulama modülü (Android uygulaması + paylaşılan Compose giriş noktası)
+|-- desktopApp/                 # Masaüstü penceresi ve native paketleme giriş noktası
 |-- iosApp/                     # Yerel iOS Swift sarmalayıcı projesi
-|-- shared/                     # Ortak sözleşmeler/modeller/navigasyon temel bileşenleri
+|-- shared/                     # Ortak CMP iş sözleşmeleri/modelleri (UI/navigasyon içermez)
 |-- data/                       # Veri katmanı: API istemcisi, repository arayüzleri/uygulamaları
 |-- viewmodel/                  # Sunum katmanı mantığı (ViewModel)
 |-- navigation/                 # NavGraph kurulumu ve rota eşlemeleri
 |-- di/                         # Koin modül tanımları
 |-- screen/
 |   `-- template/               # Özellik ekranı UI modülü (örnek/şablon)
+|-- webApp/                     # Bağımsız React/TypeScript SPA (ayrı Node derlemesi)
 |-- gradle/                     # Wrapper + version catalog
 |-- build.gradle.kts            # Kök build ayarı
 |-- settings.gradle.kts         # Dahil edilen modüller
@@ -143,10 +172,10 @@ Android ve iOS hedefleyen, Compose Multiplatform ile oluşturulmuş modüler bir
 
 - `:composeApp`
   - Uygulama giriş noktası (`App.kt`), Android `MainActivity`, iOS `MainViewController` köprüsü.
-  - `:shared`, `:navigation`, `:di` modüllerine bağlıdır.
+  - `:navigation`, `:di` modüllerine bağlıdır.
 - `:navigation`
   - `SetupNavGraph` tanımlar, şu an `TemplateScreen` rotasına gider.
-  - `:shared`, `:screen:template` modüllerine bağlıdır.
+  - Navigasyon rota türlerini sahiplenir ve `:screen:template` modülüne bağlıdır.
 - `:screen:template`
   - Özellik UI (`TemplateScreen`) ve Koin ile ViewModel enjeksiyonu içerir.
   - `:viewmodel` modülüne bağlıdır.
@@ -160,7 +189,11 @@ Android ve iOS hedefleyen, Compose Multiplatform ile oluşturulmuş modüler bir
   - Koin içinde `ApiClient`, `TemplateRepository` ve `TemplateViewModel` bağımlılıklarını bağlar.
   - `:shared`, `:data`, `:viewmodel` modüllerine bağlıdır.
 - `:shared`
-  - Ortak sonuç sarmalayıcısı (`Result`) ve navigasyon rota modeli (`Screen`) içerir.
+  - `Result` gibi ortak CMP iş sözleşmelerini/modellerini içerir.
+
+- `webApp/`
+  - Bağımsız React UI, tarayıcı HTTP istemcisi ve web'e ait state'i içerir. CMP ile yalnızca API
+    sözleşmesini paylaşır; Compose ekranlarını, Koin'i, Ktor uygulamasını veya Gradle modül ağacını paylaşmaz.
 
 ## Mevcut Uygulama Akışı
 
@@ -182,6 +215,27 @@ Windows:
 gradlew.bat :composeApp:assembleDebug
 gradlew.bat :composeApp:installDebug
 ```
+
+### Desktop / Windows
+
+```bash
+gradlew.bat :desktopApp:run
+gradlew.bat :desktopApp:packageMsi
+```
+
+`desktopApp` yalnızca JVM penceresi ve MSI paketlemesinden sorumludur. Ortak UI, state, DI ve data modülleri yeniden kullanılmaya devam eder; JVM'e özgü Ktor istemcisi `data/src/jvmMain` içinde uygulanır.
+
+### Web / React
+
+```bash
+cd webApp
+npm ci
+npm run dev
+```
+
+`webApp`, Gradle ve Compose'tan kasıtlı olarak bağımsızdır. Tek entegrasyon noktası backend API
+sözleşmesidir; ayrıntılar için [webApp/ARCHITECTURE.md](webApp/ARCHITECTURE.md) ve
+[webApp/SECURITY.md](webApp/SECURITY.md) dosyalarına bakın.
 
 macOS/Linux:
 
@@ -211,10 +265,10 @@ macOS/Linux:
 
 ## Технологии
 
-- Kotlin Multiplatform (`2.3.20`)
+- Kotlin Multiplatform (`2.3.21`)
 - Compose Multiplatform (`1.10.3`)
-- Koin (`4.2.1`) для dependency injection
-- Ktor (`3.4.2`) для сетевых запросов
+- Koin (`4.2.2`) для dependency injection
+- Ktor (`3.4.3`) для сетевых запросов
 - Kotlinx Serialization + Coroutines
 
 ## Анализ структуры проекта
@@ -308,10 +362,10 @@ macOS/Linux:
 
 ## 技术栈
 
-- Kotlin Multiplatform (`2.3.20`)
+- Kotlin Multiplatform (`2.3.21`)
 - Compose Multiplatform (`1.10.3`)
-- Koin (`4.2.1`)（依赖注入）
-- Ktor (`3.4.2`)（网络层）
+- Koin (`4.2.2`)（依赖注入）
+- Ktor (`3.4.3`)（网络层）
 - Kotlinx Serialization + Coroutines
 
 ## 项目结构分析
@@ -320,7 +374,7 @@ macOS/Linux:
 .
 |-- composeApp/                 # 主应用模块（Android 应用 + 共享 Compose 入口）
 |-- iosApp/                     # 原生 iOS Swift 包装工程
-|-- shared/                     # 共享契约/模型/导航基础组件
+|-- shared/                     # 共享 CMP 业务契约/模型（不含 UI/导航）
 |-- data/                       # 数据层：API 客户端、Repository 接口/实现
 |-- viewmodel/                  # 展示层逻辑（ViewModel）
 |-- navigation/                 # NavGraph 配置与路由绑定
@@ -354,7 +408,7 @@ macOS/Linux:
   - 在 Koin 中装配 `ApiClient`、`TemplateRepository` 和 `TemplateViewModel`。
   - 依赖 `:shared`、`:data`、`:viewmodel`。
 - `:shared`
-  - 通用结果封装（`Result`）和导航路由模型（`Screen`）。
+  - 通用 CMP 业务契约/模型，例如结果封装（`Result`）。
 
 ## 当前应用流程
 
