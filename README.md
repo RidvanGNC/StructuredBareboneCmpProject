@@ -38,6 +38,8 @@ A Kotlin Multiplatform (KMP) template targeting Android and iOS, built with Comp
 |-- screen/
 |   `-- template/               # Feature screen UI module (example/template)
 |-- webApp/                     # Independent React/TypeScript SPA (separate Node build)
+|-- packages/tenant/            # Optional KMP tenant + entitlement capability
+|-- contracts/                  # API contracts shared semantically by KMP and React
 |-- gradle/                     # Wrapper + version catalog
 |-- build.gradle.kts            # Root build config
 |-- settings.gradle.kts         # Included modules
@@ -162,6 +164,8 @@ Android ve iOS hedefleyen, Compose Multiplatform ile oluşturulmuş modüler bir
 |-- screen/
 |   `-- template/               # Özellik ekranı UI modülü (örnek/şablon)
 |-- webApp/                     # Bağımsız React/TypeScript SPA (ayrı Node derlemesi)
+|-- packages/tenant/            # Opsiyonel KMP tenant + entitlement yeteneği
+|-- contracts/                  # KMP ve React'in anlamsal olarak paylaştığı API sözleşmeleri
 |-- gradle/                     # Wrapper + version catalog
 |-- build.gradle.kts            # Kök build ayarı
 |-- settings.gradle.kts         # Dahil edilen modüller

@@ -12,9 +12,29 @@ export class ApiClient {
   public constructor(private readonly baseUrl: string) {}
 
   public async get<T>(path: string, signal?: AbortSignal): Promise<T> {
-    const response = await fetch(new URL(path, this.baseUrl), {
-      headers: { Accept: "application/json" },
+    return this.request<T>(path, { method: "GET", signal });
+  }
+
+  public async put<TResponse, TBody>(
+    path: string,
+    body: TBody,
+    signal?: AbortSignal,
+  ): Promise<TResponse> {
+    return this.request<TResponse>(path, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
       signal,
+    });
+  }
+
+  private async request<T>(path: string, init: RequestInit): Promise<T> {
+    const response = await fetch(new URL(path, this.baseUrl), {
+      ...init,
+      headers: {
+        Accept: "application/json",
+        ...init.headers,
+      },
     });
 
     if (!response.ok) {

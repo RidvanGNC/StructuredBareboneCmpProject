@@ -12,3 +12,8 @@ The initial web client deliberately uses the browser `fetch` API and local React
 server-state cache, form library, component suite, global store or CSS framework should be added
 only for a concrete requirement, after checking its maintainer, release status, transitive
 dependencies, license, and published advisories.
+
+The optional tenant package lives at `src/packages/tenant`. It is not imported by the base SPA; a
+tenant-aware host explicitly mounts `TenantProvider` around the applicable route tree. Its API
+contract is shared with CMP at `../contracts/tenant-api.openapi.yaml`, while its state and UI stay
+native to React.

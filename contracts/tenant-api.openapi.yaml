@@ -1,0 +1,122 @@
+openapi: 3.1.2
+info:
+  title: Tenant Context API
+  version: 1.0.0
+  description: >-
+    Client-facing tenant context and entitlement contract. The server is authoritative for
+    membership, authorization and data isolation; a client-provided tenant ID is only a selector.
+servers:
+  - url: https://api.example.invalid
+security:
+  - bearerAuth: []
+paths:
+  /v1/client/tenant-bootstrap:
+    get:
+      operationId: getTenantBootstrap
+      summary: Return the authenticated subject's verified tenant context and package grants.
+      responses:
+        '200':
+          description: Verified tenant context.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantBootstrap'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v1/client/tenant-context:
+    put:
+      operationId: selectActiveTenant
+      summary: Select a tenant context after server-side membership verification.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [tenantId]
+              properties:
+                tenantId:
+                  type: string
+                  minLength: 1
+      responses:
+        '200':
+          description: Refreshed verified tenant context.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantBootstrap'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Authenticated subject is not an active member of the selected tenant.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    Unauthorized:
+      description: Authentication is missing, expired or invalid.
+  schemas:
+    TenantBootstrap:
+      type: object
+      additionalProperties: false
+      required:
+        - tenantMode
+        - subjectId
+        - memberships
+        - packageEntitlements
+        - authorizationVersion
+      properties:
+        tenantMode:
+          type: string
+          enum: [SINGLE_TENANT, MULTI_TENANT]
+        subjectId:
+          type: string
+        activeTenant:
+          $ref: '#/components/schemas/TenantRef'
+        memberships:
+          type: array
+          items:
+            $ref: '#/components/schemas/TenantMembership'
+        packageEntitlements:
+          type: array
+          items:
+            $ref: '#/components/schemas/PackageEntitlement'
+        authorizationVersion:
+          type: string
+    TenantRef:
+      type: object
+      additionalProperties: false
+      required: [id, displayName]
+      properties:
+        id:
+          type: string
+        displayName:
+          type: string
+    TenantMembership:
+      type: object
+      additionalProperties: false
+      required: [tenant, roles]
+      properties:
+        tenant:
+          $ref: '#/components/schemas/TenantRef'
+        roles:
+          type: array
+          items:
+            type: string
+    PackageEntitlement:
+      type: object
+      additionalProperties: false
+      required: [packageId, packageVersion, enabledFeatures]
+      properties:
+        packageId:
+          type: string
+        packageVersion:
+          type: string
+        enabledFeatures:
+          type: array
+          items:
+            type: string
