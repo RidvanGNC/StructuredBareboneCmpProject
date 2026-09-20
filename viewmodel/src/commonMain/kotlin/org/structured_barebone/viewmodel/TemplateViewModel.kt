@@ -1,8 +1,7 @@
 package org.structured_barebone.viewmodel
 
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,29 +12,24 @@ import org.structured_barebone.shared.model.Result
 class TemplateViewModel(
     private val templateRepository: TemplateRepository
 ) : ViewModel() {
-    private val viewModelScope = CoroutineScope(Dispatchers.Main)
-
-    sealed class UiState {
-        data object Idle : UiState()
+    sealed interface UiState {
         data object Loading : UiState()
-        data class Success(val message: String) : UiState()
+        data class Success(val value: String) : UiState()
         data class Error(val message: String) : UiState()
     }
 
-    private val _uiState = MutableStateFlow<UiState>(UiState.Idle)
+    private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
-    private val _templateValue = MutableStateFlow<String>("")
-    val templateValue: StateFlow<String> = _templateValue.asStateFlow()
-
     init {
-        templateViewModelFunction()
+        refresh()
     }
 
-    fun templateViewModelFunction() {
+    fun refresh() {
         viewModelScope.launch {
+            _uiState.value = UiState.Loading
             when (val result = templateRepository.template()) {
-                is Result.Success -> _templateValue.value = result.data
+                is Result.Success -> _uiState.value = UiState.Success(result.data)
                 is Result.Error -> _uiState.value = UiState.Error(result.message)
             }
         }

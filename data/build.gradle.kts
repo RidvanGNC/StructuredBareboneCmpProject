@@ -3,76 +3,34 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.composeMultiplatform)
-    alias(libs.plugins.composeCompiler)
-    //Serialization
     alias(libs.plugins.kotlinx.serialization)
 }
 
 kotlin {
     androidTarget {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
-        }
+        compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
     }
-
-    listOf(
-        iosArm64(), iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "data"
-            isStatic = true
-        }
-    }
+    listOf(iosArm64(), iosSimulatorArm64())
 
     sourceSets {
         androidMain.dependencies {
-            implementation(libs.androidx.activity.compose)
-
-            //Koin
-            implementation(libs.koin.android)
-
-            //Ktor
-            implementation(libs.ktor.client.okhttp)
             implementation(libs.ktor.client.android)
         }
-
         commonMain.dependencies {
-            implementation(libs.compose.runtime)
-            implementation(libs.compose.foundation)
-            implementation(libs.compose.material3)
-            implementation(libs.compose.ui)
-            implementation(libs.compose.components.resources)
-            implementation(libs.compose.uiToolingPreview)
-            implementation(libs.androidx.lifecycle.viewmodelCompose)
-            implementation(libs.androidx.lifecycle.runtimeCompose)
-
-            //Serialization
             implementation(libs.kotlinx.serialization.json)
-
-            // Coroutines for Flows and ViewModelScope
-            implementation(libs.kotlinx.coroutines.core)
-
-            // Ktor
             implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.cio)
-            implementation(libs.ktor.client.json)
             implementation(libs.ktor.client.logging)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.client.serialization)
             implementation(libs.ktor.serialization.kotlinx.json)
-
-            // Koin
-            implementation(libs.koin.core)
-            implementation(libs.koin.compose)
-
-            //Project
             implementation(project(":shared"))
         }
-
         iosMain.dependencies {
-            //Ktor
             implementation(libs.ktor.client.darwin)
+        }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
         }
     }
 }
@@ -80,13 +38,9 @@ kotlin {
 android {
     namespace = "org.structured_barebone.data"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
-
-    defaultConfig {
-        minSdk = libs.versions.android.minSdk.get().toInt()
-    }
-
+    defaultConfig { minSdk = libs.versions.android.minSdk.get().toInt() }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }

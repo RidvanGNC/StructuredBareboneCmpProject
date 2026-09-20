@@ -8,8 +8,8 @@ import org.structured_barebone.data.model.ServerException
 import org.structured_barebone.shared.model.Result
 
 abstract class BaseRepository {
-    protected inline fun <reified T> safeRequest(
-        block: () -> ApiResponse<T>
+    protected suspend inline fun <reified T> safeRequest(
+        crossinline block: suspend () -> ApiResponse<T>
     ): Result<T> {
         return try {
             val response = block()

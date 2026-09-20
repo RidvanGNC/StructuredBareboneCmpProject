@@ -13,7 +13,7 @@
 
 ## English
 
-A Kotlin Multiplatform (KMP) template targeting Android and iOS, built with Compose Multiplatform and a modular structure.
+A Kotlin Multiplatform (KMP) template targeting Android and iOS, built with Compose Multiplatform and a modular structure. See [VERSIONING.md](VERSIONING.md) for deterministic local and CI version configuration.
 
 ## Tech Stack
 
@@ -73,7 +73,7 @@ A Kotlin Multiplatform (KMP) template targeting Android and iOS, built with Comp
 
 ### Prerequisites
 
-- JDK 11+
+- JDK 17+
 - Android Studio (for Android)
 - Xcode (for iOS)
 
@@ -101,7 +101,7 @@ On macOS/Linux:
 
 ## Notes
 
-- `ApiClient.BASE_URL` is currently a placeholder (`https://www.google.com`).
+- `ApiClient.BASE_URL` is intentionally non-routable (`https://example.invalid`); a consuming app must supply its own API configuration.
 - The sample `TemplateRepositoryImpl` currently returns mock/template data and is ready to be replaced with real API calls.
 
 ---
@@ -110,7 +110,7 @@ On macOS/Linux:
 
 ## Türkçe
 
-Android ve iOS hedefleyen, Compose Multiplatform ile oluşturulmuş modüler bir Kotlin Multiplatform (KMP) şablonu.
+Android ve iOS hedefleyen, Compose Multiplatform ile oluşturulmuş modüler bir Kotlin Multiplatform (KMP) şablonu. Yerel ve CI sürüm ayarları için [VERSIONING.md](VERSIONING.md) dosyasına bakın.
 
 ## Teknoloji Yığını
 
@@ -170,7 +170,7 @@ Android ve iOS hedefleyen, Compose Multiplatform ile oluşturulmuş modüler bir
 
 ### Gereksinimler
 
-- JDK 11+
+- JDK 17+
 - Android Studio (Android için)
 - Xcode (iOS için)
 
@@ -198,7 +198,7 @@ macOS/Linux:
 
 ## Notlar
 
-- `ApiClient.BASE_URL` şu anda bir yer tutucudur (`https://www.google.com`).
+- `ApiClient.BASE_URL` kasıtlı olarak yönlendirilemeyen bir yer tutucudur (`https://example.invalid`); kullanan uygulama kendi API yapılandırmasını sağlamalıdır.
 - Örnek `TemplateRepositoryImpl` şu anda mock/şablon veri döndürür ve gerçek API çağrılarıyla değiştirilmeye hazırdır.
 
 ---
@@ -267,7 +267,7 @@ macOS/Linux:
 
 ### Требования
 
-- JDK 11+
+- JDK 17+
 - Android Studio (для Android)
 - Xcode (для iOS)
 
@@ -295,7 +295,7 @@ macOS/Linux:
 
 ## Примечания
 
-- `ApiClient.BASE_URL` сейчас содержит placeholder (`https://www.google.com`).
+- `ApiClient.BASE_URL` намеренно использует недоступный адрес-заполнитель (`https://example.invalid`); использующее приложение должно предоставить собственную конфигурацию API.
 - Пример `TemplateRepositoryImpl` пока возвращает mock/template данные и готов к замене на реальные API вызовы.
 
 ---
@@ -364,7 +364,7 @@ macOS/Linux:
 
 ### 前置要求
 
-- JDK 11+
+- JDK 17+
 - Android Studio（用于 Android）
 - Xcode（用于 iOS）
 
@@ -392,5 +392,5 @@ macOS/Linux:
 
 ## 备注
 
-- `ApiClient.BASE_URL` 当前是占位地址（`https://www.google.com`）。
+- `ApiClient.BASE_URL` 有意使用不可路由的占位地址（`https://example.invalid`）；使用此模板的应用必须提供自己的 API 配置。
 - 示例 `TemplateRepositoryImpl` 目前返回 mock/template 数据，后续可替换为真实 API 调用。

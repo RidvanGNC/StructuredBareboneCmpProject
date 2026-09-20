@@ -1,5 +1,12 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
+val appVersionName = providers.environmentVariable("APP_VERSION_NAME")
+    .orElse(providers.gradleProperty("app.version.name"))
+val appVersionCode = providers.environmentVariable("APP_VERSION_CODE")
+    .orElse(providers.environmentVariable("GITHUB_RUN_NUMBER"))
+    .orElse(providers.gradleProperty("app.version.code"))
+    .map(String::toInt)
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
@@ -10,7 +17,7 @@ plugins {
 kotlin {
     androidTarget {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
+            jvmTarget.set(JvmTarget.JVM_17)
         }
     }
 
@@ -38,14 +45,6 @@ kotlin {
             implementation(libs.compose.ui)
             implementation(libs.compose.components.resources)
             implementation(libs.compose.uiToolingPreview)
-            implementation(libs.androidx.lifecycle.viewmodelCompose)
-            implementation(libs.androidx.lifecycle.runtimeCompose)
-
-            // Koin
-            implementation(libs.koin.core)
-            implementation(libs.koin.compose)
-            implementation(libs.koin.compose.viewmodel)
-
             //Project
             implementation(project(path = ":shared"))
             implementation(project(path = ":navigation"))
@@ -65,8 +64,8 @@ android {
         applicationId = "org.structured_barebone.cmp_project"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1 //Change it every github push eg. 1, 2, 3 etc.
-        versionName = "0.1" //Change it every github push eg. 0.1, 1.2, 2.3 etc.
+        versionCode = appVersionCode.get()
+        versionName = appVersionName.get()
     }
     packaging {
         resources {
@@ -79,8 +78,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 

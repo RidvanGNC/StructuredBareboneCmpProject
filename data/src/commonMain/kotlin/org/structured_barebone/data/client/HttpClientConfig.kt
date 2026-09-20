@@ -5,9 +5,6 @@ import io.ktor.client.HttpClientConfig
 import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logger
-import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
@@ -15,7 +12,7 @@ import kotlinx.serialization.json.Json
 import org.structured_barebone.data.model.ProblemDetails
 import org.structured_barebone.data.model.ServerException
 
-fun HttpClientConfig<*>.installCommonPlugins() {
+fun HttpClientConfig<*>.installCommonPlugins(enableNetworkLogging: Boolean = false) {
     val json = Json {
         ignoreUnknownKeys = true
         isLenient = true
@@ -33,13 +30,15 @@ fun HttpClientConfig<*>.installCommonPlugins() {
         requestTimeoutMillis = 60_000
     }
 
-    install(Logging) {
-        logger = object : Logger {
-            override fun log(message: String) {
-                println("KTOR: $message")
+    if (enableNetworkLogging) {
+        install(Logging) {
+            logger = object : Logger {
+                override fun log(message: String) {
+                    println("KTOR: $message")
+                }
             }
+            level = LogLevel.HEADERS
         }
-        level = LogLevel.BODY
     }
 
     HttpResponseValidator {

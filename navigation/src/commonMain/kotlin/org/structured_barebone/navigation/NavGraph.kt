@@ -13,12 +13,6 @@ fun SetupNavGraph(startDestination: Screen = Screen.Template) {
     NavHost(
         navController = navController, startDestination = startDestination
     ) {
-        composable<Screen.Template> {
-            TemplateScreen(
-                navigateBack = {
-                    navController.popBackStack()
-                }
-            )
-        }
+        composable<Screen.Template> { TemplateScreen() }
     }
 }
