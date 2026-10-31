@@ -48,6 +48,7 @@ android {
 dependencies {
     implementation(project(":composeApp"))
     implementation(project(":di"))
+    implementation(project(":data"))
     implementation(libs.androidx.activity.compose)
     implementation(libs.koin.android)
     implementation(libs.compose.uiToolingPreview)

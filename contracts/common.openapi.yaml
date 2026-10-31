@@ -1,0 +1,140 @@
+openapi: 3.1.2
+info:
+  title: Common API Contract
+  version: 1.0.0
+  description: >-
+    Definitions shared by every API of a product: the error document, the client version gate, the
+    health probe and the session refresh. Product contracts reference these components instead of
+    redefining them. The server is authoritative for authentication and authorization.
+servers:
+  - url: https://api.example.invalid
+paths:
+  /health:
+    get:
+      operationId: getHealth
+      summary: Reachability probe used by clients to tell "server unreachable" from "request failed".
+      description: >-
+        Needs no authentication and no client version. Any answer other than a gateway error
+        (502, 503, 504) counts as reachable, so an implementation may return 200 with an empty body.
+      security: []
+      responses:
+        '200':
+          description: The server is reachable.
+  /v1/auth/refresh:
+    post:
+      operationId: refreshSession
+      summary: Exchange a refresh token for a new access and refresh token pair.
+      description: >-
+        Refresh tokens are single use: the response carries a new pair and the old refresh token stops
+        working. A rejected refresh token ends the session on the client. Clients send this request
+        without an access token and never repeat it automatically after a failure.
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/ClientVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshRequest'
+      responses:
+        '200':
+          description: New token pair.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenPair'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '426':
+          $ref: '#/components/responses/UpgradeRequired'
+components:
+  parameters:
+    ClientVersion:
+      name: X-Client-Version
+      in: header
+      required: false
+      description: >-
+        Numeric application version of the calling client (`major.minor[.patch[.build]]`). Development
+        builds send 9999.0.0. The server answers 426 when the value is below its minimum supported
+        version. A missing header is treated like an unsupported version when a minimum is configured.
+      schema:
+        type: string
+        pattern: '^\d+(\.\d+){1,3}$'
+  responses:
+    Unauthorized:
+      description: Authentication is missing, expired or invalid.
+      headers:
+        WWW-Authenticate:
+          description: Must contain the Bearer scheme so clients start the session refresh.
+          schema:
+            type: string
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    Forbidden:
+      description: The authenticated subject may not perform this operation.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    UpgradeRequired:
+      description: This client version is no longer supported; the user must update the application.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    Problem:
+      description: Any other failure, described by a problem document.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+  schemas:
+    Problem:
+      type: object
+      description: >-
+        Error document (RFC 9457). Clients branch on `status` and `code` and show their own localized
+        text; `detail` is for logs and support and is never shown to users as is.
+      properties:
+        type:
+          type: string
+          format: uri-reference
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+        instance:
+          type: string
+        code:
+          type: string
+          description: Stable machine-readable code, for example `order.quantity_too_low`. Never reused for another meaning.
+        traceId:
+          type: string
+          description: Correlation id that identifies the request in server logs.
+        errors:
+          type: object
+          description: Validation messages by field name.
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    RefreshRequest:
+      type: object
+      additionalProperties: false
+      required: [refreshToken]
+      properties:
+        refreshToken:
+          type: string
+    TokenPair:
+      type: object
+      additionalProperties: false
+      required: [accessToken, refreshToken]
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string

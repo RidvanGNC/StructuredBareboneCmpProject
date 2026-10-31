@@ -24,6 +24,7 @@ kotlin {
             implementation(libs.kotlinx.coroutines.swing)
             implementation(project(":composeApp"))
             implementation(project(":di"))
+            implementation(project(":data"))
         }
     }
 }
@@ -31,6 +32,8 @@ kotlin {
 compose.desktop {
     application {
         mainClass = "org.structured_barebone.desktop.MainKt"
+        // The server reads the app version from the X-Client-Version header (see AppInfo).
+        jvmArgs += "-Dapp.version=${desktopVersionName.get()}"
 
         nativeDistributions {
             targetFormats(TargetFormat.Msi)

@@ -1,10 +1,37 @@
+/** Error document of every failed API response (RFC 9457); see contracts/common.openapi.yaml. */
+export interface Problem {
+  type?: string;
+  title?: string;
+  status?: number;
+  detail?: string;
+  instance?: string;
+  /** Stable machine code; map it to localized text, never show `detail` to users. */
+  code?: string;
+  traceId?: string;
+  errors?: Record<string, string[]>;
+}
+
 export class ApiError extends Error {
   public constructor(
     public readonly status: number,
-    message: string,
+    public readonly problem?: Problem,
   ) {
-    super(message);
+    super(`Request failed with HTTP ${status}${problem?.code ? ` (${problem.code})` : ""}.`);
     this.name = "ApiError";
+  }
+
+  /** True when the server no longer supports this client version (HTTP 426). */
+  public get updateRequired(): boolean {
+    return this.status === 426;
+  }
+}
+
+async function readProblem(response: Response): Promise<Problem | undefined> {
+  try {
+    const parsed: unknown = await response.json();
+    return typeof parsed === "object" && parsed !== null ? (parsed as Problem) : undefined;
+  } catch {
+    return undefined;
   }
 }
 
@@ -32,13 +59,13 @@ export class ApiClient {
     const response = await fetch(new URL(path, this.baseUrl), {
       ...init,
       headers: {
-        Accept: "application/json",
+        Accept: "application/json, application/problem+json",
         ...init.headers,
       },
     });
 
     if (!response.ok) {
-      throw new ApiError(response.status, `Request failed with HTTP ${response.status}.`);
+      throw new ApiError(response.status, await readProblem(response));
     }
 
     return (await response.json()) as T;

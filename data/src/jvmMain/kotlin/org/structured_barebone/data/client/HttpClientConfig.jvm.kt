@@ -3,6 +3,6 @@ package org.structured_barebone.data.client
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 
-actual fun createHttpClient(): HttpClient = HttpClient(CIO) {
-    installCommonPlugins()
+actual fun createHttpClient(options: HttpClientOptions): HttpClient = HttpClient(CIO) {
+    installCommonPlugins(options) { HttpClient(CIO) { installBasePlugins(options) } }
 }

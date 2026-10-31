@@ -14,6 +14,8 @@ paths:
     get:
       operationId: getTenantBootstrap
       summary: Return the authenticated subject's verified tenant context and package grants.
+      parameters:
+        - $ref: 'common.openapi.yaml#/components/parameters/ClientVersion'
       responses:
         '200':
           description: Verified tenant context.
@@ -23,10 +25,14 @@ paths:
                 $ref: '#/components/schemas/TenantBootstrap'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '426':
+          $ref: 'common.openapi.yaml#/components/responses/UpgradeRequired'
   /v1/client/tenant-context:
     put:
       operationId: selectActiveTenant
       summary: Select a tenant context after server-side membership verification.
+      parameters:
+        - $ref: 'common.openapi.yaml#/components/parameters/ClientVersion'
       requestBody:
         required: true
         content:
@@ -49,7 +55,9 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
-          description: Authenticated subject is not an active member of the selected tenant.
+          $ref: 'common.openapi.yaml#/components/responses/Forbidden'
+        '426':
+          $ref: 'common.openapi.yaml#/components/responses/UpgradeRequired'
 components:
   securitySchemes:
     bearerAuth:
@@ -58,7 +66,7 @@ components:
       bearerFormat: JWT
   responses:
     Unauthorized:
-      description: Authentication is missing, expired or invalid.
+      $ref: 'common.openapi.yaml#/components/responses/Unauthorized'
   schemas:
     TenantBootstrap:
       type: object

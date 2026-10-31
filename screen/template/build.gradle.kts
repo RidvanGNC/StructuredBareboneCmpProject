@@ -28,6 +28,7 @@ kotlin {
             implementation(libs.compose.ui)
             implementation(libs.koin.compose.viewmodel)
             implementation(project(":viewmodel"))
+            implementation(project(":shared"))
         }
     }
 }

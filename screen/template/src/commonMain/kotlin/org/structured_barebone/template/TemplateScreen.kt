@@ -37,7 +37,7 @@ fun TemplateScreen() {
     Scaffold(topBar = { TopAppBar(title = { Text("Operations Workspace") }) }) { innerPadding ->
         when (val current = state) {
             TemplateViewModel.UiState.Loading -> LoadingWorkspace(Modifier.padding(innerPadding))
-            is TemplateViewModel.UiState.Error -> ErrorWorkspace(current.message, Modifier.padding(innerPadding))
+            is TemplateViewModel.UiState.Error -> ErrorWorkspace(current.error.kind.name, Modifier.padding(innerPadding))
             is TemplateViewModel.UiState.Success -> WorkspaceDashboard(
                 status = current.value,
                 modifier = Modifier.padding(innerPadding),
