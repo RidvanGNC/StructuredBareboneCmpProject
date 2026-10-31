@@ -20,6 +20,28 @@ responses are unwrapped. Below the presentation layer an error is data only (`Ap
 status, trace id, field errors) and never carries user-visible text, so changing the language does not
 leave stale text in state. The UI maps kinds and codes to localized text. See `contracts/README.md`.
 
+## Session and secrets
+
+Tokens are stored only in the platform `SecureKeyStore`; `Settings` (plain text) holds just the
+"a session exists" flag. An entry that cannot be decrypted ends the session instead of failing, and
+the user signs in again. Sign-out goes through `SessionCleaner`: product steps first (time-limited,
+best effort), tokens last and always. A refresh token the server rejects ends the session the same way,
+and the app shell observes `TokenProvider.isLoggedIn`. Details and platform status: `data/README.md`.
+
+## App shell and features
+
+The shell (`composeApp/App.kt`) decides what the user sees: the update screen when the server answered 426,
+a loading state while a stored session is checked, the sign-in screen while signed out, otherwise the
+navigation. Sign-in is email and password (`contracts/common.openapi.yaml`); without a configured API root
+(`AppConfig`) there is no sign-in and the screens show fixture data. A session that ends by itself returns the
+user to sign-in with a message; a sign-out chosen by the user does not show one.
+
+Features are compiled-in `FeatureModule`s in the `:feature` registry. Which of them the user sees is a
+`FeatureVisibilityPolicy`: everything by default, the server's entitlements when `:packages:tenant` is added.
+Visibility only shapes the experience; the backend authorizes every operation. The base has no permission
+keys. Theme and layout: sizes, colors and type styles come from `:theme` tokens, and the layout switches
+between a bottom bar (phones) and a side rail (wide windows).
+
 ## Localization
 
 User-visible text is never written in code. On KMP it lives in Compose Resources

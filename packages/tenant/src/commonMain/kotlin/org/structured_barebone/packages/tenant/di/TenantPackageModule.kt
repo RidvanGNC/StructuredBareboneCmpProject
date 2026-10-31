@@ -3,6 +3,8 @@ package org.structured_barebone.packages.tenant.di
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import org.structured_barebone.data.client.createHttpClient
+import org.structured_barebone.feature.FeatureVisibilityPolicy
+import org.structured_barebone.packages.tenant.catalog.EntitlementVisibilityPolicy
 import org.structured_barebone.packages.tenant.data.KtorTenantRepository
 import org.structured_barebone.packages.tenant.data.TenantRepository
 import org.structured_barebone.packages.tenant.runtime.TenantSessionStore
@@ -13,4 +15,6 @@ data class TenantPackageConfig(val apiBaseUrl: String)
 fun tenantPackageModule(config: TenantPackageConfig): Module = module {
     single<TenantRepository> { KtorTenantRepository(createHttpClient(), config.apiBaseUrl) }
     single { TenantSessionStore(get()) }
+    // Replaces the base policy that shows every compiled feature.
+    single<FeatureVisibilityPolicy> { EntitlementVisibilityPolicy(get<TenantSessionStore>().state) }
 }

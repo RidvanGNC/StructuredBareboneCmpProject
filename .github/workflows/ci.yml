@@ -20,9 +20,9 @@ jobs:
           java-version: "17"
       - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6
 
-      # JVM tests include the structure rule tests in :composeApp.
+      # JVM tests include the structure and style rule tests and the app flow UI tests in :composeApp.
       - name: Tests
-        run: ./gradlew :data:jvmTest :packages:tenant:jvmTest :composeApp:jvmTest
+        run: ./gradlew :data:jvmTest :viewmodel:jvmTest :feature:jvmTest :theme:jvmTest :navigation:jvmTest :packages:tenant:jvmTest :composeApp:jvmTest
 
       - name: Android lint
         run: ./gradlew :androidApp:lintDebug

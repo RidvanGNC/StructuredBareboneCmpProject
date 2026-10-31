@@ -9,3 +9,12 @@ and configure Android inside `kotlin { android { ... } }`. A module that ships A
 (`src/androidMain/res`) must set `androidResources { enable = true }`.
 
 Build: `gradlew.bat :androidApp:assembleDebug`.
+
+## Configuration
+
+- Backend: `-PapiBaseUrl=https://...` or the `APP_API_BASE_URL` environment variable sets the API root
+  (`BuildConfig.API_BASE_URL`). Without it the app runs on fixture data and shows no sign-in.
+- Branding (optional): see "Branding" in `AGENTS.md`. `productName` becomes the launcher label and
+  `applicationId` the application id.
+- The encrypted token file (`secure_store`) is excluded from backups (`res/xml`), because its key never
+  leaves the device.

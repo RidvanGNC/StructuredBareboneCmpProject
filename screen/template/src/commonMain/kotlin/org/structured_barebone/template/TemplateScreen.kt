@@ -5,32 +5,34 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import org.jetbrains.compose.resources.StringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-import org.structured_barebone.shared.model.AppError
 import org.structured_barebone.shared.model.AppLanguage
 import org.structured_barebone.template.resources.*
+import org.structured_barebone.theme.Spacing
+import org.structured_barebone.ui.LoadingIndicator
+import org.structured_barebone.ui.RowDivider
+import org.structured_barebone.ui.ScreenBody
+import org.structured_barebone.ui.ScreenHeader
+import org.structured_barebone.ui.SectionCard
+import org.structured_barebone.ui.SectionHeader
+import org.structured_barebone.ui.ListRow
+import org.structured_barebone.ui.StateMessage
+import org.structured_barebone.ui.labelResource
+import org.structured_barebone.ui.messageResource
+import org.structured_barebone.ui.resources.Res as UiRes
+import org.structured_barebone.ui.resources.language_title
+import org.structured_barebone.ui.resources.message_reference
 import org.structured_barebone.viewmodel.LanguageViewModel
 import org.structured_barebone.viewmodel.TemplateViewModel
 
@@ -44,56 +46,35 @@ private object DemoFixture {
 }
 
 /** A visual SaaS fixture, not an active tenant integration. */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TemplateScreen() {
     val viewModel: TemplateViewModel = koinViewModel()
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    Scaffold(topBar = { TopAppBar(title = { Text(stringResource(Res.string.app_title)) }) }) { innerPadding ->
+    Column {
+        ScreenHeader(stringResource(Res.string.app_title))
         when (val current = state) {
-            TemplateViewModel.UiState.Loading -> LoadingWorkspace(Modifier.padding(innerPadding))
-            is TemplateViewModel.UiState.Error -> ErrorWorkspace(current.error, Modifier.padding(innerPadding))
-            is TemplateViewModel.UiState.Success -> WorkspaceDashboard(
-                status = current.value,
-                modifier = Modifier.padding(innerPadding),
+            TemplateViewModel.UiState.Loading -> LoadingIndicator()
+            is TemplateViewModel.UiState.Error -> StateMessage(
+                title = stringResource(Res.string.workspace_unavailable),
+                message = listOfNotNull(
+                    stringResource(current.error.kind.messageResource()),
+                    current.error.traceId?.let { stringResource(UiRes.string.message_reference, it) },
+                ).joinToString("\n"),
+                onAction = viewModel::refresh,
             )
+            is TemplateViewModel.UiState.Success -> WorkspaceDashboard(status = current.value)
         }
     }
 }
 
 @Composable
-private fun LoadingWorkspace(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier.fillMaxWidth().padding(24.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        CircularProgressIndicator(modifier = Modifier.size(28.dp))
-        Text(stringResource(Res.string.loading_workspace))
-    }
-}
-
-@Composable
-private fun ErrorWorkspace(error: AppError, modifier: Modifier = Modifier) {
-    Column(modifier = modifier.fillMaxWidth().padding(24.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(stringResource(Res.string.workspace_unavailable), style = MaterialTheme.typography.titleMedium)
-        Text(stringResource(error.kind.messageResource()), color = MaterialTheme.colorScheme.error)
-        error.traceId?.let { traceId ->
-            Text(stringResource(Res.string.error_reference, traceId), style = MaterialTheme.typography.bodySmall)
-        }
-    }
-}
-
-@Composable
-private fun WorkspaceDashboard(status: String, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(20.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(DemoFixture.WORKSPACE_NAME, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+private fun WorkspaceDashboard(status: String) {
+    ScreenBody {
+        Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+            Text(DemoFixture.WORKSPACE_NAME, style = MaterialTheme.typography.headlineSmall)
             Text(stringResource(Res.string.workspace_description))
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                 AssistChip(onClick = {}, label = { Text(stringResource(Res.string.chip_multi_tenant_demo)) })
                 AssistChip(
                     onClick = {},
@@ -105,31 +86,37 @@ private fun WorkspaceDashboard(status: String, modifier: Modifier = Modifier) {
         LanguageSelector()
 
         Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)) {
-            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Column(modifier = Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
                 Text(stringResource(Res.string.card_template_state), style = MaterialTheme.typography.labelLarge)
                 Text(status, style = MaterialTheme.typography.titleMedium)
                 Text(stringResource(Res.string.card_fixture_notice))
             }
         }
 
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
             MetricCard(stringResource(Res.string.metric_open_work), DemoFixture.OPEN_WORK, Modifier.weight(1f))
             MetricCard(stringResource(Res.string.metric_team_members), DemoFixture.TEAM_MEMBERS, Modifier.weight(1f))
             MetricCard(stringResource(Res.string.metric_usage), DemoFixture.USAGE, Modifier.weight(1f))
         }
 
-        SectionCard(stringResource(Res.string.section_enabled_packages)) {
-            DetailRow(stringResource(Res.string.package_reporting), stringResource(Res.string.package_reporting_detail))
-            HorizontalDivider()
-            DetailRow(stringResource(Res.string.package_team), stringResource(Res.string.package_team_detail))
+        Column {
+            SectionHeader(stringResource(Res.string.section_enabled_packages))
+            SectionCard {
+                ListRow(stringResource(Res.string.package_reporting), subtitle = stringResource(Res.string.package_reporting_detail))
+                RowDivider()
+                ListRow(stringResource(Res.string.package_team), subtitle = stringResource(Res.string.package_team_detail))
+            }
         }
 
-        SectionCard(stringResource(Res.string.section_activity)) {
-            DetailRow(stringResource(Res.string.activity_report_added), stringResource(Res.string.activity_report_added_time))
-            HorizontalDivider()
-            DetailRow(stringResource(Res.string.activity_review_ready), stringResource(Res.string.activity_review_ready_time))
-            HorizontalDivider()
-            DetailRow(stringResource(Res.string.activity_contract_updated), stringResource(Res.string.activity_contract_updated_time))
+        Column {
+            SectionHeader(stringResource(Res.string.section_activity))
+            SectionCard {
+                ListRow(stringResource(Res.string.activity_report_added), subtitle = stringResource(Res.string.activity_report_added_time))
+                RowDivider()
+                ListRow(stringResource(Res.string.activity_review_ready), subtitle = stringResource(Res.string.activity_review_ready_time))
+                RowDivider()
+                ListRow(stringResource(Res.string.activity_contract_updated), subtitle = stringResource(Res.string.activity_contract_updated_time))
+            }
         }
 
         Text(
@@ -144,11 +131,11 @@ private fun WorkspaceDashboard(status: String, modifier: Modifier = Modifier) {
 @Composable
 private fun LanguageSelector() {
     val viewModel: LanguageViewModel = koinViewModel()
-    val selected by viewModel.language.collectAsState()
+    val selected by viewModel.language.collectAsStateWithLifecycle()
 
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(stringResource(Res.string.language_title), style = MaterialTheme.typography.labelLarge)
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+        Text(stringResource(UiRes.string.language_title), style = MaterialTheme.typography.labelLarge)
+        Row(horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
             AppLanguage.entries.forEach { language ->
                 FilterChip(
                     selected = language == selected,
@@ -160,36 +147,12 @@ private fun LanguageSelector() {
     }
 }
 
-private fun AppLanguage.labelResource(): StringResource = when (this) {
-    AppLanguage.SYSTEM -> Res.string.language_system
-    AppLanguage.ENGLISH -> Res.string.language_english
-    AppLanguage.TURKISH -> Res.string.language_turkish
-}
-
 @Composable
 private fun MetricCard(label: String, value: String, modifier: Modifier = Modifier) {
-    Card(modifier = modifier) {
-        Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(value, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+    Card(modifier = modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(Spacing.md), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+            Text(value, style = MaterialTheme.typography.titleLarge)
             Text(label, style = MaterialTheme.typography.bodySmall)
         }
-    }
-}
-
-@Composable
-private fun SectionCard(title: String, content: @Composable () -> Unit) {
-    Card(modifier = Modifier.fillMaxWidth()) {
-        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
-            content()
-        }
-    }
-}
-
-@Composable
-private fun DetailRow(primary: String, secondary: String) {
-    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-        Text(primary, fontWeight = FontWeight.Medium)
-        Text(secondary, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }

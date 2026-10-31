@@ -4,7 +4,7 @@ OpenAPI definitions in this folder are the source of truth for communication bet
 KMP clients, and React clients. They do not make client authorization authoritative.
 
 - `common.openapi.yaml`: the error document, the client version gate, the health probe and the
-  session refresh. Every product contract references it instead of redefining these.
+  session endpoints. Every product contract references it instead of redefining these.
 - `tenant-api.openapi.yaml`: optional tenant context contract; read it with
   `docs/tenant-architecture.md`.
 
@@ -32,6 +32,9 @@ automatically; an operation that must be repeatable needs an idempotency key def
 Access tokens are short lived. A `401` with `WWW-Authenticate: Bearer` makes the client call
 `POST /v1/auth/refresh` once (refresh tokens are single use) and repeat the request. A rejected refresh
 token ends the session. The access token is sent without a prior challenge only to the API host.
+
+Sign-in is email and password (`POST /v1/auth/login`); `GET /v1/auth/me` returns the user and doubles as
+the start-up session check, and `POST /v1/auth/logout` revokes the refresh token on sign-out.
 
 Before changing a contract, decide the API versioning, authentication mechanism, pagination and
 backwards-compatibility policy. Keep external `$ref` resources reviewed and trusted. Generate Kotlin

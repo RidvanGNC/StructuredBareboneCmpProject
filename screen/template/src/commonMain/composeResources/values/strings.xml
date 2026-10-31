@@ -2,7 +2,6 @@
     <string name="app_title">Operations Workspace</string>
     <string name="loading_workspace">Preparing the demo workspace…</string>
     <string name="workspace_unavailable">The demo workspace is unavailable</string>
-    <string name="error_reference">Reference: %1$s</string>
     <string name="workspace_description">A SaaS workspace fixture for the mobile and desktop template.</string>
     <string name="chip_multi_tenant_demo">Multi-tenant demo</string>
     <string name="chip_packages_enabled">%1$d packages enabled</string>
@@ -24,19 +23,4 @@
     <string name="activity_contract_updated">API contract updated</string>
     <string name="activity_contract_updated_time">Yesterday</string>
     <string name="footer_tenant_hint">To make this tenant-aware, opt into :packages:tenant and connect it to the documented backend contract.</string>
-    <string name="language_title">Language</string>
-    <string name="language_system">System default</string>
-    <string name="language_english">English</string>
-    <string name="language_turkish">Türkçe</string>
-    <string name="error_network_unreachable">Cannot reach the server. Check your connection.</string>
-    <string name="error_timeout">The server took too long to respond. Please try again.</string>
-    <string name="error_unauthorized">Your session has expired. Please sign in again.</string>
-    <string name="error_forbidden">You are not allowed to do this.</string>
-    <string name="error_not_found">We could not find what you asked for.</string>
-    <string name="error_conflict">This could not be completed because something changed. Refresh and try again.</string>
-    <string name="error_validation">Some of the information is not valid. Check it and try again.</string>
-    <string name="error_rate_limited">Too many requests. Wait a moment and try again.</string>
-    <string name="error_update_required">This version is no longer supported. Please update the app.</string>
-    <string name="error_server">The server is having trouble. Please try again later.</string>
-    <string name="error_unexpected">Something went wrong. Please try again.</string>
 </resources>

@@ -28,9 +28,12 @@ kotlin {
             implementation(libs.compose.material3)
             implementation(libs.compose.ui)
             implementation(libs.compose.components.resources)
+            implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.koin.compose.viewmodel)
             implementation(project(":viewmodel"))
             implementation(project(":shared"))
+            implementation(project(":theme"))
+            implementation(project(":ui"))
         }
     }
 }

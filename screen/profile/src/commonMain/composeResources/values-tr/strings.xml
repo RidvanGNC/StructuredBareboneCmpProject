@@ -1,0 +1,11 @@
+<resources>
+    <string name="profile_title">Profil</string>
+    <string name="profile_no_account">Bir sunucu yapılandırılmadığı için gösterilecek hesap yok.</string>
+    <string name="profile_section_appearance">Görünüm</string>
+    <string name="profile_section_language">Dil</string>
+    <string name="profile_section_account">Hesap</string>
+    <string name="profile_sign_out">Çıkış yap</string>
+    <string name="profile_sign_out_title">Çıkış yapılsın mı?</string>
+    <string name="profile_sign_out_message">Uygulamayı kullanmak için yeniden giriş yapmanız gerekecek.</string>
+    <string name="profile_unnamed">Hesap</string>
+</resources>

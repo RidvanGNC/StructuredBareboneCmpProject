@@ -4,7 +4,7 @@ info:
   version: 1.0.0
   description: >-
     Definitions shared by every API of a product: the error document, the client version gate, the
-    health probe and the session refresh. Product contracts reference these components instead of
+    health probe and the session endpoints. Product contracts reference these components instead of
     redefining them. The server is authoritative for authentication and authorization.
 servers:
   - url: https://api.example.invalid
@@ -20,6 +20,73 @@ paths:
       responses:
         '200':
           description: The server is reachable.
+  /v1/auth/login:
+    post:
+      operationId: login
+      summary: Sign in with email and password.
+      description: >-
+        Returns a token pair. Wrong credentials answer 401 with a problem document whose `code` is
+        `auth.invalid_credentials`; the client shows a "check your email or password" message, not a
+        "session expired" one. The server decides lockout and rate limiting (429).
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/ClientVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Token pair of the new session.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenPair'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '426':
+          $ref: '#/components/responses/UpgradeRequired'
+  /v1/auth/me:
+    get:
+      operationId: getCurrentUser
+      summary: The signed-in user; also how a client checks that a stored session is still valid.
+      description: >-
+        Clients call it once at start when a session is stored. 401 (after a rejected refresh) ends the
+        session; a network failure keeps the user signed in for offline use.
+      parameters:
+        - $ref: '#/components/parameters/ClientVersion'
+      responses:
+        '200':
+          description: The signed-in user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '426':
+          $ref: '#/components/responses/UpgradeRequired'
+  /v1/auth/logout:
+    post:
+      operationId: logout
+      summary: Revoke the refresh token of this device.
+      description: >-
+        Best effort: the client signs out locally even when this call fails or times out.
+      parameters:
+        - $ref: '#/components/parameters/ClientVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshRequest'
+      responses:
+        '204':
+          description: The refresh token is revoked.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
   /v1/auth/refresh:
     post:
       operationId: refreshSession
@@ -122,6 +189,26 @@ components:
             type: array
             items:
               type: string
+    LoginRequest:
+      type: object
+      additionalProperties: false
+      required: [email, password]
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+          format: password
+    UserProfile:
+      type: object
+      required: [id, email]
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        displayName:
+          type: string
     RefreshRequest:
       type: object
       additionalProperties: false

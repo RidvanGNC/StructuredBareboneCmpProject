@@ -7,6 +7,15 @@ val appVersionCode = providers.environmentVariable("APP_VERSION_CODE")
     .orElse(providers.gradleProperty("app.version.code"))
     .map(String::toInt)
 
+// Optional branding from gradle/brand.gradle.kts; empty when that file was removed.
+@Suppress("UNCHECKED_CAST")
+val brand = rootProject.extra["brandValues"] as Map<String, String>
+
+// Backend root URL. Without it the app runs on fixture data and shows no sign-in.
+val apiBaseUrl = providers.environmentVariable("APP_API_BASE_URL")
+    .orElse(providers.gradleProperty("apiBaseUrl"))
+    .orElse("")
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeCompiler)
@@ -23,11 +32,16 @@ android {
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "org.structured_barebone.cmp_project"
+        applicationId = brand["applicationId"] ?: "org.structured_barebone.cmp_project"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = appVersionCode.get()
         versionName = appVersionName.get()
+        manifestPlaceholders["appLabel"] = brand["productName"] ?: "@string/app_name"
+        buildConfigField("String", "API_BASE_URL", "\"${apiBaseUrl.get()}\"")
+    }
+    buildFeatures {
+        buildConfig = true
     }
     packaging {
         resources {

@@ -1,0 +1,9 @@
+<resources>
+    <string name="login_title">Giriş yap</string>
+    <string name="login_subtitle">Devam etmek için giriş yapın.</string>
+    <string name="login_email">E-posta</string>
+    <string name="login_password">Parola</string>
+    <string name="login_submit">Giriş yap</string>
+    <string name="login_field_required">Bu alan zorunludur.</string>
+    <string name="login_invalid_credentials">E-posta veya parola hatalı.</string>
+</resources>

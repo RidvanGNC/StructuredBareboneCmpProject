@@ -40,6 +40,7 @@ kotlin {
         }
         jvmMain.dependencies {
             implementation(libs.ktor.client.cio)
+            implementation(libs.jna.platform)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

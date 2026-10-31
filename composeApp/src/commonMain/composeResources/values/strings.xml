@@ -1,0 +1,4 @@
+<resources>
+    <string name="update_required_title">Update required</string>
+    <string name="update_required_message">This version is no longer supported. Please update the app to continue.</string>
+</resources>

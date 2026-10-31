@@ -39,15 +39,36 @@ kotlin {
             implementation(libs.compose.ui)
             implementation(libs.compose.components.resources)
             implementation(libs.compose.uiToolingPreview)
+            implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(libs.navigation.compose)
             //Project
             implementation(project(path = ":navigation"))
             implementation(project(path = ":di"))
+            implementation(project(path = ":data"))
+            implementation(project(path = ":feature"))
             implementation(project(path = ":shared"))
+            implementation(project(path = ":theme"))
+            implementation(project(path = ":ui"))
             implementation(project(path = ":viewmodel"))
+            implementation(project(path = ":screen:login"))
+            implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
+        jvmTest.dependencies {
+            implementation(compose.desktop.currentOs)
+            implementation(libs.compose.uiTest)
+            implementation(libs.androidx.lifecycle.viewmodelCompose)
+            implementation(libs.multiplatform.settings)
+            implementation(libs.multiplatform.settings.test)
+            implementation(libs.kotlinx.coroutines.test)
+            implementation(project(":viewmodel"))
+        }
     }
+}
+
+compose.resources {
+    packageOfResClass = "org.structured_barebone.cmp_project.resources"
 }

@@ -1,0 +1,4 @@
+# Example brand file. Copy it, change the values and pass it to Gradle with -PbrandFile=<path>.
+productName=Example Product
+applicationId=com.example.product
+desktopPackageName=ExampleProduct

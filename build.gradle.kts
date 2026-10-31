@@ -9,6 +9,10 @@ plugins {
     alias(libs.plugins.kotlinx.serialization) apply false
 }
 
+// Optional branding (see AGENTS.md): without gradle/brand.gradle.kts the modules fall back to their defaults.
+extra["brandValues"] = emptyMap<String, String>()
+rootProject.file("gradle/brand.gradle.kts").takeIf { it.isFile }?.let { apply(from = it) }
+
 subprojects {
     plugins.withId("org.jetbrains.kotlin.plugin.compose") {
         extensions.configure<ComposeCompilerGradlePluginExtension> {

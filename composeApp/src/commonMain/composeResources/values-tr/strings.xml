@@ -1,0 +1,4 @@
+<resources>
+    <string name="update_required_title">Güncelleme gerekli</string>
+    <string name="update_required_message">Bu sürüm artık desteklenmiyor. Devam etmek için lütfen uygulamayı güncelleyin.</string>
+</resources>

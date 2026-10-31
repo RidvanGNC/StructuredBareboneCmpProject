@@ -1,0 +1,9 @@
+<resources>
+    <string name="login_title">Sign in</string>
+    <string name="login_subtitle">Sign in to continue.</string>
+    <string name="login_email">Email</string>
+    <string name="login_password">Password</string>
+    <string name="login_submit">Sign in</string>
+    <string name="login_field_required">This field is required.</string>
+    <string name="login_invalid_credentials">The email or password is incorrect.</string>
+</resources>

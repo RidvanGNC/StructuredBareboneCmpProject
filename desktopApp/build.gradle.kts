@@ -4,6 +4,15 @@ val desktopVersionName = providers.environmentVariable("APP_VERSION_NAME")
     .orElse(providers.gradleProperty("app.version.name"))
     .map { it.substringBefore("-") }
 
+// Optional branding from gradle/brand.gradle.kts; empty when that file was removed.
+@Suppress("UNCHECKED_CAST")
+val brand = rootProject.extra["brandValues"] as Map<String, String>
+
+// Backend root URL. Without it the app runs on fixture data and shows no sign-in.
+val apiBaseUrl = providers.environmentVariable("APP_API_BASE_URL")
+    .orElse(providers.gradleProperty("apiBaseUrl"))
+    .orElse("")
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeMultiplatform)
@@ -34,10 +43,11 @@ compose.desktop {
         mainClass = "org.structured_barebone.desktop.MainKt"
         // The server reads the app version from the X-Client-Version header (see AppInfo).
         jvmArgs += "-Dapp.version=${desktopVersionName.get()}"
+        jvmArgs += "-Dapp.apiBaseUrl=${apiBaseUrl.get()}"
 
         nativeDistributions {
             targetFormats(TargetFormat.Msi)
-            packageName = "StructuredBareboneCmpProject"
+            packageName = brand["desktopPackageName"] ?: "StructuredBareboneCmpProject"
             packageVersion = desktopVersionName.get()
         }
     }

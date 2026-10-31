@@ -2,7 +2,6 @@
     <string name="app_title">Operasyon Çalışma Alanı</string>
     <string name="loading_workspace">Demo çalışma alanı hazırlanıyor…</string>
     <string name="workspace_unavailable">Demo çalışma alanı kullanılamıyor</string>
-    <string name="error_reference">Referans: %1$s</string>
     <string name="workspace_description">Mobil ve masaüstü şablonu için bir SaaS çalışma alanı örneği.</string>
     <string name="chip_multi_tenant_demo">Çok kiracılı demo</string>
     <string name="chip_packages_enabled">%1$d paket etkin</string>
@@ -24,19 +23,4 @@
     <string name="activity_contract_updated">API sözleşmesi güncellendi</string>
     <string name="activity_contract_updated_time">Dün</string>
     <string name="footer_tenant_hint">Bunu kiracı farkındalıklı yapmak için :packages:tenant paketini ekleyin ve belgelenmiş sunucu sözleşmesine bağlayın.</string>
-    <string name="language_title">Dil</string>
-    <string name="language_system">Sistem varsayılanı</string>
-    <string name="language_english">English</string>
-    <string name="language_turkish">Türkçe</string>
-    <string name="error_network_unreachable">Sunucuya ulaşılamıyor. İnternet bağlantınızı kontrol edin.</string>
-    <string name="error_timeout">Sunucu yanıt vermedi. Lütfen tekrar deneyin.</string>
-    <string name="error_unauthorized">Oturum süreniz doldu. Lütfen yeniden giriş yapın.</string>
-    <string name="error_forbidden">Bu işlem için yetkiniz yok.</string>
-    <string name="error_not_found">İstenen kayıt bulunamadı.</string>
-    <string name="error_conflict">İşlem tamamlanamadı, kayıt değişmiş olabilir. Yenileyip tekrar deneyin.</string>
-    <string name="error_validation">Bazı bilgiler geçersiz. Kontrol edip tekrar deneyin.</string>
-    <string name="error_rate_limited">Çok fazla istek gönderildi. Biraz bekleyip tekrar deneyin.</string>
-    <string name="error_update_required">Bu sürüm artık desteklenmiyor. Lütfen uygulamayı güncelleyin.</string>
-    <string name="error_server">Sunucu şu anda yanıt veremiyor. Lütfen daha sonra tekrar deneyin.</string>
-    <string name="error_unexpected">Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.</string>
 </resources>

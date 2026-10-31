@@ -53,3 +53,13 @@ target.
 - Android application code lives in `:androidApp`; Kotlin Multiplatform modules use `com.android.kotlin.multiplatform.library` (see `androidApp/README.md`).
 - Run the tasks listed in `.github/workflows/ci.yml` before committing; the rule tests in `composeApp` check route, ViewModel and repository registration.
 - Never hard-code user-visible text: use Compose Resources on KMP and `webApp/src/i18n` on the web; see the localization section of `docs/architecture-decisions.md` to add a language.
+- Sizes, colors and type styles come from `:theme` tokens only; raw `dp`/`sp`, `Color(0x...)`, `fontSize`, `FontWeight` and `RoundedCornerShape` are allowed in `:theme` alone (`StyleRulesTest`, no exception list).
+- Feature modules are compiled-in `FeatureModule`s in the `:feature` registry; entitlement filtering belongs to `:packages:tenant`, never to the base. Never add permission keys to the single-tenant base.
+
+## Branding (removable)
+
+`gradle/brand.gradle.kts` lets one build produce differently named apps: `-PbrandFile=<properties file>` (see `gradle/brand.properties.example`) or `-Pbrand.<key>=<value>` sets `productName`, `applicationId` and `desktopPackageName`. A product with a single fixed identity does not need it. To remove it, delete `gradle/brand.gradle.kts` and `gradle/brand.properties.example`; the builds then use the defaults written in `androidApp/build.gradle.kts` and `desktopApp/build.gradle.kts`, and the `brandValues` lines in the root `build.gradle.kts` can go as well. Do not read brand values anywhere else.
+
+## Sign-in (removable)
+
+Email and password sign-in is part of the template (`:screen:login`, the session gate in `composeApp/App.kt`, `/v1/auth/*` in `contracts/common.openapi.yaml`). It switches itself off when `AppConfig.apiBaseUrl` is empty. Ask the decision-gate questions before changing the authentication method; social sign-in and two-factor are not part of the template.

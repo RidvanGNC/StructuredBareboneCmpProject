@@ -35,6 +35,9 @@ include(":shared")
 include(":navigation")
 include(":viewmodel")
 include(":di")
+include(":theme")
+include(":ui")
+include(":feature")
 
 // Optional product capabilities. Apps opt in explicitly; the base template has no tenancy dependency.
 include(":packages:tenant")
@@ -42,3 +45,5 @@ include(":packages:tenant")
 //Screens
 include(":data")
 include(":screen:template")
+include(":screen:login")
+include(":screen:profile")

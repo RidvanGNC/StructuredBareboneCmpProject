@@ -26,6 +26,7 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.ktor.client.core)
             implementation(project(":data"))
+            implementation(project(":feature"))
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

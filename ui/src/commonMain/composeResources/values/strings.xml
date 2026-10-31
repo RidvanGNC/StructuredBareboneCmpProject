@@ -1,0 +1,27 @@
+<resources>
+    <string name="action_retry">Try again</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_dismiss">Dismiss</string>
+    <string name="action_show_password">Show</string>
+    <string name="action_hide_password">Hide</string>
+    <string name="message_reference">Reference: %1$s</string>
+    <string name="language_title">Language</string>
+    <string name="language_system">System default</string>
+    <string name="language_english">English</string>
+    <string name="language_turkish">Türkçe</string>
+    <string name="theme_title">Appearance</string>
+    <string name="theme_system">System default</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="error_network_unreachable">Cannot reach the server. Check your connection.</string>
+    <string name="error_timeout">The server took too long to respond. Please try again.</string>
+    <string name="error_unauthorized">Your session has expired. Please sign in again.</string>
+    <string name="error_forbidden">You are not allowed to do this.</string>
+    <string name="error_not_found">We could not find what you asked for.</string>
+    <string name="error_conflict">This could not be completed because something changed. Refresh and try again.</string>
+    <string name="error_validation">Some of the information is not valid. Check it and try again.</string>
+    <string name="error_rate_limited">Too many requests. Wait a moment and try again.</string>
+    <string name="error_update_required">This version is no longer supported. Please update the app.</string>
+    <string name="error_server">The server is having trouble. Please try again later.</string>
+    <string name="error_unexpected">Something went wrong. Please try again.</string>
+</resources>

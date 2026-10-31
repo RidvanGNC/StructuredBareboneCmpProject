@@ -23,7 +23,10 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.multiplatform.settings)
             implementation(libs.androidx.lifecycle.viewmodel)
+            implementation(libs.ktor.client.core)
             implementation(project(":data"))
+            implementation(project(":feature"))
+            implementation(project(":shared"))
             implementation(project(":viewmodel"))
         }
     }
