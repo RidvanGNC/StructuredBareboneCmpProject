@@ -2,6 +2,7 @@ package org.structured_barebone.data.implementation
 
 import io.ktor.client.network.sockets.ConnectTimeoutException
 import io.ktor.client.network.sockets.SocketTimeoutException
+import kotlinx.coroutines.CancellationException
 import kotlinx.io.IOException
 import org.structured_barebone.data.model.ApiResponse
 import org.structured_barebone.data.model.ServerException
@@ -18,6 +19,9 @@ abstract class BaseRepository {
             } else {
                 Result.Error(response.message ?: "Beklenmeyen bir hata oluştu.")
             }
+        } catch (e: CancellationException) {
+            // Leaving a screen cancels the request; that is not an error and must keep propagating.
+            throw e
         } catch (e: ConnectTimeoutException) {
             Result.Error("Sunucuya ulaşılamıyor. İnternet bağlantınızı kontrol edin.")
         } catch (e: SocketTimeoutException) {
@@ -27,7 +31,8 @@ abstract class BaseRepository {
         } catch (e: ServerException) {
             Result.Error("Server Hatası: ${e.message}")
         } catch (e: Exception) {
-            Result.Error("Bir hata oluştu: ${e.message}")
+            // The exception text is technical and must not reach the user.
+            Result.Error("Beklenmeyen bir hata oluştu.")
         }
     }
 }

@@ -1,0 +1,17 @@
+version: 2
+updates:
+  # Version catalog (Gradle), GitHub Actions and web dependencies: weekly pull requests.
+  - package-ecosystem: gradle
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+  - package-ecosystem: npm
+    directory: "/webApp"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5

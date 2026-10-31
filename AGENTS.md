@@ -51,3 +51,4 @@ target.
 - Write all identifiers (variables, functions, classes, files) in English.
 - Use stable releases only (no alpha, beta or RC); verify new dependency sets by building and running every target available locally.
 - Android application code lives in `:androidApp`; Kotlin Multiplatform modules use `com.android.kotlin.multiplatform.library` (see `androidApp/README.md`).
+- Run the tasks listed in `.github/workflows/ci.yml` before committing; the rule tests in `composeApp` check route, ViewModel and repository registration.
