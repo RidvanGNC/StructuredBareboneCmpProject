@@ -48,3 +48,6 @@ target.
 - Keep demo data visibly labelled as fixture data.
 - Update the nearest README/decision guide when a new choice or integration point is introduced.
 - Never add secrets to client code, `VITE_*` values, fixtures, or documentation.
+- Write all identifiers (variables, functions, classes, files) in English.
+- Use stable releases only (no alpha, beta or RC); verify new dependency sets by building and running every target available locally.
+- Android application code lives in `:androidApp`; Kotlin Multiplatform modules use `com.android.kotlin.multiplatform.library` (see `androidApp/README.md`).

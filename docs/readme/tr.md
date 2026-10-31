@@ -8,7 +8,7 @@ uygulaması değil; yalnızca backend sözleşmeleri paylaşılır.
 
 ```bash
 # Android
-gradlew.bat :composeApp:assembleDebug
+gradlew.bat :androidApp:assembleDebug
 
 # Desktop / Windows
 gradlew.bat :desktopApp:run

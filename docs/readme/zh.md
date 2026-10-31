@@ -6,7 +6,7 @@
 ## 快速开始
 
 ```bash
-gradlew.bat :composeApp:assembleDebug
+gradlew.bat :androidApp:assembleDebug
 gradlew.bat :desktopApp:run
 cd webApp && npm ci && npm run dev
 ```

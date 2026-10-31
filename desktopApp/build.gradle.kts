@@ -20,6 +20,8 @@ kotlin {
     sourceSets {
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
+            // Provides Dispatchers.Main on the JVM (viewModelScope); without it the desktop app crashes on start.
+            implementation(libs.kotlinx.coroutines.swing)
             implementation(project(":composeApp"))
             implementation(project(":di"))
         }

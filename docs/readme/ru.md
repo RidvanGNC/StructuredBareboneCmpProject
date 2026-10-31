@@ -6,7 +6,7 @@ React web-приложение. Общей границей является API
 ## Быстрый старт
 
 ```bash
-gradlew.bat :composeApp:assembleDebug
+gradlew.bat :androidApp:assembleDebug
 gradlew.bat :desktopApp:run
 cd webApp && npm ci && npm run dev
 ```

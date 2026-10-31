@@ -1,15 +1,8 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-val appVersionName = providers.environmentVariable("APP_VERSION_NAME")
-    .orElse(providers.gradleProperty("app.version.name"))
-val appVersionCode = providers.environmentVariable("APP_VERSION_CODE")
-    .orElse(providers.environmentVariable("GITHUB_RUN_NUMBER"))
-    .orElse(providers.gradleProperty("app.version.code"))
-    .map(String::toInt)
-
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.androidKotlinMultiplatformLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
 }
@@ -21,10 +14,12 @@ kotlin {
         }
     }
 
-    androidTarget {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-        }
+    android {
+        namespace = "org.structured_barebone.app"
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
+        compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
+        androidResources { enable = true }
     }
 
     listOf(
@@ -37,13 +32,6 @@ kotlin {
     }
 
     sourceSets {
-        androidMain.dependencies {
-            implementation(libs.compose.uiToolingPreview)
-            implementation(libs.androidx.activity.compose)
-
-            //Koin
-            implementation(libs.koin.android)
-        }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
@@ -60,35 +48,3 @@ kotlin {
         }
     }
 }
-
-android {
-    namespace = "org.structured_barebone.cmp_project"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
-
-    defaultConfig {
-        applicationId = "org.structured_barebone.cmp_project"
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = appVersionCode.get()
-        versionName = appVersionName.get()
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-}
-
-dependencies {
-    debugImplementation(libs.compose.uiTooling)
-}
-

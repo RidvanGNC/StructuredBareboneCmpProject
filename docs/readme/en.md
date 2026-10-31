@@ -8,7 +8,7 @@ not UI, navigation, dependency injection, or client data implementations.
 
 ```bash
 # Android
-gradlew.bat :composeApp:assembleDebug
+gradlew.bat :androidApp:assembleDebug
 
 # Desktop / Windows
 gradlew.bat :desktopApp:run

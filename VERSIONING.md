@@ -12,7 +12,7 @@ Bu şablon, uygulama sürümünü doğrudan Gradle dosyasına yazmak yerine yap�
 Yerel bir sürüm üretmek için:
 
 ```powershell
-.\gradlew.bat :composeApp:assembleDebug `
+.\gradlew.bat :androidApp:assembleDebug `
   -Papp.version.name=0.2.0-dev `
   -Papp.version.code=2
 ```
