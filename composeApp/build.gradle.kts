@@ -42,6 +42,9 @@ kotlin {
             //Project
             implementation(project(path = ":navigation"))
             implementation(project(path = ":di"))
+            implementation(project(path = ":shared"))
+            implementation(project(path = ":viewmodel"))
+            implementation(libs.koin.compose.viewmodel)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

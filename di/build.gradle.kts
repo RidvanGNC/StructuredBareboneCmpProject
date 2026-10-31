@@ -21,6 +21,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(libs.koin.core)
+            implementation(libs.multiplatform.settings)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(project(":data"))
             implementation(project(":viewmodel"))

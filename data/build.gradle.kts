@@ -28,6 +28,7 @@ kotlin {
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.auth)
             implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.multiplatform.settings)
             implementation(libs.ktor.client.logging)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.client.serialization)
@@ -44,6 +45,7 @@ kotlin {
             implementation(libs.kotlin.test)
             implementation(libs.kotlinx.coroutines.test)
             implementation(libs.ktor.client.mock)
+            implementation(libs.multiplatform.settings.test)
         }
     }
 }

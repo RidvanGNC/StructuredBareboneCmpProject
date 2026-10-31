@@ -25,7 +25,8 @@ Use JDK 17+ for Gradle. React requires Node `^20.19.0 || >=22.12.0`.
 
 Both clients show an **Operations Workspace** fixture: packages, workspace metrics, and activity.
 The labels are explanatory sample content, not a live tenancy implementation. See the decision
-guides before connecting a backend.
+guides before connecting a backend. The demo screens switch between English and Turkish; the
+choice is saved on the device (see the localization section of the architecture decisions).
 
 ## Key decisions
 

@@ -17,6 +17,7 @@ kotlin {
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
         compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
+        androidResources { enable = true }
     }
     listOf(iosArm64(), iosSimulatorArm64())
 
@@ -26,9 +27,14 @@ kotlin {
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
             implementation(libs.compose.ui)
+            implementation(libs.compose.components.resources)
             implementation(libs.koin.compose.viewmodel)
             implementation(project(":viewmodel"))
             implementation(project(":shared"))
         }
     }
+}
+
+compose.resources {
+    packageOfResClass = "org.structured_barebone.template.resources"
 }

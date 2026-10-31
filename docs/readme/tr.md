@@ -25,7 +25,8 @@ Gradle için JDK 17+, React için Node `^20.19.0 || >=22.12.0` gerekir.
 
 İki istemci de paketler, çalışma alanı metrikleri ve aktivite içeren bir **Operations Workspace**
 fixture’ı gösterir. Bu içerik canlı tenant entegrasyonu değildir; backend bağlanmadan önce aşağıdaki
-karar rehberleri okunmalıdır.
+karar rehberleri okunmalıdır. Demo ekranlarında İngilizce ve Türkçe arasında geçiş yapılabilir;
+seçim cihazda saklanır (mimari kararlardaki yerelleştirme bölümüne bakın).
 
 ## Kritik kararlar
 

@@ -15,4 +15,5 @@ cd webApp && npm ci && npm run dev
 
 Operations Workspace 演示仅使用本地 fixture 数据。基础项目是 single-tenant；如需
 multi-tenant，显式接入 `:packages:tenant`。请先阅读 [tenant 架构](../tenant-architecture.md)
-和 [API 契约](../../contracts/README.md)。
+和 [API 契约](../../contracts/README.md)。演示界面可在英语和土耳其语之间切换，所选语言保存在设备上
+（见架构决策中的本地化部分）。

@@ -52,3 +52,4 @@ target.
 - Use stable releases only (no alpha, beta or RC); verify new dependency sets by building and running every target available locally.
 - Android application code lives in `:androidApp`; Kotlin Multiplatform modules use `com.android.kotlin.multiplatform.library` (see `androidApp/README.md`).
 - Run the tasks listed in `.github/workflows/ci.yml` before committing; the rule tests in `composeApp` check route, ViewModel and repository registration.
+- Never hard-code user-visible text: use Compose Resources on KMP and `webApp/src/i18n` on the web; see the localization section of `docs/architecture-decisions.md` to add a language.

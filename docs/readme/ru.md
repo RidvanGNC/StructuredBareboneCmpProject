@@ -15,4 +15,5 @@ cd webApp && npm ci && npm run dev
 
 Demo Operations Workspace использует только локальные fixture-данные. Базовый проект
 single-tenant; multi-tenant подключается явно через `:packages:tenant`. Начните с
-[документации tenant](../tenant-architecture.md) и [API-контракта](../../contracts/README.md).
+[документации tenant](../tenant-architecture.md) и [API-контракта](../../contracts/README.md). Демо-экраны переключаются между английским и
+турецким; выбор сохраняется на устройстве (см. раздел о локализации в архитектурных решениях).
