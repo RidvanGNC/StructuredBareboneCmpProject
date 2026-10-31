@@ -35,11 +35,16 @@ async function readProblem(response: Response): Promise<Problem | undefined> {
   }
 }
 
+/** `exactOptionalPropertyTypes` forbids an explicit `signal: undefined`, so the property is only set when present. */
+function withSignal(init: RequestInit, signal: AbortSignal | undefined): RequestInit {
+  return signal === undefined ? init : { ...init, signal };
+}
+
 export class ApiClient {
   public constructor(private readonly baseUrl: string) {}
 
   public async get<T>(path: string, signal?: AbortSignal): Promise<T> {
-    return this.request<T>(path, { method: "GET", signal });
+    return this.request<T>(path, withSignal({ method: "GET" }, signal));
   }
 
   public async put<TResponse, TBody>(
@@ -47,12 +52,10 @@ export class ApiClient {
     body: TBody,
     signal?: AbortSignal,
   ): Promise<TResponse> {
-    return this.request<TResponse>(path, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-      signal,
-    });
+    return this.request<TResponse>(
+      path,
+      withSignal({ method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }, signal),
+    );
   }
 
   private async request<T>(path: string, init: RequestInit): Promise<T> {

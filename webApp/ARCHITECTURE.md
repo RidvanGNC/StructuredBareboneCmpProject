@@ -17,3 +17,9 @@ The optional tenant package lives at `src/packages/tenant`. It is not imported b
 tenant-aware host explicitly mounts `TenantProvider` around the applicable route tree. Its API
 contract is shared with CMP at `../contracts/tenant-api.openapi.yaml`, while its state and UI stay
 native to React.
+
+Localization: `src/i18n/dictionaries.ts` holds one dictionary per language, and the compiler checks that
+every dictionary has the same keys (`satisfies Dictionary`). `I18nProvider` resolves the language
+(stored choice, otherwise the browser language) and sets `document.documentElement.lang`.
+`npm run typecheck` checks the app sources through `tsconfig.app.json`; the root `tsconfig.json` only
+holds project references and checks nothing on its own.

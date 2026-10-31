@@ -12,5 +12,8 @@ owns its own UI, routing, state, dependency injection choices, and HTTP integrat
 3. Is tenant support required? If yes, mount `src/packages/tenant/TenantProvider` only around the
    tenant-aware application tree and use the OpenAPI contract.
 
+All visible text lives in the typed dictionaries in `src/i18n` (English and Turkish); the language
+choice is kept in `localStorage` inside `try/catch`. Add no i18n library until there is a concrete need.
+
 Run `npm ci`, `npm run build`, `npm audit`, and `npm audit --omit=dev` for every dependency change.
 See [SECURITY.md](SECURITY.md) and [ARCHITECTURE.md](ARCHITECTURE.md).
