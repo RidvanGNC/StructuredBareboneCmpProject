@@ -24,6 +24,10 @@ jobs:
       - name: Tests
         run: ./gradlew :data:jvmTest :viewmodel:jvmTest :feature:jvmTest :theme:jvmTest :navigation:jvmTest :packages:tenant:jvmTest :composeApp:jvmTest
 
+      # The same common tests again on the Android target (withHostTest in each module's build file).
+      - name: Android host tests
+        run: ./gradlew :data:testAndroidHostTest :viewmodel:testAndroidHostTest :feature:testAndroidHostTest :theme:testAndroidHostTest :navigation:testAndroidHostTest :packages:tenant:testAndroidHostTest
+
       - name: Android lint
         run: ./gradlew :androidApp:lintDebug
 

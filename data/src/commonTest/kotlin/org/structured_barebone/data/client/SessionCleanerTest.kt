@@ -1,6 +1,7 @@
 package org.structured_barebone.data.client
 
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceTimeBy
@@ -10,6 +11,8 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 
+// advanceTimeBy and testScheduler are still marked experimental in kotlinx-coroutines-test.
+@OptIn(ExperimentalCoroutinesApi::class)
 class SessionCleanerTest {
     @Test
     fun steps_run_in_order_while_the_tokens_still_exist_and_the_tokens_are_cleared_last() = runTest {

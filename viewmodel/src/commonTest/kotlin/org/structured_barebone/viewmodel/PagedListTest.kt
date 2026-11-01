@@ -2,6 +2,7 @@ package org.structured_barebone.viewmodel
 
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -18,6 +19,8 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
+// advanceUntilIdle, advanceTimeBy and testScheduler are still marked experimental in kotlinx-coroutines-test.
+@OptIn(ExperimentalCoroutinesApi::class)
 class PagedListTest {
     private val pages = mapOf(
         null to Page(listOf("a", "b"), "p2"),

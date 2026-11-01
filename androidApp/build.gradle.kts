@@ -47,6 +47,11 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+        jniLibs {
+            // Prebuilt library from Compose; where the NDK strip tool is missing (CI runners) AGP warns that it
+            // cannot strip it and packages it unchanged, which is what this setting does without the warning.
+            keepDebugSymbols += "**/libandroidx.graphics.path.so"
+        }
     }
     // Release signing comes from the environment (CI secrets) or from -P properties; never from files in the
     // repository. Without a keystore the release build is produced unsigned.

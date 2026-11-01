@@ -15,6 +15,7 @@ kotlin {
         namespace = "org.structured_barebone.packages.tenant"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
+        withHostTest { }
         compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
     }
     listOf(iosArm64(), iosSimulatorArm64())
