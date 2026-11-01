@@ -1,0 +1,183 @@
+name: Release
+
+# Builds the Android APK/AAB and the Windows MSI, writes SHA-256 sums and opens a DRAFT release; a person
+# publishes it. Runs on a version tag (v1.2.3), by hand, or from another workflow (workflow_call), so a
+# product repository can call it with its own brand file and secrets.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version name, SemVer without the leading v (for example 1.4.0 or 1.4.0-rc.1)
+        required: true
+        type: string
+      brand_file:
+        description: Optional brand properties file, relative to the repository root
+        required: false
+        type: string
+        default: ""
+  workflow_call:
+    inputs:
+      version:
+        description: Version name, SemVer without the leading v
+        required: true
+        type: string
+      brand_file:
+        description: Optional brand properties file, relative to the repository root
+        required: false
+        type: string
+        default: ""
+    secrets:
+      ANDROID_KEYSTORE_BASE64:
+        required: false
+      ANDROID_KEYSTORE_PASSWORD:
+        required: false
+      ANDROID_KEY_ALIAS:
+        required: false
+      ANDROID_KEY_PASSWORD:
+        required: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  # Backend root URL; empty builds the app without sign-in on fixture data. Set it as a repository variable.
+  APP_API_BASE_URL: ${{ vars.APP_API_BASE_URL }}
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      name: ${{ steps.v.outputs.name }}
+      prerelease: ${{ steps.v.outputs.prerelease }}
+    steps:
+      - id: v
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          if [ "$REF_TYPE" = "tag" ]; then raw="${REF_NAME#v}"; else raw="${INPUT_VERSION#v}"; fi
+          if ! printf '%s' "$raw" | grep -Eq '^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?$'; then
+            echo "Version '$raw' is not SemVer (MAJOR.MINOR.PATCH[-prerelease])." >&2
+            exit 1
+          fi
+          echo "name=$raw" >> "$GITHUB_OUTPUT"
+          case "$raw" in *-*) echo "prerelease=true" >> "$GITHUB_OUTPUT" ;; *) echo "prerelease=false" >> "$GITHUB_OUTPUT" ;; esac
+
+  verify:
+    uses: ./.github/workflows/ci.yml
+
+  android:
+    needs: [version, verify]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6
+
+      - name: Restore signing key
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            printf '%s' "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.jks"
+            echo "ANDROID_KEYSTORE_FILE=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
+          else
+            echo "::warning::ANDROID_KEYSTORE_BASE64 is not set; the APK and AAB are built unsigned."
+          fi
+
+      - name: Build APK and AAB
+        env:
+          APP_VERSION_NAME: ${{ needs.version.outputs.name }}
+          APP_VERSION_CODE: ${{ github.run_number }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          BRAND_FILE: ${{ inputs.brand_file }}
+        run: ./gradlew :androidApp:assembleRelease :androidApp:bundleRelease ${BRAND_FILE:+-PbrandFile="$BRAND_FILE"}
+
+      - name: Collect files
+        env:
+          VERSION: ${{ needs.version.outputs.name }}
+        run: |
+          mkdir -p dist
+          cp androidApp/build/outputs/apk/release/*.apk "dist/app-$VERSION.apk"
+          cp androidApp/build/outputs/bundle/release/*.aab "dist/app-$VERSION.aab"
+          cp androidApp/build/outputs/mapping/release/mapping.txt "dist/mapping-$VERSION.txt"
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: android
+          path: dist/*
+          if-no-files-found: error
+
+  windows:
+    needs: [version, verify]
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6
+
+      - name: Build MSI
+        shell: bash
+        env:
+          APP_VERSION_NAME: ${{ needs.version.outputs.name }}
+          BRAND_FILE: ${{ inputs.brand_file }}
+        run: ./gradlew :desktopApp:packageReleaseMsi ${BRAND_FILE:+-PbrandFile="$BRAND_FILE"}
+
+      - name: Collect files
+        shell: bash
+        env:
+          VERSION: ${{ needs.version.outputs.name }}
+        run: |
+          mkdir -p dist
+          cp desktopApp/build/compose/binaries/main-release/msi/*.msi "dist/app-$VERSION.msi"
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: windows
+          path: dist/*
+          if-no-files-found: error
+
+  draft-release:
+    needs: [version, android, windows]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Checksums
+        working-directory: dist
+        run: |
+          # The R8 mapping file stays out of the sums: it is for crash reports, not for users.
+          sha256sum app-* > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
+      - name: Create draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.version.outputs.name }}
+          PRERELEASE: ${{ needs.version.outputs.prerelease }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+        run: |
+          flags=(--draft --title "v$VERSION" --target "$SHA" --generate-notes)
+          if [ "$PRERELEASE" = "true" ]; then flags+=(--prerelease); fi
+          gh release create "v$VERSION" "${flags[@]}" --repo "$REPO" dist/app-* dist/SHA256SUMS.txt dist/mapping-*

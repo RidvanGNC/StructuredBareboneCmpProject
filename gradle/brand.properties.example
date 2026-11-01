@@ -2,3 +2,12 @@
 productName=Example Product
 applicationId=com.example.product
 desktopPackageName=ExampleProduct
+
+# Windows installer upgrade code: generate one UUID per product and never change it afterwards.
+upgradeUuid=00000000-0000-0000-0000-000000000000
+
+# Optional.
+vendor=Example Vendor
+# Directory with res-style folders (mipmap-*/ic_launcher*, ic_launcher_round*) replacing the launcher icons.
+#androidIconDir=branding/android-res
+#desktopIcon=branding/product.ico

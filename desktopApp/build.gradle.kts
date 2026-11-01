@@ -45,10 +45,37 @@ compose.desktop {
         jvmArgs += "-Dapp.version=${desktopVersionName.get()}"
         jvmArgs += "-Dapp.apiBaseUrl=${apiBaseUrl.get()}"
 
+        // ProGuard stays off in the release build: it removed the Ktor service providers.
+        buildTypes.release.proguard {
+            isEnabled.set(false)
+        }
+
         nativeDistributions {
             targetFormats(TargetFormat.Msi)
             packageName = brand["desktopPackageName"] ?: "StructuredBareboneCmpProject"
             packageVersion = desktopVersionName.get()
+            brand["vendor"]?.let { vendor = it }
+            windows {
+                // Per-user install without a directory page, and a Start menu entry.
+                perUserInstall = true
+                dirChooser = false
+                shortcut = true
+                menu = true
+                brand["upgradeUuid"]?.let { upgradeUuid = it }
+                brand["desktopIcon"]?.let { iconFile.set(File(it)) }
+            }
+        }
+    }
+}
+
+// The upgrade code ties every release of a product together; an installer without a brand-specific one
+// would replace or conflict with other products, so the MSI build refuses to run without it.
+val hasUpgradeUuid = brand["upgradeUuid"] != null
+tasks.matching { it.name.startsWith("package") && it.name.endsWith("Msi") }.configureEach {
+    val upgradeUuidPresent = hasUpgradeUuid
+    doFirst {
+        check(upgradeUuidPresent) {
+            "MSI packaging needs the brand key upgradeUuid (see gradle/brand.properties.example)."
         }
     }
 }

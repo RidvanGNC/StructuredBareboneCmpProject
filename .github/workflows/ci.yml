@@ -30,6 +30,10 @@ jobs:
       - name: Android debug build
         run: ./gradlew :androidApp:assembleDebug
 
+      # R8 breakage shows only in a release build, so every change builds one (unsigned without a keystore).
+      - name: Android release build (R8)
+        run: ./gradlew :androidApp:assembleRelease
+
       - name: Desktop compile
         run: ./gradlew :desktopApp:compileKotlinJvm
 

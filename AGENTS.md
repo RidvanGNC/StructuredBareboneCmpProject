@@ -58,7 +58,7 @@ target.
 
 ## Branding (removable)
 
-`gradle/brand.gradle.kts` lets one build produce differently named apps: `-PbrandFile=<properties file>` (see `gradle/brand.properties.example`) or `-Pbrand.<key>=<value>` sets `productName`, `applicationId` and `desktopPackageName`. A product with a single fixed identity does not need it. To remove it, delete `gradle/brand.gradle.kts` and `gradle/brand.properties.example`; the builds then use the defaults written in `androidApp/build.gradle.kts` and `desktopApp/build.gradle.kts`, and the `brandValues` lines in the root `build.gradle.kts` can go as well. Do not read brand values anywhere else.
+`gradle/brand.gradle.kts` lets one build produce differently named apps: `-PbrandFile=<properties file>` (see `gradle/brand.properties.example`) or `-Pbrand.<key>=<value>` sets `productName`, `applicationId`, `desktopPackageName`, `upgradeUuid` (required for the MSI), `vendor`, `androidIconDir` and `desktopIcon`. A product with a single fixed identity does not need it. To remove it, delete `gradle/brand.gradle.kts` and `gradle/brand.properties.example`; the builds then use the defaults written in `androidApp/build.gradle.kts` and `desktopApp/build.gradle.kts`, and the `brandValues` lines in the root `build.gradle.kts` can go as well. Do not read brand values anywhere else.
 
 ## Sign-in (removable)
 

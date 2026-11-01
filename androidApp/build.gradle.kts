@@ -48,9 +48,36 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    // Release signing comes from the environment (CI secrets) or from -P properties; never from files in the
+    // repository. Without a keystore the release build is produced unsigned.
+    val keystoreFile = providers.environmentVariable("ANDROID_KEYSTORE_FILE")
+        .orElse(providers.gradleProperty("android.keystore.file"))
+    signingConfigs {
+        if (keystoreFile.isPresent) {
+            create("release") {
+                storeFile = file(keystoreFile.get())
+                storePassword = providers.environmentVariable("ANDROID_KEYSTORE_PASSWORD")
+                    .orElse(providers.gradleProperty("android.keystore.password")).get()
+                keyAlias = providers.environmentVariable("ANDROID_KEY_ALIAS")
+                    .orElse(providers.gradleProperty("android.key.alias")).get()
+                keyPassword = providers.environmentVariable("ANDROID_KEY_PASSWORD")
+                    .orElse(providers.gradleProperty("android.key.password")).get()
+            }
+        }
+    }
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfigs.findByName("release")?.let { signingConfig = it }
+        }
+    }
+    // A product's launcher icons (brand key androidIconDir) replace the template ones.
+    brand["androidIconDir"]?.let { iconDir ->
+        sourceSets {
+            getByName("debug").res.directories.add(iconDir)
+            getByName("release").res.directories.add(iconDir)
         }
     }
     compileOptions {
